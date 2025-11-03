@@ -1,0 +1,81 @@
+<?php
+require_once __DIR__ . '/../config/database.php';
+
+class Viajero {
+    private $conexion;
+    private $tabla = "transfer_viajero";
+
+    public function __construct() {
+        $db = new Database();
+        $this->conexion = $db->connect();
+    }
+
+    // ====================================
+    // Registrar nuevo viajero
+    // ====================================
+    public function registrarViajero($nombre, $apellido1, $apellido2, $email, $password, $direccion, $codigo_postal, $pais, $ciudad) {
+        try {
+            $query = "INSERT INTO {$this->tabla} 
+                      (nombre_cliente, apellido1, apellido2, email, password, direccion, codigo_postal, pais, ciudad)
+                      VALUES 
+                      (:nombre, :apellido1, :apellido2, :email, :password, :direccion, :codigo_postal, :pais, :ciudad)";
+            $statement = $this->conexion->prepare($query);
+
+            $hash = password_hash($password, PASSWORD_BCRYPT);
+
+            $statement->bindParam(':nombre', $nombre);
+            $statement->bindParam(':apellido1', $apellido1);
+            $statement->bindParam(':apellido2', $apellido2);
+            $statement->bindParam(':email', $email);
+            $statement->bindParam(':password', $hash);
+            $statement->bindParam(':direccion', $direccion);
+            $statement->bindParam(':codigo_postal', $codigo_postal);
+            $statement->bindParam(':pais', $pais);
+            $statement->bindParam(':ciudad', $ciudad);
+
+            return $statement->execute();
+        } catch (PDOException $e) {
+            error_log("Error al registrar viajero: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // ====================================
+    // Autenticar viajero
+    // ====================================
+    public function autenticarViajero($email, $password) {
+        try {
+            $query = "SELECT * FROM {$this->tabla} WHERE email = :email LIMIT 1";
+            $statement = $this->conexion->prepare($query);
+            $statement->bindParam(':email', $email);
+            $statement->execute();
+
+            $viajero = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if ($viajero && password_verify($password, $viajero['password'])) {
+                return $viajero;
+            }
+            return false;
+        } catch (PDOException $e) {
+            error_log("Error al autenticar viajero: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // ====================================
+    // Mostrar todos los viajeros
+    // ====================================
+    public function mostrarTodosViajeros() {
+        try {
+            $query = "SELECT id_viajero, nombre_cliente, email, ciudad, pais FROM {$this->tabla}";
+            $statement = $this->conexion->prepare($query);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener viajeros: " . $e->getMessage());
+            return [];
+        }
+    }
+}
+?>

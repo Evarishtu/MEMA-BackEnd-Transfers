@@ -13,8 +13,8 @@
         <p>Gestione traslados fácilmente con nuestro sistema.</p>
         <nav>
             <ul>
-                <li><a href="/?url=auth/login">Iniciar sesión</a></li>
-                <li><a href="/?url=auth/registro">Registrarse</a></li>
+                <li><a href="/?url=login/login">Iniciar sesión</a></li>
+                <li><a href="/?url=registro/registrar">Registrarse</a></li>
             </ul>
         </nav>
     </main>
