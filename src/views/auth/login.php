@@ -7,7 +7,7 @@
 </head>
     <body>
         <h1>Iniciar sesion</h1>
-        <form methid = "POST" action = "/?url=auth/login">
+        <form method = "POST" action = "/?url=login/login">
             <label>Email:</label><br>
             <input type = "email" name = "email" placeholder="tu email" autocomplete="new-email" required><br><br>
             <label>Contraseña</label><br>
@@ -21,7 +21,7 @@
             <button type = "submit">Entrar</button>
         </form>
         
-        <p>Darse de alta <a href="./registro.php"></a></p> 
+        <p>Darse de alta <a href="/?url=auth/registro"></a></p> 
 
     </body>
 </html>

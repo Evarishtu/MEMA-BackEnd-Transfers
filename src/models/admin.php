@@ -41,12 +41,12 @@ class Admin{
 
             if ($admin && password_verify($password, $admin['password'])){
                 return $admin;
-            }else{
-               return false; 
             }
+            return false; 
+            
             
         }catch(PDOException $e){
-            echo "Error al autenticar administrador: " . $e->getMessage();
+            error_log("Error al autenticar administrador: " . $e->getMessage());
             return false;
         }
     }
