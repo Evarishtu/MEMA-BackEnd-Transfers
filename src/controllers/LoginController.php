@@ -10,51 +10,59 @@ class LoginController {
             $password = $_POST['password'] ?? '';
 
             if(empty($rol) || empty($email) || empty($password)){
-                echo "<p>Por favor, rellene todos los campos.</p>";
-                include __DIR__ . '/../views/auth/login.php';
-                return;
+                // echo "<p>Por favor, rellene todos los campos.</p>";
+                header('Location: /?url=login/login');
+                exit;
             }
-
+            if(session_status() === PHP_SESSION_NONE){
+                session_start();
+            }
             switch($rol){
                 case 'administrador': 
                     $adminModel = new Admin();
                     $admin = $adminModel->autenticarAdmin($email, $password);
                     if($admin){
-                        session_start();
+                        
                         $_SESSION['user_id'] = $admin['id_admin'];
                         $_SESSION['user_nombre'] = $admin['nombre'];
                         $_SESSION['rol'] = 'administrador';
                         header('Location: /?url=admin/dashboard');
                         exit;
                     }else{
-                        echo "<p>Credenciales incorrectas.</p>";
-                        include __DIR__ . '/../views/auth/login.php';;
+                        // echo "<p>Credenciales incorrectas.</p>";
+                        header('Location: /?url=login/login');
+                        exit;
                     }
                     break;
                 case 'viajero':
                     $viajeroModel = new Viajero();
                     $viajero = $viajeroModel->autenticarViajero($email, $password);
                     if($viajero){
-                        session_start();
+                        
                         $_SESSION['user_id'] = $viajero['id_viajero'];
                         $_SESSION['user_nombre'] = $viajero['nombre_cliente'];
                         $_SESSION['rol'] = 'viajero';
                         header('Location: /?url=viajero/perfil');
                         exit;
                     }else{
-                        echo "<p>Credenciales incorrectas.</p>";
-                        include __DIR__ . '/../views/auth/login.php';
+                        // echo "<p>Credenciales incorrectas.</p>";
+                        header('Location: /?url=login/login');
+                        exit;
                     }
                     break;
                 default:
-                    echo "<p>Rol no reconocido</p>";
+                    // echo "<p>Rol no reconocido</p>";
+                    header('Location: /?url=login/login');
+                    exit;
             }
-        }else{
-            include __DIR__ . '/../views/auth/login.php';
         }
+            include __DIR__ . '/../views/auth/login.php';  
     }
     public function logout(){
-        session_start();
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
+        
         session_destroy();
         header('Location: /?url=login/login');
         exit;

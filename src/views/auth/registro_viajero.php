@@ -7,7 +7,7 @@
 </head>
     <body>
         <h2>Registro de Cliente Particular</h2>
-        <form method = "POST" action ="/?url=auth/registro">
+        <form method = "POST" action = "/?url=registro/registrar">
             <input type = "hidden" name = "rol" value ="viajero">
 
             <label for = "email">Email de autenticación de usuario:</label><br>
@@ -17,7 +17,7 @@
             <input type = "password" name = "password" placeholder = "contraseña de usuario" required><br><br>
 
             <label for = "nombre_cliente">Nombre:</label><br>
-            <input type = "text" name = "nombre_cliente" placeholder ="tu nombre" required><br><br>
+            <input type = "text" name = "nombre" placeholder ="tu nombre" required><br><br>
 
             <label for = "apellido1">Primer apellido:</label><br>
             <input type = "text" name = "apellido1" placeholder ="tu primer apellido" required><br><br>
@@ -29,7 +29,7 @@
             <input type = "text" name = "direccion" placeholder ="tu dirección" required><br><br>
 
             <label for = "codigo_postal">Código postal:</label><br>
-            <input type = "text" name = "codigo_postal" placeholder ="tu código postal" required><br><br>
+            <input type = "text" name = "codigoPostal" placeholder ="tu código postal" required><br><br>
 
             <label for = "pais">País:</label><br>
             <input type = "text" name = "pais" placeholder ="tu país" required><br><br>

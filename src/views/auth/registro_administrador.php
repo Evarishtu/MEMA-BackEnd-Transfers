@@ -7,7 +7,7 @@
 </head>
     <body>
         <h2>Registro de Administrador</h2>
-        <form method = "POST" action = "/?url=auth/registro">
+        <form method = "POST" action = "/?url=registro/registrar">
             <input type = "hidden" name = "rol" value = "administrador">
 
             <label for = "email">Email de autenticación de usuario</label><br>

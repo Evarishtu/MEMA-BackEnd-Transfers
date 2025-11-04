@@ -1,4 +1,12 @@
-<?php // Comprobar si el usuario logueado es administrador ?>
+<?php 
+if (session_status() === PHP_SESSION_NONE){
+    session_start();
+}
+
+if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
+    header('Location: /?url=login/login');
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,11 +17,11 @@
 </head>
     <body>
         <header>
-            <h1>Panel de Administración</h1>
+            <h1>Bienvenido, <?=htmlspecialchars($_SESSION['user_nombre'])?></h1>
         </header> 
         <nav>
             <ul>
-                <li><a href="../auth/login.php">Cerrar sesión</a></li>
+                <li><a href="/?url=login/logout">Cerrar sesión</a></li>
             </ul>
         </nav>
         <main>

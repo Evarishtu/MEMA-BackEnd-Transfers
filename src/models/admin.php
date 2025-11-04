@@ -10,10 +10,10 @@ class Admin{
         $this->conexion = $db->connect();
     }
     // Registrar nuevo administrador
-    public function registrarAdmin($nombre, $email, $password, $rol = 'administrador'){
+    public function registrarAdmin($nombre, $email, $password){
         try{
-            $query = "INSERT INTO {$this->tabla} (nombre, email, password, rol)
-                VALUES (:nombre, :email, :password, :rol)";
+            $query = "INSERT INTO {$this->tabla} (nombre, email, password)
+                VALUES (:nombre, :email, :password)";
             $statement = $this->conexion->prepare($query);
 
             $hash = password_hash($password, PASSWORD_BCRYPT);
@@ -21,11 +21,10 @@ class Admin{
             $statement->bindParam(':nombre', $nombre);
             $statement->bindParam(':email', $email);
             $statement->bindParam(':password', $hash);
-            $statement->bindParam(':rol', $rol);
 
             return $statement->execute();
         }catch (PDOException $e){
-            echo "Error al registrar administrador: " . $e->getMessage();
+            error_log("Error al registrar administrador: " . $e->getMessage());
             return false;
         }
     }
@@ -36,9 +35,9 @@ class Admin{
             $statement = $this->conexion->prepare($query);
             $statement->bindParam(':email', $email);
             $statement->execute();
-
+            
             $admin = $statement->fetch(PDO::FETCH_ASSOC);
-
+            
             if ($admin && password_verify($password, $admin['password'])){
                 return $admin;
             }
@@ -53,7 +52,7 @@ class Admin{
     // MOstrar todos los administradores
     public function mostrarTodosAdmins(){
         try{
-            $query = "SELECT id_admin, nombre, email, rol FROM {$this->tabla}";
+            $query = "SELECT id_admin, nombre, email FROM {$this->tabla}";
             $statement = $this->conexion->prepare($query);
             $statement->execute();
 

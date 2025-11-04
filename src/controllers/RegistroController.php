@@ -15,20 +15,18 @@ class RegistroController{
                 switch($rol){
                     case 'administrador':
                         include __DIR__ . '/../views/auth/registro_administrador.php';
-                        break;
+                        return;
                     case 'viajero':
                         include __DIR__ . '/../views/auth/registro_viajero.php';
-                        break;
+                        return;
                     case 'hotel':
                         echo '<p>El panel de registro para clientes corporativos aún no está disponible</p>';
-                        echo '<a href = "/?url=auth/registro">Volver al registro</a>';
-                        break;
+                        echo '<a href = "/?url=registro/registrar">Volver al registro</a>';
+                        return;
                     default:
-                        echo "<p>Rol no válido.</p>";
-                        include __DIR__ . '/../views/auth/registro.php';
-                        break;
+                        header('Location: /?url=registro/registrar');
+                        exit;
                 }
-                return;
             }
            // Segundo paso: procesar el formulario completo
            $rol = $_POST['rol'] ?? '';
@@ -39,55 +37,58 @@ class RegistroController{
                 $password = $_POST['password'] ?? '';
                 $nombre = $_POST['nombre'] ?? '';
 
-                if(empty($email) || empty($password) || empty($nombre)){
-                    echo "<p>Faltan datos obligatorios para el administrador</p>";
-                    echo "<a href= '/?url=auth/registro'>Volver al registro</a>";
-                    return;
+                if(empty($email) || empty($password) || empty($nombre)){                   
+                    header('Location: /?url=registro/registrar');
+                    exit;
                 }
                 $adminModel = new Admin();
-                $resultado = $adminModel->registrarAdmin($nombre, $email, $password, $rol);
+                $resultado = $adminModel->registrarAdmin($nombre, $email, $password);
 
-                if($resultado){
-                    echo "<p>Administrador registrado correctamente</p>";
-                    echo "<a href = '/?url=auth/login'>Ir al login</a>";
+                if($resultado){                   
+                    header('Location: /?url=login/login');
+                    exit;
                 }else{
-                    echo "<p>Error al registrar el administrador.</p>";
+                    header('Location: /?url=registro/registrar');
+                    exit;
                 }
-                break;
+                
             case 'viajero':
                 $email = $_POST['email'] ?? '';
                 $password = $_POST['password'] ?? '';
-                $nombre = $_POST['nombre_cliente'] ?? '';
+                $nombre = $_POST['nombre'] ?? '';
                 $apellido1 = $_POST['apellido1'] ?? '';
                 $apellido2 = $_POST['apellido2'] ?? '';
                 $direccion = $_POST['direccion'] ?? '';
-                $codigo_postal = $_POST['codigo_postal'] ?? '';
+                $codigoPostal = $_POST['codigoPostal'] ?? '';
                 $pais = $_POST['pais'] ?? '';
                 $ciudad = $_POST['ciudad'] ?? '';
                  if (
                     empty($email) || empty($password) || empty($nombre) ||
                     empty($apellido1) || empty($apellido2) || empty($direccion) ||
-                    empty($codigo_postal) || empty($pais) || empty($ciudad)
+                    empty($codigoPostal) || empty($pais) || empty($ciudad)
                 ) {
-                    echo "<p>Faltan datos obligatorios para el viajero.</p>";
-                    echo '<a href="/?url=auth/registro">Volver al registro</a>';
-                    return;
+                    header('Location: /?url=registro/registrar');
+                    exit;
                 }
                 $viajeroModel = new Viajero();
                 $resultado = $viajeroModel->registrarViajero(
                     $nombre, $apellido1, $apellido2, $email, $password,
-                    $direccion, $codigo_postal, $pais, $ciudad
+                    $direccion, $codigoPostal, $pais, $ciudad
                 );
                 if($resultado){
-                    echo "<p>Cliente particular reigstrado correctamente.</p>";
-                    echo "<a href='/?url=auth/login'>Ir al login</a>";
+                    // var_dump ($resultado);
+                    header('Location: /?url=login/login');
+                    exit;
                 }else{
-                    echo "<p>Error al registrar el cliente particular</p>";
+                    // var_dump ($resultado);
+                    header('Location: /?url=registro/registrar');
+                    exit;
                 }
-                break;
+                
             default:
-                echo "<p>Rol no válido o no soportado</p>";
-                include __DIR__ . '/../views/auth/registro.php';
+                echo 'estas en el default';
+                header('Location: /?url=registro/registrar');
+                exit;
            }
         }else{
             include __DIR__ . '/../views/auth/registro.php';

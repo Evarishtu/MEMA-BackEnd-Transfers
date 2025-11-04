@@ -3,7 +3,7 @@ require_once __DIR__ . '/../config/database.php';
 
 class Viajero {
     private $conexion;
-    private $tabla = "transfer_viajero";
+    private $tabla = "transfer_viajeros";
 
     public function __construct() {
         $db = new Database();
@@ -13,12 +13,12 @@ class Viajero {
     // ====================================
     // Registrar nuevo viajero
     // ====================================
-    public function registrarViajero($nombre, $apellido1, $apellido2, $email, $password, $direccion, $codigo_postal, $pais, $ciudad) {
+    public function registrarViajero($nombre, $apellido1, $apellido2, $email, $password, $direccion, $codigoPostal, $pais, $ciudad) {
         try {
             $query = "INSERT INTO {$this->tabla} 
-                      (nombre_cliente, apellido1, apellido2, email, password, direccion, codigo_postal, pais, ciudad)
+                      (nombre, apellido1, apellido2, email, password, direccion, codigoPostal, pais, ciudad)
                       VALUES 
-                      (:nombre, :apellido1, :apellido2, :email, :password, :direccion, :codigo_postal, :pais, :ciudad)";
+                      (:nombre, :apellido1, :apellido2, :email, :password, :direccion, :codigoPostal, :pais, :ciudad)";
             $statement = $this->conexion->prepare($query);
 
             $hash = password_hash($password, PASSWORD_BCRYPT);
@@ -29,7 +29,7 @@ class Viajero {
             $statement->bindParam(':email', $email);
             $statement->bindParam(':password', $hash);
             $statement->bindParam(':direccion', $direccion);
-            $statement->bindParam(':codigo_postal', $codigo_postal);
+            $statement->bindParam(':codigoPostal', $codigoPostal);
             $statement->bindParam(':pais', $pais);
             $statement->bindParam(':ciudad', $ciudad);
 
