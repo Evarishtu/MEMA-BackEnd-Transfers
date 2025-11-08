@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE){
 
 if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
     header('Location: /?url=login/login');
+    exit;
 }
 ?>
 
@@ -20,21 +21,17 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
             <h1>Bienvenido, <?=htmlspecialchars($_SESSION['user_nombre'])?></h1>
         </header> 
         <nav>
-            <ul>
-                <li><a href="/?url=login/logout">Cerrar sesión</a></li>
-            </ul>
+            <li><a href="/?url=login/logout">Cerrar sesión</a></li>
         </nav>
         <main>
             <section>
                 <h2>Gestión de reservas</h2>
                 <ul>
-                    <li><a href="./crear-reserva.php">Crear nueva reserva</a></li>
-                    <li><a href="./listar-reservas.php">Consultar y gestionar las reservas</a></li>
+                    <li><a href="/?url=admin/crearReserva">Crear nueva reserva</a></li>
+                    <li><a href="/?url=admin/listarReservas">Consultar y gestionar las reservas</a></li>
                 </ul>
             </section>
         </main>
-        <footer>
-            
-        </footer>
+       
     </body>
 </html>
