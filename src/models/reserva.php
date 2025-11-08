@@ -12,15 +12,15 @@ class Reserva {
 
     public function crearReserva($datos) {
         try {
-            $query = "INSERT INTO {$this->tabla} (
-                localizador, id_hotel, id_tipo_reserva, email_cliente, fecha_llegada, hora_llegada,
-                numero_vuelo_llegada, origen_vuelo, fecha_salida, hora_salida,
-                num_vuelo_salida, hora_recogida, numero_viajeros 
-            ) VALUES (
-                :localizador, :id_hotel, :id_tipo_reserva, :email_cliente, :fecha_llegada, :hora_llegada,
-                :numero_vuelo_llegada, :origen_vuelo, :fecha_salida, :hora_salida,
-                :num_vuelo_salida, :hora_recogida, :numero_viajeros, 
-            )";
+            $query = "INSERT INTO {$this->tabla} ( 
+            localizador, id_hotel, id_tipo_reserva, email_cliente, fecha_reserva, fecha_modificacion, 
+            id_destino, fecha_entrada, hora_entrada, numero_vuelo_entrada, origen_vuelo_entrada, 
+            hora_vuelo_salida, fecha_vuelo_salida, numero_viajeros, id_vehiculo ) 
+            
+            VALUES ( :localizador, :id_hotel, :id_tipo_reserva, :email_cliente, :fecha_reserva, 
+            :fecha_modificacion, :id_destino, :fecha_entrada, :hora_entrada, 
+            :numero_vuelo_entrada, :origen_vuelo_entrada, :hora_vuelo_salida, 
+            :fecha_vuelo_salida, :numero_viajeros, :id_vehiculo )";
 
             $stmt = $this->conexion->prepare($query);
             return $stmt->execute($datos);

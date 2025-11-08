@@ -32,22 +32,24 @@ class AdminController{
     $id_hotel = $_POST['id_hotel'] ?? null;
     $numero_viajeros = $_POST['numero_viajeros'] ?? '';
     $email_cliente = $_POST['email_cliente'] ?? '';
+    $fecha_actual = date('Y-m-d H:i:s');
 
-    $datos = [
-            'localizador' => strtoupper(uniqid('RES-')),
-            'id_tipo_reserva' => $tipo_reserva,
-            'id_hotel' => $id_hotel,
-            'fecha_llegada' => $_POST['fecha_llegada'] ?? null,
-            'hora_llegada' => $_POST['hora_llegada'] ?? null,
-            'numero_vuelo_llegada' => $_POST['numero_vuelo_llegada'] ?? null,
-            'origen_vuelo' => $_POST['origen_vuelo'] ?? null,
-            'fecha_salida' => $_POST['fecha_salida'] ?? null,
-            'hora_salida' => $_POST['hora_salida'] ?? null,
-            'num_vuelo_salida' => $_POST['num_vuelo_salida'] ?? null,
-            'hora_recogida' => $_POST['hora_recogida'] ?? null,
-            'numero_viajeros' => $numero_viajeros,
-            'email_cliente' => $email_cliente
-        ];
+    $datos = [ 'localizador' => strtoupper(uniqid('RES-')), 
+                'id_hotel' => $id_hotel, 
+                'id_tipo_reserva' => $tipo_reserva, 
+                'email_cliente' => $email_cliente, 
+                'fecha_reserva' => $fecha_actual, 
+                'fecha_modificacion' => '', 
+                'id_destino' => '', 
+                'fecha_entrada' => $_POST['fecha_llegada'] ?? null, 
+                'hora_entrada' => $_POST['hora_llegada'] ?? null, 
+                'numero_vuelo_entrada' => $_POST['numero_vuelo_llegada'] ?? null, 
+                'origen_vuelo_entrada' => $_POST['origen_vuelo'] ?? null, 
+                'hora_vuelo_salida' => $_POST['hora_salida'] ?? null, 
+                'fecha_vuelo_salida' => $_POST['fecha_salida'] ?? null, 
+                'numero_viajeros' => $numero_viajeros, 
+                'hora_recogida' => $_POST['hora_recogida'] ?? null 
+            ];
 
         $reservaModel = new Reserva();
         $resultado = $reservaModel->crearReserva($datos);
