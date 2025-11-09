@@ -19,6 +19,8 @@
             <label for = "nombre">Nombre:</label><br>
             <input type = "text" name = "nombre" placeholder = "tu nombre" required><br><br>
 
-            <button type = "submit">Registrar</button>               
+            <button type = "submit">Registrar</button>
+        </form>
+        <p><a href="/?url=registro/registrar"><- Volver al inicio del registro</a></p>               
     </body>
 </html>
