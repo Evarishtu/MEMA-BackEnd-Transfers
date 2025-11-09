@@ -19,7 +19,7 @@ $email = $_POST['email'] ?? '';
                 <select name = "rol" required>
                     <option value = "">--Seleccione tipo de usuario--</option>
                     <option value = "viajero">Cliente particular</option>
-                    <option value = "hotel">Cliente corporativo</option>
+                    <option value = "hotel">Cliente Corporativo (Hotel)</option>
                     <option value = "administrador">Administrador</option>
                 </select><br><br>
                 <button type = "submit">Continuar</button>
