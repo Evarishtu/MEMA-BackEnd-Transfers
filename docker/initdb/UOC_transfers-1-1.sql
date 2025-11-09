@@ -246,18 +246,12 @@ ALTER TABLE `transfer_reservas`
   ADD CONSTRAINT `FK_RESERVAS_VEHICULO` FOREIGN KEY (`id_vehiculo`) REFERENCES `transfer_vehiculo` (`id_vehiculo`);
 COMMIT;
 
-CREATE TABLE `transfer_admin` (
-    `id_admin` INT(11) NOT NULL AUTO_INCREMENT,
-    `nombre` VARCHAR(100) NOT NULL,
-    `email` VARCHAR(150) NOT NULL UNIQUE,
-    `password` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`id_admin`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 ALTER TABLE `transfer_zona`
 CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL; 
 
 ALTER TABLE `tranfer_hotel` ADD `nombre` VARCHAR(100) NOT NULL AFTER `id_zona`; 
+
+ALTER TABLE `transfer_viajeros` ADD `tipo_usuario` ENUM('usuario_cliente', 'usuario_admin') NOT NULL AFTER `password`; 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

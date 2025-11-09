@@ -11,7 +11,7 @@ require_once __DIR__ . '/../config/database.php';
 //Capturar la ruta
 $url = $_GET['url'] ?? '';
 
-if(empty($url)){
+if(empty($url) || $url ==='home'){
     include __DIR__ . '/../views/home.php';
     exit;
 }
@@ -44,11 +44,10 @@ if (!class_exists($controllerName)) {
 $controller = new $controllerName();
 
 // Verificar que la acción existe
-if (!file_exists($controllerFile)) {
+if (!method_exists($controller, $accion)) {
     http_response_code(404);
-    echo "<h2>Error 404: Controlador <strong>$controllerName</strong> no encontrado.</h2>";
-    echo "<p>Ruta solicitada: <strong>$url</strong></p>";
-    echo "<a href='/'>Volver al inicio</a>";
+    echo "<h2>Error 404: Controlador <strong>{$accion}</strong> no encontrado en {$controllerName}</h2>";
+    echo "<a href='/index.php'>Volver al inicio</a>";
     exit;
 }
 

@@ -14,13 +14,13 @@ $email = $_POST['email'] ?? '';
             <h1>Registro de nuevo usuario</h1>
         </header>
         <main>
-            <form method = "POST" action = "?url=registro/registrar">
+            <form method = "POST" action = "/?url=registro/registrar">
                 <label>Tipo de usuario: </label><br>
                 <select name = "rol" required>
                     <option value = "">--Seleccione tipo de usuario--</option>
-                    <option value = "viajero">Cliente particular</option>
-                    <option value = "hotel">Cliente corporativo</option>
-                    <option value = "administrador">Administrador</option>
+                    <option value = "usuario_cliente">Cliente particular</option>
+                    <option value = "hotel">Cliente Corporativo (Hotel)</option>
+                    <option value = "usuario_admin">Administrador</option>
                 </select><br><br>
                 <button type = "submit">Continuar</button>
             </form>       
