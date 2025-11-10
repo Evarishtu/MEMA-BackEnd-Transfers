@@ -15,6 +15,9 @@ class Viajero {
     // ====================================
     public function registrarViajero($nombre, $apellido1, $apellido2, $email, $password, $direccion, $codigoPostal, $pais, $ciudad) {
         try {
+            if ($this->existeEmail($email)){
+                return "email_duplicado";
+            }
             $query = "INSERT INTO {$this->tabla} 
                       (nombre, apellido1, apellido2, email, password, direccion, codigoPostal, pais, ciudad)
                       VALUES 
@@ -75,6 +78,18 @@ class Viajero {
         } catch (PDOException $e) {
             error_log("Error al obtener viajeros: " . $e->getMessage());
             return [];
+        }
+    }
+    public function existeEmail($email){
+        try{
+            $query = "SELECT COUNT(*) FROM {$this->tabla} WHERE email = :email";
+            $stmt = $this->conexion->prepare($query);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            return $stmt->fetchColumn() > 0;
+        }catch (PDOException $e){
+            error_log("Error al verificar email del viajero" . $e->getMessage());
+            return false;
         }
     }
 }
