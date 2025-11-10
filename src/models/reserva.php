@@ -15,17 +15,18 @@ class Reserva {
             $query = "INSERT INTO {$this->tabla} ( 
             localizador, id_hotel, id_tipo_reserva, email_cliente, fecha_reserva, fecha_modificacion, 
             id_destino, fecha_entrada, hora_entrada, numero_vuelo_entrada, origen_vuelo_entrada, 
-            hora_vuelo_salida, fecha_vuelo_salida, numero_viajeros, id_vehiculo ) 
+            hora_vuelo_salida, fecha_vuelo_salida, numero_vuelo_salida, 
+            hora_recogida, num_viajeros, id_vehiculo) 
             
             VALUES ( :localizador, :id_hotel, :id_tipo_reserva, :email_cliente, :fecha_reserva, 
             :fecha_modificacion, :id_destino, :fecha_entrada, :hora_entrada, 
             :numero_vuelo_entrada, :origen_vuelo_entrada, :hora_vuelo_salida, 
-            :fecha_vuelo_salida, :numero_viajeros, :id_vehiculo )";
+            :fecha_vuelo_salida, :numero_vuelo_salida, :hora_recogida, :num_viajeros, :id_vehiculo )";
 
             $stmt = $this->conexion->prepare($query);
             return $stmt->execute($datos);
         } catch (PDOException $e) {
-            error_log("Error al crear reserva: " . $e->getMessage());
+            echo("Error al crear reserva: " . $e->getMessage());
             var_dump($datos);
             return false;
         }

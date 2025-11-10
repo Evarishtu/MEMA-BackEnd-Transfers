@@ -20,12 +20,14 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
         <h1>Crear nueva reserva</h1>
         <p>Seleccione el tipo de trayecto que desea reservar: </p>
         <form method = "POST" action = "/?url=admin/crearReservaDatos">
-            <label for = "id_tipo_reserva">Tipo de trayecto:</label><br>
+            <label for = "tipo_reserva">Tipo de trayecto:</label><br>
             <select id = "tipo_reserva" name = "tipo_reserva" required>
                 <option value = "">Selecciona tipo de trayecto</option>
-                <option value = "1">Aeropuerto->Hotel</option>
-                <option value = "2">Hotel -> Aeropuerto</option>
-                <option value = "3">Ida y vuelta</option>
+                <?php foreach ($tipos_reserva as $tipo): ?>
+                    <option value = "<?= htmlspecialchars($tipo['id_tipo_reserva'])?>">
+                        <?= htmlspecialchars($tipo['Descripción'])?>
+                    </option>
+                <?php endforeach; ?>
             </select><br><br>
             <button type = "submit">Continuar</button>
         </form>

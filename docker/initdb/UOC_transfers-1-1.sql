@@ -259,6 +259,25 @@ CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL;
 
 ALTER TABLE `tranfer_hotel` ADD `nombre` VARCHAR(100) NOT NULL AFTER `id_zona`; 
 
+INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES ('1', 'Vehículo de 4 plazas', 'alfredo@correo.com', '12345'), ('2', 'Vehículo de 8 plazas', 'luis@correo.com', '12345'), ('3', 'Vehículo de 5 plazas', 'sonia@correo.com', '12345');
+
+ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `Descripción` VARCHAR(200) NOT NULL; 
+INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `Descripción`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta');
+
+ALTER TABLE `transfer_reservas` ADD `numero_vuelo_salida` VARCHAR(10) NOT NULL AFTER `fecha_vuelo_salida`, ADD `hora_recogida` TIME NOT NULL AFTER `numero_vuelo_salida`; 
+ALTER TABLE `transfer_reservas` CHANGE `fecha_entrada` `fecha_entrada` DATE NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `hora_entrada` `hora_entrada` TIME NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_entrada` `numero_vuelo_entrada` VARCHAR(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `origen_vuelo_entrada` `origen_vuelo_entrada` VARCHAR(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `fecha_vuelo_salida` `fecha_vuelo_salida` DATE NULL;
+ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIMESTAMP on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;  
+ALTER TABLE `transfer_reservas` CHANGE `id_destino` `id_destino` INT NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `email_cliente` `email_cliente` VARCHAR(200) NOT NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_salida` `numero_vuelo_salida` VARCHAR(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `hora_recogida` `hora_recogida` TIME NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIME NULL;  
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
