@@ -20,6 +20,6 @@
             </select><br><br>
             <button type = "submit">Entrar</button>
         </form>
-        <p>Darse de alta <a href="/?url=registro/registrar"></a></p> 
+        <p><a href="/"><- Volver a la página principal</a></p>  
     </body>
 </html>

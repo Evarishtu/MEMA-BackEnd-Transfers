@@ -23,7 +23,8 @@ $email = $_POST['email'] ?? '';
                     <option value = "administrador">Administrador</option>
                 </select><br><br>
                 <button type = "submit">Continuar</button>
-            </form>       
+            </form> 
+            <p><a href="/"><- Volver a la página principal</a></p>      
         </main>    
     </body>
 </html>
