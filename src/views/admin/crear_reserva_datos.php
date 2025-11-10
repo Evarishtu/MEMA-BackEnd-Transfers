@@ -8,7 +8,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
     exit;
 }
 
-$tipo_reserva = $_POST['tipo_reserva'] ?? '';
+$tipo_reserva = $_POST['tipo_reserva'] ?? ($_GET['tipo_reserva'] ?? '');
 if(!$tipo_reserva){
     header('Location: /?url=admin/crearReserva');
     exit;
@@ -55,7 +55,7 @@ if(!$tipo_reserva){
                 <input type = "time" name = "hora_salida"><br><br>
 
                 <label for = "numero_vuelo_salida">Número de vuelo:</label><br>
-                <input type = "text" name = "num_vuelo_salida"><br><br>
+                <input type = "text" name = "numero_vuelo_salida"><br><br>
                 
                 <label for = "hora_recogida">Hora recogida en hotel:</label><br>
                 <input type = "time" name = "hora_recogida"><br><br>
@@ -78,7 +78,7 @@ if(!$tipo_reserva){
                 <input type = "number" name = "numero_viajeros"><br><br>
             <!--Información personal-->
                 <label for = "email_cliente">Email del cliente</label><br>
-                <input type = "email" name = "email_cliente"><br><br>
+                <input type="email" name="email_cliente" value="<?= htmlspecialchars($email_cliente_precargado ?? '') ?>" required><br><br>
             <!--Vehículo-->
                 <label for = "vehiculo">Vehículo asignado</label><br>
                 <select id = "vehiculo" name = "id_vehiculo" required>
