@@ -28,7 +28,7 @@ services:
       - db_data:/var/lib/mysql
       - ./docker/initdb:/docker-entrypoint-initdb.d
     ports:
-      - '3306:3306'
+      - '3307:3306'
   phpmyadmin:
     image: phpmyadmin:5
     container_name: mema_phpmyadmin

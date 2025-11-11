@@ -131,4 +131,63 @@ class Reserva {
         $stmt = $this->conexion->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function obtenerReservaPorLocalizador($localizador) {
+        try {
+            $query = "SELECT * FROM {$this->tabla} WHERE localizador = :localizador LIMIT 1";
+            $statement = $this->conexion->prepare($query);
+            $statement->bindParam(':localizador', $localizador);
+            $statement->execute();
+
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener reserva: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function listarReservas() {
+        try {
+            $query = "SELECT * FROM {$this->tabla} ORDER BY fecha_reserva DESC";
+            $statement = $this->conexion->prepare($query);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al listar reservas: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function eliminarReserva($id_reserva) {
+        try {
+            $query = "DELETE FROM {$this->tabla} WHERE id_reserva = :id_reserva";
+            $statement = $this->conexion->prepare($query);
+            $statement->bindParam(':id_reserva', $id_reserva);
+            return $statement->execute();
+        } catch (PDOException $e) {
+            error_log("Error al eliminar reserva: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function actualizarReserva($id_reserva, $datos) {
+        try {
+            $setPart = [];
+            foreach ($datos as $key => $value) {
+                $setPart[] = "$key = :$key";
+            }
+            $setString = implode(", ", $setPart);
+
+            $query = "UPDATE {$this->tabla} SET $setString WHERE id_reserva = :id_reserva";
+            $statement = $this->conexion->prepare($query);
+            $datos['id_reserva'] = $id_reserva;
+
+            return $statement->execute($datos);
+        } catch (PDOException $e) {
+            error_log("Error al actualizar reserva: " . $e->getMessage());
+            return false;
+        }
+    }   
+
 }
