@@ -199,6 +199,130 @@ class AdminController{
             echo "<p>Error al registrar el cliente.</p>";
             echo "<a href='/?url=admin/crearViajero'>Volver</a>";
         }
+    }
+    public function listarReservas(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+        if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
+            header('Location: /?url=login/login');
+            exit;
+        }
+        $reservaModel = new Reserva();
+        $filtros = ['desde' => $_GET['desde'] ?? null,
+                    'hasta' => $_GET['hasta'] ?? null,
+                    'tipo' => $_GET['tipo'] ?? null,
+                    'hotel' => $_GET['hotel'] ?? null,
+                    'q' => $_GET['q'] ?? null];
+        $reservas = $reservaModel->listarTodas($filtros);
+
+        include __DIR__ . '/../views/admin/listar_reservas.php';
+    }
+    public function verReserva(){
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
+            header('Location: /?url=login/login');
+            exit;
+        }
+        $id = $_GET['id'] ?? null;
+        if (!$id){
+            header('Location: /?url=admin/listarReservas');
+            exit;
+        }
+        $reservaModel = new Reserva();
+        $reserva = $reservaModel->obtenerPorId($id);
+
+        include __DIR__ . '/../views/admin/ver_reserva.php';
+    }
+    public function editarReserva(){
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
+            header('Location: /?url=login/login');
+            exit;
+        }
+        $id = $_GET['id'] ?? null;
+        if(!$id){
+            header('Location: /?url=admin/listarReservas');
+            exit;
+        }
+        $reservaModel = new Reserva();
+        $reserva = $reservaModel->obtenerPorId($id);
+
+        $hotelModel = new Hotel();
+        $hoteles = $hotelModel->listarHoteles();
+
+        $vehiculoModel = new Vehiculo();
+        $vehiculos = $vehiculoModel->listarVehiculos();
+
+        $tipoModel = new TipoReserva();
+        $tipos_reserva = $tipoModel->listarTipos();
+
+        include __DIR__ . '/../views/admin/editar_reserva.php';
+    }
+    public function actualizarReserva(){
+        if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+            header('Location: /?url=admin/listarReservas'); 
+            exit;
+        }
+            $datos = [
+            'id_reserva' => $_POST['id_reserva'] ?? null,
+            'id_hotel' => $_POST['id_hotel'] ?? null,
+            'id_tipo_reserva' => $_POST['id_tipo_reserva'] ?? null,
+            'email_cliente' => $_POST['email_cliente'] ?? null,
+            'fecha_entrada' => $_POST['fecha_entrada'] ?? null,
+            'hora_entrada' => $_POST['hora_entrada'] ?? null,
+            'numero_vuelo_entrada' => $_POST['numero_vuelo_entrada'] ?? null,
+            'origen_vuelo_entrada' => $_POST['origen_vuelo_entrada'] ?? null,
+            'fecha_vuelo_salida' => $_POST['fecha_vuelo_salida'] ?? null,
+            'hora_vuelo_salida' => $_POST['hora_vuelo_salida'] ?? null,
+            'numero_vuelo_salida' => $_POST['numero_vuelo_salida'] ?? null,
+            'hora_recogida' => $_POST['hora_recogida'] ?? null,
+            'num_viajeros' => $_POST['num_viajeros'] ?? null,
+            'id_vehiculo' => $_POST['id_vehiculo'] ?? null
+        ];
+        $reservaModel = new Reserva();
+        $ok = $reservaModel->actualizarReserva($datos);
+
+        if($ok){
+            header('Location: /?url=admin/verReserva$id=' .urlencode($datos['id_reserva']));
+        }else{
+            echo "<p>Error al actualizar la reserva</p>";
+            echo "<a href='/?url=admin/listarReservas'>Volver</a>";
+        }
+    }
+    public function cancelarReserva(){
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
+            header('Location: /?url=login/login');
+            exit;
+        }
+
+        $id = $_GET['id'] ?? null;
+        if (!$id){
+            header('Location: /?url=admin/listarReservas');
+            exit;
+        }
+        $reservaModel = new Reserva();
+        $ok = $reservaModel->eliminarReserva($id);
+
+        if($ok){
+            header('Location: /?url=admin/listarReservas');
+        }else{
+            echo "<p>No se pudo eliminar la reserva</p>";
+            echo "<a href='/?url=admin/listarReservas'>Volver</a>";
+        }
+    }
+    public function calendario(){
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
+            header('Location: /?url=login/login');
+            exit;
+        }
+        $reservaModel = new Reserva();
+        $eventos = $reservaModel->listarEventosCalendario();
+
+        $vista = $_GET['vista'] ?? 'semana';
+        $fecha_base = $_GET['fecha'] ?? date('Y-m-d');
+
+        include __DIR__ . '/../views/admin/calendario.php';
     } 
 }
 
