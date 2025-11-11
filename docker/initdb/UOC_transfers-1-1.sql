@@ -261,8 +261,8 @@ ALTER TABLE `tranfer_hotel` ADD `nombre` VARCHAR(100) NOT NULL AFTER `id_zona`;
 
 INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES ('1', 'Vehículo de 4 plazas', 'alfredo@correo.com', '12345'), ('2', 'Vehículo de 8 plazas', 'luis@correo.com', '12345'), ('3', 'Vehículo de 5 plazas', 'sonia@correo.com', '12345');
 
-ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `Descripción` VARCHAR(200) NOT NULL; 
-INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `Descripción`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta');
+ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) NOT NULL; 
+INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `descripcion`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta');
 
 ALTER TABLE `transfer_reservas` ADD `numero_vuelo_salida` VARCHAR(10) NOT NULL AFTER `fecha_vuelo_salida`, ADD `hora_recogida` TIME NOT NULL AFTER `numero_vuelo_salida`; 
 ALTER TABLE `transfer_reservas` CHANGE `fecha_entrada` `fecha_entrada` DATE NULL; 

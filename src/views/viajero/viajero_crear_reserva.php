@@ -81,7 +81,7 @@ $email_cliente = $_SESSION['user_email'];
                 <option value="">-- Selecciona tipo de reserva --</option>
                 <?php foreach ($tiposReserva as $tipo): ?>
                     <option value="<?= htmlspecialchars($tipo['id_tipo_reserva']) ?>">
-                        <?= htmlspecialchars($tipo['Descripción']) ?>
+                        <?= htmlspecialchars($tipo['descripcion']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -144,7 +144,7 @@ $email_cliente = $_SESSION['user_email'];
                 <option value="">-- Selecciona un vehículo --</option>
                 <?php foreach ($vehiculos as $vehiculo): ?>
                     <option value="<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
-                        <?= htmlspecialchars($vehiculo['Descripción']) ?>
+                        <?= htmlspecialchars($vehiculo['descripcion']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>

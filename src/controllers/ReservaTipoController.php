@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . '/../models/reservatipo.php';
+require_once __DIR__ . '/../models/tipo_reserva.php';
 
 class ReservaTipoController {
 
     // Mostrar todos los tipos de reservas
     public function index() {
-        $reservatipoModel = new tipo_reserva();
+        $reservatipoModel = new tiporeserva();
         $reservatipo = $reservatipoModel->listarTipos();
 
         include __DIR__ . '/../views/reservatipo/listar-reserva_tipo.php';
@@ -17,7 +17,7 @@ class ReservaTipoController {
             $descripcion = trim($_POST['descripcion'] ?? '');
 
             if (!empty($descripcion)) {
-                $reservatipoModel = new tipo_reserva();
+                $reservatipoModel = new tiporeserva();
                 $reservatipoModel->create_reservatipo($descripcion);
                 header("Location: /?url=reservatipo/index");
                 exit;
@@ -31,7 +31,7 @@ class ReservaTipoController {
 
     // Editar una reservatipo existente
     public function edit() {
-        $reservatipoModel = new tipo_reserva();
+        $reservatipoModel = new tiporeserva();
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
@@ -60,7 +60,7 @@ class ReservaTipoController {
         $id = $_GET['id'] ?? null;
 
         if ($id) {
-            $reservatipoModel = new tipo_reserva();
+            $reservatipoModel = new tiporeserva();
             $reservatipoModel->delete_reservatipo($id);
         }
 
