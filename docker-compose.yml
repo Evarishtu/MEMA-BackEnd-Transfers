@@ -14,6 +14,7 @@ services:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     depends_on:
       - database
+      - mailhog
   database:
     image: mysql:8.0
     container_name: mema_db
@@ -27,7 +28,7 @@ services:
       - db_data:/var/lib/mysql
       - ./docker/initdb:/docker-entrypoint-initdb.d
     ports:
-      - '3306:3306'
+      - '3307:3306'
   phpmyadmin:
     image: phpmyadmin:5
     container_name: mema_phpmyadmin
@@ -40,5 +41,12 @@ services:
       - '8081:80'
     depends_on:
       - database
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mema_mailhog
+    restart: always
+    ports:
+      - "8025:8025"
+      - "1025:1025"
 volumes:
   db_data:

@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `tranfer_hotel`
 --
 
-CREATE TABLE `tranfer_hotel` (
+CREATE TABLE IF NOT EXISTS `tranfer_hotel` (
   `id_hotel` int(11) NOT NULL,
   `id_zona` int(11) DEFAULT NULL,
   `Comision` int(11) DEFAULT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `tranfer_hotel` (
 -- Estructura de tabla para la tabla `transfer_precios`
 --
 
-CREATE TABLE `transfer_precios` (
+CREATE TABLE IF NOT EXISTS `transfer_precios` (
   `id_precios` int(11) NOT NULL,
   `id_vehiculo` int(11) NOT NULL,
   `id_hotel` int(11) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE `transfer_precios` (
 -- Estructura de tabla para la tabla `transfer_reservas`
 --
 
-CREATE TABLE `transfer_reservas` (
+CREATE TABLE IF NOT EXISTS `transfer_reservas` (
   `id_reserva` int(11) NOT NULL,
   `localizador` varchar(100) NOT NULL,
   `id_hotel` int(11) DEFAULT NULL COMMENT 'Es el hotel que realiza la reserva',
@@ -79,7 +79,7 @@ CREATE TABLE `transfer_reservas` (
 -- Estructura de tabla para la tabla `transfer_tipo_reserva`
 --
 
-CREATE TABLE `transfer_tipo_reserva` (
+CREATE TABLE IF NOT EXISTS `transfer_tipo_reserva` (
   `id_tipo_reserva` int(11) NOT NULL,
   `Descripción` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -90,7 +90,7 @@ CREATE TABLE `transfer_tipo_reserva` (
 -- Estructura de tabla para la tabla `transfer_vehiculo`
 --
 
-CREATE TABLE `transfer_vehiculo` (
+CREATE TABLE IF NOT EXISTS `transfer_vehiculo` (
   `id_vehiculo` int(11) NOT NULL,
   `Descripción` varchar(100) NOT NULL,
   `email_conductor` varchar(100) NOT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE `transfer_vehiculo` (
 -- Estructura de tabla para la tabla `transfer_viajeros`
 --
 
-CREATE TABLE `transfer_viajeros` (
+CREATE TABLE IF NOT EXISTS `transfer_viajeros` (
   `id_viajero` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellido1` varchar(100) NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE `transfer_viajeros` (
 -- Estructura de tabla para la tabla `transfer_zona`
 --
 
-CREATE TABLE `transfer_zona` (
+CREATE TABLE IF NOT EXISTS `transfer_zona` (
   `id_zona` int(11) NOT NULL,
   `descripcion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -246,7 +246,7 @@ ALTER TABLE `transfer_reservas`
   ADD CONSTRAINT `FK_RESERVAS_VEHICULO` FOREIGN KEY (`id_vehiculo`) REFERENCES `transfer_vehiculo` (`id_vehiculo`);
 COMMIT;
 
-CREATE TABLE `transfer_admin` (
+CREATE TABLE IF NOT EXISTS `transfer_admin` (
     `id_admin` INT(11) NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(100) NOT NULL,
     `email` VARCHAR(150) NOT NULL UNIQUE,
@@ -258,6 +258,30 @@ ALTER TABLE `transfer_zona`
 CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL; 
 
 ALTER TABLE `tranfer_hotel` ADD `nombre` VARCHAR(100) NOT NULL AFTER `id_zona`; 
+
+INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES ('1', 'Vehículo de 4 plazas', 'alfredo@correo.com', '12345'), ('2', 'Vehículo de 8 plazas', 'luis@correo.com', '12345'), ('3', 'Vehículo de 5 plazas', 'sonia@correo.com', '12345');
+
+ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `Descripción` VARCHAR(200) NOT NULL; 
+INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `Descripción`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta');
+
+ALTER TABLE `transfer_reservas` ADD `numero_vuelo_salida` VARCHAR(10) NOT NULL AFTER `fecha_vuelo_salida`, ADD `hora_recogida` TIME NOT NULL AFTER `numero_vuelo_salida`; 
+ALTER TABLE `transfer_reservas` CHANGE `fecha_entrada` `fecha_entrada` DATE NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `hora_entrada` `hora_entrada` TIME NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_entrada` `numero_vuelo_entrada` VARCHAR(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `origen_vuelo_entrada` `origen_vuelo_entrada` VARCHAR(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `fecha_vuelo_salida` `fecha_vuelo_salida` DATE NULL;
+ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIMESTAMP on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;  
+ALTER TABLE `transfer_reservas` CHANGE `id_destino` `id_destino` INT NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `email_cliente` `email_cliente` VARCHAR(200) NOT NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_salida` `numero_vuelo_salida` VARCHAR(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `hora_recogida` `hora_recogida` TIME NULL; 
+ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIME NULL;  
+
+ALTER TABLE transfer_viajeros ADD CONSTRAINT unique_email_viajero UNIQUE (email);
+
+ALTER TABLE `transfer_viajeros`
+ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' 
+AFTER `password`;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

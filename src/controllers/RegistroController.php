@@ -1,6 +1,7 @@
 <?php 
 require_once __DIR__ . '/../models/admin.php';
 require_once __DIR__ . '/../models/viajero.php';
+require_once __DIR__ . '/../models/hotel.php';
 
 class RegistroController{
     //==================================
@@ -9,7 +10,10 @@ class RegistroController{
     public function registrar(){
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             // Primer paso: usuario eligió el rol
-            if(isset($_POST['rol']) && empty($_POST['email'])){
+            if (isset($_POST['rol']) && (
+            ($_POST['rol'] !== 'hotel' && empty($_POST['email'])) ||
+            ($_POST['rol'] === 'hotel' && empty($_POST['usuario']))
+            )) {
                 $rol = $_POST['rol'];
 
                 switch($rol){
@@ -20,8 +24,7 @@ class RegistroController{
                         include __DIR__ . '/../views/auth/registro_viajero.php';
                         return;
                     case 'hotel':
-                        echo '<p>El panel de registro para clientes corporativos aún no está disponible</p>';
-                        echo '<a href = "/?url=registro/registrar">Volver al registro</a>';
+                        include __DIR__ . '/../views/auth/registro_hotel.php';
                         return;
                     default:
                         header('Location: /?url=registro/registrar');
@@ -51,7 +54,7 @@ class RegistroController{
                     header('Location: /?url=registro/registrar');
                     exit;
                 }
-                
+            break;
             case 'viajero':
                 $email = $_POST['email'] ?? '';
                 $password = $_POST['password'] ?? '';
@@ -80,13 +83,36 @@ class RegistroController{
                     header('Location: /?url=login/login');
                     exit;
                 }else{
-                    // var_dump ($resultado);
-                    header('Location: /?url=registro/registrar');
+                    echo "<p>Error al registrar viajero</p>";
+                    echo "<a href='/?url=registro/registrar'>Volver</a>";
                     exit;
                 }
-                
+            break;
+            case 'hotel':
+                $nombre_hotel = $_POST['nombre'] ?? '';
+                $id_zona = $_POST['id_zona'] ?? null;
+                $comision = $_POST['comision'] ?? null;
+                $usuario = $_POST['usuario'] ?? '';
+                $password = $_POST['password'] ?? '';
+
+                if(empty($nombre_hotel) || empty($usuario) || empty($password)){
+                    echo "<p>Nombre, usuario y contraseña son obligatorios.</p>";
+                    echo "<a href='/?url=registro/registrar'>Volver</a>";
+                    exit;
+                }
+            $hotelModel = new Hotel();
+            $resultado = $hotelModel->registrarHotel($nombre_hotel, $id_zona, $comision, $usuario, $password);
+            
+            if($resultado){
+                header('Location: /?url=login/login');
+                exit;
+            }else{
+                echo "<p>Error al registrar hotel</p>";
+                echo "<a href='/?url=registro/registrar'>Volver</a>";
+                exit;
+            }
+            break;
             default:
-                echo 'estas en el default';
                 header('Location: /?url=registro/registrar');
                 exit;
            }

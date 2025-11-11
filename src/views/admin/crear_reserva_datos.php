@@ -8,7 +8,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
     exit;
 }
 
-$tipo_reserva = $_POST['tipo_reserva'] ?? '';
+$tipo_reserva = $_POST['tipo_reserva'] ?? ($_GET['tipo_reserva'] ?? '');
 if(!$tipo_reserva){
     header('Location: /?url=admin/crearReserva');
     exit;
@@ -25,8 +25,8 @@ if(!$tipo_reserva){
     <body>
         <h1>Datos de la reserva</h1>
         <form method = "POST" action = "/?url=admin/guardarReserva">
-        <?php if ($tipo_reserva == "1" || $tipo_reserva == "3"): ?>
-            <input type="hidden" name="tipo_reserva" value="<?= htmlspecialchars($tipo_reserva) ?>">   
+        <input type="hidden" name="tipo_reserva" value="<?= htmlspecialchars($tipo_reserva) ?>">
+        <?php if ($tipo_reserva == "1" || $tipo_reserva == "3"): ?>   
             <!--Datos del vuelo de llegada-->
             <fieldset>
                 <legend>Vuelo de llegada (Aeropuerto->Hotel)</legend>
@@ -54,8 +54,8 @@ if(!$tipo_reserva){
                 <label for = "hora_salida">Hora vuelo:</label><br>
                 <input type = "time" name = "hora_salida"><br><br>
 
-                <label for = "num_vuelo_salida">Número de vuelo:</label><br>
-                <input type = "text" name = "num_vuelo_salida"><br><br>
+                <label for = "numero_vuelo_salida">Número de vuelo:</label><br>
+                <input type = "text" name = "numero_vuelo_salida"><br><br>
                 
                 <label for = "hora_recogida">Hora recogida en hotel:</label><br>
                 <input type = "time" name = "hora_recogida"><br><br>
@@ -69,7 +69,7 @@ if(!$tipo_reserva){
                     <option value = "">--Selecciona un hotel--</option>
                     <?php foreach ($hoteles as $hotel): ?>
                         <option value = "<?= htmlspecialchars($hotel['id_hotel']) ?>">
-                            <?= htmlspecialchars($hotel['name'])?>
+                            <?= htmlspecialchars($hotel['nombre'])?>
                         </option>
                     <?php endforeach; ?>
                 </select><br><br>
@@ -78,8 +78,17 @@ if(!$tipo_reserva){
                 <input type = "number" name = "numero_viajeros"><br><br>
             <!--Información personal-->
                 <label for = "email_cliente">Email del cliente</label><br>
-                <input type = "email" name = "email_cliente"><br><br>
-                
+                <input type="email" name="email_cliente" value="<?= htmlspecialchars($email_cliente_precargado ?? '') ?>" required><br><br>
+            <!--Vehículo-->
+                <label for = "vehiculo">Vehículo asignado</label><br>
+                <select id = "vehiculo" name = "id_vehiculo" required>
+                    <option value = "">--Selecciona un vehículo--</option>
+                    <?php foreach ($vehiculos as $vehiculo): ?>
+                        <option value = "<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
+                            <?= htmlspecialchars($vehiculo['Descripción']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select><br><br>
                 <button type = "submit">Guardar reserva</button>
             </fieldset>
         </form>
