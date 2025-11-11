@@ -23,9 +23,10 @@ class LoginController {
                     $admin = $adminModel->autenticarAdmin($email, $password);
                     if($admin){
                         
-                        $_SESSION['user_id'] = $admin['id_admin'];
+                        $_SESSION['user_id']     = $admin['id_admin'];
                         $_SESSION['user_nombre'] = $admin['nombre'];
-                        $_SESSION['rol'] = 'administrador';
+                        $_SESSION['user_email']  = $admin['email'];
+                        $_SESSION['rol']         = 'administrador';
                         header('Location: /?url=admin/dashboard');
                         exit;
                     }else{
@@ -39,12 +40,14 @@ class LoginController {
                     $viajero = $viajeroModel->autenticarViajero($email, $password);
                     if($viajero){
                         
-                        $_SESSION['user_id'] = $viajero['id_viajero'];
-                        $_SESSION['user_nombre'] = $viajero['nombre_cliente'];
-                        $_SESSION['rol'] = 'viajero';
-                        header('Location: /?url=viajero/perfil');
+                        $_SESSION['user_id']     = $viajero['id_viajero'];
+                        $_SESSION['user_nombre'] = $viajero['nombre'];
+                        $_SESSION['user_email']  = $viajero['email'];
+                        $_SESSION['rol']         = 'viajero';
+                        header('Location: /?url=viajero/dashboard');
                         exit;
-                    }else{
+                    }
+                    else{
                         // echo "<p>Credenciales incorrectas.</p>";
                         header('Location: /?url=login/login');
                         exit;

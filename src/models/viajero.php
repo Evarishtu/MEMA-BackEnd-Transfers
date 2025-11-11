@@ -80,6 +80,7 @@ class Viajero {
             return [];
         }
     }
+
     public function existeEmail($email){
         try{
             $query = "SELECT COUNT(*) FROM {$this->tabla} WHERE email = :email";
@@ -92,5 +93,53 @@ class Viajero {
             return false;
         }
     }
+
+    // ====================================
+    // Mostrar informacion personal del viajero
+    // ====================================
+
+    public function obtenerViajeroPorEmail($email) {
+        try {
+            $query = "SELECT id_viajero, nombre, apellido1, apellido2, email, direccion, codigoPostal, pais, ciudad 
+                        FROM {$this->tabla} WHERE email = :email LIMIT 1";
+            $statement = $this->conexion->prepare($query);
+            $statement->bindParam(':email', $email);
+            $statement->execute();
+
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener viajero: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // ====================================
+    // Actualizar informacion personal del viajero
+    // ====================================
+
+    public function actualizarViajero($id_viajero, $datos) {
+        try {
+            $campos = [];
+            foreach ($datos as $key => $value) {
+                $campos[] = "$key = :$key";
+            }
+            $setString = implode(", ", $campos);
+
+            $query = "UPDATE {$this->tabla} SET $setString WHERE id_viajero = :id_viajero";
+            $stmt = $this->conexion->prepare($query);
+
+            $datos['id_viajero'] = $id_viajero;
+            return $stmt->execute($datos);
+        } catch (PDOException $e) {
+            error_log("Error al actualizar viajero: " . $e->getMessage());
+            return false;
+        }
+    }
+
+
+    // ====================================
+    // Mostrar todos los viajeros
+    // ====================================
+
 }
 ?>
