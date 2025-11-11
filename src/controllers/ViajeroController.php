@@ -4,6 +4,7 @@ require_once __DIR__ . '/../models/reserva.php';
 require_once __DIR__ . '/../models/tipo_reserva.php';
 require_once __DIR__ . '/../models/vehiculo.php';
 require_once __DIR__ . '/../models/viajero.php';
+require_once __DIR__ . '/../models/viajero_reserva.php';
 
 class ViajeroController {
 
@@ -24,30 +25,6 @@ class ViajeroController {
         include __DIR__ . '/../views/viajero/viajero_dashboard.php';
     }
 
-    // ===============================
-    // MOSTRAR RESERVAS DEL VIAJERO
-    // ===============================
-    public function obtenerReservasPorViajero() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $reservaModel = new Reserva();
-        $reservas = $reservaModel->obtenerReservasPorViajero($_SESSION['user_email']);
-
-        include __DIR__ . '/../views/viajero/reservas.php';
-    }
-
-    // ===============================
-    // CREAR RESERVA
-    // ===============================
-    public function crearReserva() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        include __DIR__ . '/../views/viajero/crear_reserva.php';
-    }
 
     // ===============================
     // INFORMACIÓN PERSONAL
@@ -57,7 +34,7 @@ class ViajeroController {
             session_start();
         }
 
-        $viajeroModel = new Viajero();
+        $viajeroModel = new viajero();
         $email = $_SESSION['user_email'];
         $viajero = $viajeroModel->obtenerViajeroPorEmail($email); // ✅ usar esta
 
@@ -68,29 +45,64 @@ class ViajeroController {
     // ACTUALIZAR INFORMACIÓN PERSONAL
     // ===============================
     public function actualizarInformacionPersonal() {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $viajeroModel = new Viajero();
+            $id = $_POST['id_viajero'];
+            
+            $datos = [
+                'nombre'       => $_POST['nombre'],
+                'apellido1'    => $_POST['apellido1'],
+                'apellido2'    => $_POST['apellido2'],
+                'direccion'    => $_POST['direccion'],
+                'codigoPostal' => $_POST['codigoPostal'],
+                'pais'         => $_POST['pais'],
+                'ciudad'       => $_POST['ciudad']
+            ];
+
+            $viajeroModel->actualizarViajero($id, $datos);
+            header('Location: /?url=viajero/informacionPersonal');
+            exit;
+        }
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $viajeroModel = new Viajero();
-        $id = $_POST['id_viajero'];
-        
-        $datos = [
-            'nombre'       => $_POST['nombre'],
-            'apellido1'    => $_POST['apellido1'],
-            'apellido2'    => $_POST['apellido2'],
-            'direccion'    => $_POST['direccion'],
-            'codigoPostal' => $_POST['codigoPostal'],
-            'pais'         => $_POST['pais'],
-            'ciudad'       => $_POST['ciudad']
-        ];
 
-        $viajeroModel->actualizarViajero($id, $datos);
-        header('Location: /?url=viajero/informacionPersonal');
-        exit;
+    // ===============================
+    // MOSTRAR RESERVAS 
+    // ===============================
+    public function obtenerReservasPorViajero() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $reservaModel = new Viajero_Reserva();
+        $email  = $_SESSION['user_email'];
+        $nombre = $_SESSION['user_nombre'];
+        $origen_admin   = 'admin';
+        $origen_viajero = 'viajero';
+
+        $reservasViajero = $reservaModel->obtenerReservasPorOrigen($email, $origen_viajero);
+        $reservasAdmin   = $reservaModel->obtenerReservasPorOrigen($email, $origen_admin);
+
+
+        include __DIR__ . '/../views/viajero/viajero_reservas.php';
     }
-}
+    
+    // ===============================
+    // CREAR RESERVA
+    // ===============================
+
+    public function crearReserva() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        include __DIR__ . '/../views/viajero/crear_reserva.php';
+    }
+
 
 }
 ?>

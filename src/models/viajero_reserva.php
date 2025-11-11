@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 
-class Reserva {
+class viajero_reserva {
     private $conexion;
     private $tabla = "transfer_reservas";
 

@@ -138,7 +138,7 @@ class Viajero {
 
 
     // ====================================
-    // Mostrar todos los viajeros
+    // Mostrar reservas del viajero echas por el mismo
     // ====================================
 
 }

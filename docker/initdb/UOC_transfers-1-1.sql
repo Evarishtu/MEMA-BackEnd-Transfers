@@ -278,6 +278,11 @@ ALTER TABLE `transfer_reservas` CHANGE `hora_recogida` `hora_recogida` TIME NULL
 ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIME NULL;  
 
 ALTER TABLE transfer_viajeros ADD CONSTRAINT unique_email_viajero UNIQUE (email);
+
+ALTER TABLE `transfer_viajeros`
+ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' 
+AFTER `password`;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
