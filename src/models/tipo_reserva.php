@@ -19,5 +19,34 @@ class TipoReserva {
             return [];
         }
     }
+
+    // Obtener un tipo de reserva por ID
+    public function get_reservatipoById($id) {
+        $query = "SELECT * FROM {$this->tabla} WHERE id_tipo_reserva = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Crear un nuevo tipo de reserva
+    public function create_reservatipo($descripcion) {
+        $query = "INSERT INTO {$this->tabla} (descripcion) VALUES (?)";
+        $stmt = $this->conexion->prepare($query);
+        return $stmt->execute([$descripcion]);
+    }
+
+    // Actualizar un tipo de reserva existente
+    public function update_reservatipo($id, $descripcion) {
+        $query = "UPDATE {$this->tabla} SET descripcion = ? WHERE id_tipo_reserva = ?";
+        $stmt = $this->conexion->prepare($query);
+        return $stmt->execute([$descripcion, $id]);
+    }
+
+    // Eliminar un tipo de reserva
+    public function delete_reservatipo($id) {
+        $query = "DELETE FROM {$this->tabla} WHERE id_tipo_reserva = ?";
+        $stmt = $this->conexion->prepare($query);
+        return $stmt->execute([$id]);
+    }
 }
 ?>
