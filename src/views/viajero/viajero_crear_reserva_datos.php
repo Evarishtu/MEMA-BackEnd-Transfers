@@ -10,7 +10,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
 
 $tipo_reserva = $_POST['tipo_reserva'] ?? ($_GET['tipo_reserva'] ?? '');
 if(!$tipo_reserva){
-    header('Location: /?url=admin/crearReserva');
+    header('Location: /?url=viajero/crearReserva');
     exit;
 }
 ?>
@@ -85,7 +85,7 @@ if(!$tipo_reserva){
                     <option value = "">--Selecciona un vehículo--</option>
                     <?php foreach ($vehiculos as $vehiculo): ?>
                         <option value = "<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
-                            <?= htmlspecialchars($vehiculo['descripcion']) ?>
+                            <?= htmlspecialchars($vehiculo['Descripción']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select><br><br>

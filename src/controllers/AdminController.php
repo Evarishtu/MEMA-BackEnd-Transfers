@@ -105,7 +105,8 @@ class AdminController{
         'numero_vuelo_salida' => $numero_vuelo_salida,
         'hora_recogida' => $hora_recogida,
         'num_viajeros' => $numero_viajeros,
-        'id_vehiculo' => $id_vehiculo
+        'id_vehiculo' => $id_vehiculo,
+        'usuario_creacion' => 'admin'
     ];
 
         $reservaModel = new Reserva();
@@ -117,7 +118,7 @@ class AdminController{
 
             $tipoModel = new TipoReserva();
             $tipo = $tipoModel->listarTipos();
-            $tipo_reserva_texto = $tipo[$tipo_reserva - 1]['Descripción'] ?? 'Desconocido';
+            $tipo_reserva_texto = $tipo[$tipo_reserva - 1]['descripcion'] ?? 'Desconocido';
 
             require_once __DIR__ . '/../utility/EnviarEmail.php';
             EmailHelper::enviarConfirmacionReserva(
