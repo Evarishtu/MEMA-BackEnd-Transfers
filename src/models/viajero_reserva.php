@@ -110,26 +110,25 @@ class viajero_reserva {
             $query = "SELECT DISTINCT
                             r.*, 
                             h.id_hotel        AS HotelId,
+                            h.nombre          AS HotelDesc,
                             z.id_zona         AS ZonaId,
                             z.descripcion     AS ZonaDesc,
                             v.id_vehiculo     AS VehiculoId,
-                            v.Descripción     AS VehiculoDesc,
+                            v.descripcion     AS VehiculoDesc,
                             t.id_tipo_reserva AS TipoReservaId, 
-                            t.Descripción     AS TipoReservaDesc
-                        FROM {$this->tabla}             AS r
-                        LEFT JOIN tranfer_hotel         AS h
-                            ON r.id_hotel         = h.id_hotel
-                        LEFT JOIN transfer_zona         AS z                       
-                            ON h.id_zona          = z.id_zona
-                        LEFT JOIN transfer_vehiculo     AS v     
-                            ON r.id_vehiculo      = v.id_vehiculo
-                        LEFT JOIN transfer_tipo_reserva AS t 
-                            ON r.id_tipo_reserva  = t.id_tipo_reserva
-                        WHERE  r.email_cliente    = :email_cliente 
-                        AND    r.usuario_creacion = :origen
+                            t.descripcion     AS TipoReservaDesc
+                        FROM {$this->tabla} AS r
+                        LEFT JOIN tranfer_hotel         AS h ON r.id_hotel = h.id_hotel
+                        LEFT JOIN transfer_zona         AS z ON h.id_zona = z.id_zona
+                        LEFT JOIN transfer_vehiculo     AS v ON r.id_vehiculo = v.id_vehiculo
+                        LEFT JOIN transfer_tipo_reserva AS t ON r.id_tipo_reserva = t.id_tipo_reserva
+                        WHERE r.email_cliente    = :email_cliente 
+                        AND   r.usuario_creacion = :origen
                         ORDER BY r.fecha_reserva DESC";
+
             $statement = $this->conexion->prepare($query);
             $statement->bindParam(':email_cliente', $email_cliente);
+            $statement->bindParam(':origen', $origen);
             $statement->execute();
 
             return $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -138,6 +137,7 @@ class viajero_reserva {
             return false;
         }
     }
+
 
     public function generarLocalizadorUnico() {
         $localizador = bin2hex(random_bytes(5)); // Genera un localizador de 10 caracteres hexadecimales
