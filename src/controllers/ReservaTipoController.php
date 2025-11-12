@@ -5,10 +5,10 @@ class ReservaTipoController {
 
     // Mostrar todos los tipos de reservas
     public function index() {
-        $reservatipoModel = new tiporeserva();
+        $reservatipoModel = new TipoReserva();
         $reservatipo = $reservatipoModel->listarTipos();
 
-        include __DIR__ . '/../views/reservatipo/listar-reserva_tipo.php';
+        include __DIR__ . '/../views/reservatipo/listar-tipo-reserva.php';
     }
 
     // Crear un nuevo tipo de reserva
@@ -17,7 +17,7 @@ class ReservaTipoController {
             $descripcion = trim($_POST['descripcion'] ?? '');
 
             if (!empty($descripcion)) {
-                $reservatipoModel = new tiporeserva();
+                $reservatipoModel = new TipoReserva();
                 $reservatipoModel->create_reservatipo($descripcion);
                 header("Location: /?url=reservatipo/index");
                 exit;
@@ -31,7 +31,7 @@ class ReservaTipoController {
 
     // Editar una reservatipo existente
     public function edit() {
-        $reservatipoModel = new tiporeserva();
+        $reservatipoModel = new TipoReserva();
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
@@ -52,7 +52,7 @@ class ReservaTipoController {
         }
 
         $reservatipo = $reservatipoModel->get_reservatipoById($id);
-        include __DIR__ . '/../views/reservatipo/zonas_form.php';
+        include __DIR__ . '/../views/reservatipo/reservatipo_form.php';
     }
 
     // Eliminar una reservatipo
@@ -60,7 +60,7 @@ class ReservaTipoController {
         $id = $_GET['id'] ?? null;
 
         if ($id) {
-            $reservatipoModel = new tiporeserva();
+            $reservatipoModel = new TipoReserva();
             $reservatipoModel->delete_reservatipo($id);
         }
 

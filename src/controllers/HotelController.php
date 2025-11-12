@@ -5,6 +5,9 @@ require_once __DIR__ . '/../models/zona.php';
 
 class HotelController {
 
+    public function index() {
+        $this->listarHoteles();
+    }
     // ===============================
     // LISTAR TODOS LOS HOTELES
     // ===============================
@@ -22,7 +25,7 @@ class HotelController {
     public function listarZonas() {
         $zonaModel = new Zona();
         $zonas = $zonaModel->get_zonasAll(); // carga las zonas para el <select>
-        include __DIR__ . '/../views/hotel/hotel_crear.php';
+        include __DIR__ . '/../views/hotel/hotel_form.php';
     }
 
     // ===============================

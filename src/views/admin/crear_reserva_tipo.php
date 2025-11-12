@@ -25,7 +25,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
                 <option value = "">Selecciona tipo de trayecto</option>
                 <?php foreach ($tipos_reserva as $tipo): ?>
                     <option value = "<?= htmlspecialchars($tipo['id_tipo_reserva'])?>">
-                        <?= htmlspecialchars($tipo['Descripción'])?>
+                        <?= htmlspecialchars($tipo['descripcion'])?>
                     </option>
                 <?php endforeach; ?>
             </select><br><br>
