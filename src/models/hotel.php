@@ -107,5 +107,49 @@ class Hotel {
             return null;
         }
     }
+
+    public function listarHotelesConZona() {
+        try {
+            $query = "SELECT 
+                            h.id_hotel, h.nombre     AS nombre_hotel,
+                            z.id_zona, z.descripcion AS nombre_zona
+                        FROM tranfer_hotel h
+                        LEFT JOIN transfer_zona z 
+                            ON h.id_zona = z.id_zona
+                        ORDER BY h.id_hotel ASC";
+            $stmt = $this->conexion->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Error al listar hoteles con zona: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function eliminarHotel($id_hotel) {
+        try {
+            $query = "DELETE FROM tranfer_hotel WHERE id_hotel = :id_hotel";
+            $stmt = $this->conexion->prepare($query);
+            $stmt->bindParam(':id_hotel', $id_hotel);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Error al eliminar hotel: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+
+    public function crearHotel($nombre, $id_zona) {
+        try {
+            $query = "INSERT INTO tranfer_hotel (nombre, id_zona) VALUES (:nombre, :id_zona)";
+            $stmt = $this->conexion->prepare($query);
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':id_zona', $id_zona);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Error al crear hotel: ' . $e->getMessage());
+            return false;
+        }
+    }
 }
 ?>

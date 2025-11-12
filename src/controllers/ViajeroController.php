@@ -69,7 +69,6 @@ class ViajeroController {
         }
     }
 
-
     // ===============================
     // MOSTRAR RESERVAS 
     // ===============================
@@ -100,8 +99,29 @@ class ViajeroController {
             session_start();
         }
 
-        include __DIR__ . '/../views/viajero/crear_reserva.php';
+        // Verificamos que el usuario sea viajero
+        if (empty($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
+            header('Location: /?url=login/login');
+            exit;
+        }
+
+        // Cargamos los modelos necesarios
+        $hotelModel       = new Hotel();
+        $vehiculoModel    = new Vehiculo();
+        $tipoReservaModel = new TipoReserva();
+
+        // Obtenemos los datos desde la base de datos
+        $hoteles      = $hotelModel->listarHoteles();
+        $vehiculos    = $vehiculoModel->listarVehiculos();
+        $tiposReserva = $tipoReservaModel->listarTipos();
+
+        // Cargamos el email del usuario desde la sesión
+        $email_cliente = $_SESSION['user_email'];
+
+        // Incluimos la vista de creación de reserva
+        include __DIR__ . '/../views/viajero/viajero_crear_reserva.php';
     }
+
 
 
 }

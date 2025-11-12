@@ -16,12 +16,12 @@ class Reserva {
             localizador, id_hotel, id_tipo_reserva, email_cliente, fecha_reserva, fecha_modificacion, 
             id_destino, fecha_entrada, hora_entrada, numero_vuelo_entrada, origen_vuelo_entrada, 
             hora_vuelo_salida, fecha_vuelo_salida, numero_vuelo_salida, 
-            hora_recogida, num_viajeros, id_vehiculo) 
+            hora_recogida, num_viajeros, id_vehiculo, usuario_creacion) 
             
             VALUES ( :localizador, :id_hotel, :id_tipo_reserva, :email_cliente, :fecha_reserva, 
             :fecha_modificacion, :id_destino, :fecha_entrada, :hora_entrada, 
             :numero_vuelo_entrada, :origen_vuelo_entrada, :hora_vuelo_salida, 
-            :fecha_vuelo_salida, :numero_vuelo_salida, :hora_recogida, :num_viajeros, :id_vehiculo )";
+            :fecha_vuelo_salida, :numero_vuelo_salida, :hora_recogida, :num_viajeros, :id_vehiculo, :usuario_creacion)";
 
             $stmt = $this->conexion->prepare($query);
             return $stmt->execute($datos);
@@ -33,9 +33,9 @@ class Reserva {
     }
     public function listarTodas($filtros = []){
         $query = "SELECT r.*,
-                    t.Descripción AS tipo_descripcion,
+                    t.descripcion AS tipo_descripcion,
                     h.nombre AS hotel_nombre,
-                    v.Descripción AS vehiculo_descripcion
+                    v.descripcion AS vehiculo_descripcion
                 FROM {$this->tabla} r
                 LEFT JOIN transfer_tipo_reserva t ON r.id_tipo_reserva = t.id_tipo_reserva
                 LEFT JOIN tranfer_hotel h ON r.id_hotel = h.id_hotel
@@ -70,9 +70,9 @@ class Reserva {
     }
     public function obtenerPorId($id){
           $query = "SELECT r.*, 
-                        t.Descripción AS tipo_descripcion,
+                        t.descripcion AS tipo_descripcion,
                         h.nombre AS hotel_nombre,
-                        v.Descripción AS vehiculo_descripcion
+                        v.descripcion AS vehiculo_descripcion
                     FROM {$this->tabla} r
                     LEFT JOIN transfer_tipo_reserva t ON r.id_tipo_reserva = t.id_tipo_reserva
                     LEFT JOIN tranfer_hotel h ON r.id_hotel = h.id_hotel
@@ -121,7 +121,7 @@ class Reserva {
                     r.hora_vuelo_salida,
                     r.num_viajeros,
                     r.email_cliente,
-                    t.Descripción AS tipo_descripcion,
+                    t.descripcion AS tipo_descripcion,
                     h.nombre AS hotel_nombre
                 FROM {$this->tabla} r
                 LEFT JOIN transfer_tipo_reserva t ON r.id_tipo_reserva = t.id_tipo_reserva
@@ -159,35 +159,34 @@ class Reserva {
         }
     }
 
-    public function eliminarReserva($id_reserva) {
-        try {
-            $query = "DELETE FROM {$this->tabla} WHERE id_reserva = :id_reserva";
-            $statement = $this->conexion->prepare($query);
-            $statement->bindParam(':id_reserva', $id_reserva);
-            return $statement->execute();
-        } catch (PDOException $e) {
-            error_log("Error al eliminar reserva: " . $e->getMessage());
-            return false;
-        }
-    }
+    // public function eliminarReserva($id_reserva) {
+    //     try {
+    //         $query = "DELETE FROM {$this->tabla} WHERE id_reserva = :id_reserva";
+    //         $statement = $this->conexion->prepare($query);
+    //         $statement->bindParam(':id_reserva', $id_reserva);
+    //         return $statement->execute();
+    //     } catch (PDOException $e) {
+    //         error_log("Error al eliminar reserva: " . $e->getMessage());
+    //         return false;
+    //     }
+    // }
 
-    public function actualizarReserva($id_reserva, $datos) {
-        try {
-            $setPart = [];
-            foreach ($datos as $key => $value) {
-                $setPart[] = "$key = :$key";
-            }
-            $setString = implode(", ", $setPart);
+    // public function actualizarReserva($id_reserva, $datos) {
+    //     try {
+    //         $setPart = [];
+    //         foreach ($datos as $key => $value) {
+    //             $setPart[] = "$key = :$key";
+    //         }
+    //         $setString = implode(", ", $setPart);
 
-            $query = "UPDATE {$this->tabla} SET $setString WHERE id_reserva = :id_reserva";
-            $statement = $this->conexion->prepare($query);
-            $datos['id_reserva'] = $id_reserva;
+    //         $query = "UPDATE {$this->tabla} SET $setString WHERE id_reserva = :id_reserva";
+    //         $statement = $this->conexion->prepare($query);
+    //         $datos['id_reserva'] = $id_reserva;
 
-            return $statement->execute($datos);
-        } catch (PDOException $e) {
-            error_log("Error al actualizar reserva: " . $e->getMessage());
-            return false;
-        }
-    }   
-
+    //         return $statement->execute($datos);
+    //     } catch (PDOException $e) {
+    //         error_log("Error al actualizar reserva: " . $e->getMessage());
+    //         return false;
+    //     }
+    // }   
 }
