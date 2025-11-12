@@ -283,6 +283,10 @@ ALTER TABLE `transfer_viajeros`
 ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' 
 AFTER `password`;
 
+ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 
+ALTER TABLE `transfer_vehiculo` CHANGE `Descripción` `descripcion` VARCHAR(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 
+ALTER TABLE `transfer_reservas` ADD `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `id_vehiculo`; 
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

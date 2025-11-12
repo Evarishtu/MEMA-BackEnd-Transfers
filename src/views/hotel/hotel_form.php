@@ -33,6 +33,6 @@
         <button type="submit">Guardar hotel</button>
     </form>
 
-    <p><a href="/?url=hotel/listarHotel">Volver al listado</a></p>
+    <p><a href="/?url=hotel/listarHoteles">Volver al listado</a></p>
 </body>
 </html>

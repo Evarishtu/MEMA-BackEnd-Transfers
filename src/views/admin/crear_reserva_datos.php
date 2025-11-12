@@ -85,7 +85,7 @@ if(!$tipo_reserva){
                     <option value = "">--Selecciona un vehículo--</option>
                     <?php foreach ($vehiculos as $vehiculo): ?>
                         <option value = "<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
-                            <?= htmlspecialchars($vehiculo['Descripción']) ?>
+                            <?= htmlspecialchars($vehiculo['descripcion']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select><br><br>
