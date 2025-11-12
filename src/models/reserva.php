@@ -31,6 +31,7 @@ class Reserva {
             return false;
         }
     }
+
     public function listarTodas($filtros = []){
         $query = "SELECT r.*,
                     t.descripcion AS tipo_descripcion,
@@ -111,6 +112,7 @@ class Reserva {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
     public function listarEventosCalendario(){
         $query = "SELECT 
                     r.id_reserva,
@@ -157,36 +159,6 @@ class Reserva {
             error_log("Error al listar reservas: " . $e->getMessage());
             return false;
         }
-    }
-
-    // public function eliminarReserva($id_reserva) {
-    //     try {
-    //         $query = "DELETE FROM {$this->tabla} WHERE id_reserva = :id_reserva";
-    //         $statement = $this->conexion->prepare($query);
-    //         $statement->bindParam(':id_reserva', $id_reserva);
-    //         return $statement->execute();
-    //     } catch (PDOException $e) {
-    //         error_log("Error al eliminar reserva: " . $e->getMessage());
-    //         return false;
-    //     }
-    // }
-
-    // public function actualizarReserva($id_reserva, $datos) {
-    //     try {
-    //         $setPart = [];
-    //         foreach ($datos as $key => $value) {
-    //             $setPart[] = "$key = :$key";
-    //         }
-    //         $setString = implode(", ", $setPart);
-
-    //         $query = "UPDATE {$this->tabla} SET $setString WHERE id_reserva = :id_reserva";
-    //         $statement = $this->conexion->prepare($query);
-    //         $datos['id_reserva'] = $id_reserva;
-
-    //         return $statement->execute($datos);
-    //     } catch (PDOException $e) {
-    //         error_log("Error al actualizar reserva: " . $e->getMessage());
-    //         return false;
-    //     }
-    // }   
+    } 
 }
+?>

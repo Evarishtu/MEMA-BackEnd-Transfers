@@ -35,6 +35,8 @@
                     <li><a href="/?url=reservatipo/create">Crear nuevo tipo de reserva</a></li>
                     <li><a href="/?url=hotel/index">Gestión de hoteles</a></li>
                     <li><a href="/?url=hotel/listarZonas">Crear nuevo hotel</a></li>
+                    <li><a href="/?url=vehiculo/listarvehiculos">Gestión de vehiculos</a></li>
+                    <li><a href="/?url=vehiculo/crearvehiculo">Crear nuevo vehiculo</a></li>
                 </ul>
             </section>
         </main>
