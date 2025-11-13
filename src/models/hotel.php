@@ -151,5 +151,19 @@ class Hotel {
             return false;
         }
     }
+
+    public function obtenerZonaIdPorHotelId($id_hotel) {
+        try {
+            $query = "SELECT id_zona FROM tranfer_hotel WHERE id_hotel = :id_hotel LIMIT 1";
+            $stmt = $this->conexion->prepare($query);
+            $stmt->bindParam(':id_hotel', $id_hotel);
+            $stmt->execute();
+            $hotel = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $hotel ? $hotel['id_zona'] : null;
+        } catch (PDOException $e) {
+            error_log("Error al obtener zona por ID de hotel: " . $e->getMessage());
+            return null;
+        }
+    }
 }
 ?>

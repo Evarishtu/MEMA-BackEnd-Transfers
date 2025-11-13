@@ -279,7 +279,7 @@ ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` T
 
 ALTER TABLE transfer_viajeros ADD CONSTRAINT unique_email_viajero UNIQUE (email);
 
-ALTER TABLE `transfer_viajeros`
+ALTER TABLE `transfer_reservas`
 ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' 
 AFTER `password`;
 
