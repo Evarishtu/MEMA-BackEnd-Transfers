@@ -13,6 +13,74 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar reserva</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        line-height: 1.6;
+        }
+
+        h1 {
+        color: #007bff;
+        margin-bottom: 25px;
+        }
+
+        form {
+        max-width: 700px;
+        }
+
+        fieldset {
+        margin-bottom: 25px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        }
+
+        legend {
+        font-weight: bold;
+        color: #333;
+        }
+
+        label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        }
+
+        input, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 4px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        }
+
+        button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-right: 10px;
+        }
+
+        button:hover {
+        background-color: #0056b3;
+        }
+
+        a {
+        color: #007bff;
+        text-decoration: none;
+        }
+
+        a:hover {
+        text-decoration: underline;
+        }
+    </style>
 </head>
     <body>
         <h1>Editar reserva <?= htmlspecialchars($r['localizador'] ?? '')?></h1>
@@ -25,7 +93,7 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
                         <?php foreach(($tipos_reserva ?? []) as $t): ?>
                             <option value = "<?= htmlspecialchars($t['id_tipo_reserva']) ?>"
                                 <?= ($tipo_sel===(string)$t['id_tipo_reserva'])?'selected':''?>>
-                                <?= htmlspecialchars($t['Descripción']) ?>
+                                <?= htmlspecialchars($t['descripcion']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -51,7 +119,7 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
                         <?php foreach(($vehiculos ?? []) as $v): ?>
                             <option value = "<?= htmlspecialchars($v['id_vehiculo']) ?>"
                                 <?= ((string)$r['id_vehiculo']===(string)$v['id_vehiculo'])?'selected':''?>>
-                                <?= htmlspecialchars($v['Descripción']) ?>
+                                <?= htmlspecialchars($v['descripcion']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>

@@ -12,6 +12,111 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservas</title>
 </head>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        line-height: 1.6;
+        }
+
+        h1 {
+        color: #007bff;
+        margin-bottom: 20px;
+        }
+
+        fieldset {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        max-width: 900px;
+        }
+
+        legend {
+        font-weight: bold;
+        }
+
+        label {
+        margin-right: 20px;
+        display: inline-block;
+        margin-bottom: 10px;
+        }
+
+        input, select {
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        }
+
+        button {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 14px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-right: 10px;
+        }
+
+        button:hover {
+        background-color: #0056b3;
+        }
+
+        a {
+        color: #007bff;
+        text-decoration: none;
+        }
+
+        a:hover {
+        text-decoration: underline;
+        }
+
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+        min-width: 800px;
+        }
+
+        th, td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+        }
+
+        th {
+        background-color: #f3f3f3;
+        font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+        background-color: #fafafa;
+        }
+
+        tr:hover {
+        background-color: #f0f8ff;
+        }
+
+        .acciones a {
+        margin-right: 10px;
+        }
+
+        .volver {
+        margin-top: 20px;
+        display: inline-block;
+        }
+
+        .vista-links a {
+        margin-right: 10px;
+        }
+
+        .overflow {
+        overflow-x: auto;
+        margin-top: 20px;
+        }
+    </style>
 <body>
     <h1>Consultar y gestionar reservas</h1>
     <form method = "GET" action = "/">
@@ -90,6 +195,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
             </tbody>
         </table>
     </div>
-    <p><a href="/?url=admin/dashboard"><-Volver al panel</a></p>
+    <p><a href="/?url=admin/dashboard">⬅️ Volver al panel</a></p>
 </body>
 </html>

@@ -73,7 +73,6 @@
                     <td><?= htmlspecialchars($hotel['nombre_hotel']) ?></td>
                     <td><?= htmlspecialchars($hotel['nombre_zona'] ?? 'Sin zona asignada') ?></td>
                     <td class="acciones">
-                        <!-- ✅ Corrige las rutas a los métodos que realmente existen -->
                         <a href="/?url=hotel/listarZonas&id=<?= $hotel['id_hotel'] ?>">✏️ Editar</a>
                         <a href="/?url=hotel/eliminarHotel&id=<?= $hotel['id_hotel'] ?>"
                            onclick="return confirm('¿Seguro que quieres eliminar este hotel?');">🗑️ Eliminar</a>
