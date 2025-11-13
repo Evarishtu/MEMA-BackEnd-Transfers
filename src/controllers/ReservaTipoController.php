@@ -68,3 +68,4 @@ class ReservaTipoController {
         exit;
     }
 }
+?>

@@ -3,6 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>Crear nuevo hotel</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        line-height: 1.6;
+        }
+
+        h2 {
+        color: #007bff;
+        margin-bottom: 20px;
+        }
+
+        .btn {
+        display: inline-block;
+        padding: 8px 14px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 14px;
+        }
+
+        .btn:hover {
+        background-color: #0056b3;
+        }
+
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        min-width: 600px;
+        background: white;
+        border: 1px solid #ddd;
+        }
+
+        th, td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+        }
+
+        th {
+        background: #f3f3f3;
+        }
+
+        tr:nth-child(even) {
+        background: #fafafa;
+        }
+
+        tr:hover {
+        background: #f0f8ff;
+        }
+
+        .acciones a {
+        margin-right: 12px;
+        color: #007bff;
+        text-decoration: none;
+        }
+
+        .acciones a:hover {
+        text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h2>🏨 Crear nuevo hotel</h2>
@@ -33,6 +96,6 @@
         <button type="submit">Guardar hotel</button>
     </form>
 
-    <p><a href="/?url=hotel/listarHoteles">Volver al listado</a></p>
+    <p><a href="/?url=hotel/listarHoteles">⬅️ Volver al listado</a></p>
 </body>
 </html>

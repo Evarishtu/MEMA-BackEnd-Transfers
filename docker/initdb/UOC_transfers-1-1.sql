@@ -277,11 +277,9 @@ ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_salida` `numero_vuelo_salid
 ALTER TABLE `transfer_reservas` CHANGE `hora_recogida` `hora_recogida` TIME NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIME NULL;  
 
-ALTER TABLE transfer_viajeros ADD CONSTRAINT unique_email_viajero UNIQUE (email);
+ALTER TABLE `transfer_viajeros` ADD CONSTRAINT `unique_email_viajero` UNIQUE (email);
 
-ALTER TABLE `transfer_viajeros`
-ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' 
-AFTER `password`;
+ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `password`;
 
 ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 
 ALTER TABLE `transfer_vehiculo` CHANGE `Descripción` `descripcion` VARCHAR(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Hoteles</title>
+    <title>Gestión de Vehículos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,34 +48,32 @@
 </head>
 <body>
 
-<h2>🏨 Gestión de Hoteles</h2>
+<h2>🚗 Gestión de Vehículos</h2>
 
 <p>
-    <a href="/?url=hotel/listarZonas" class="btn">➕ Nuevo hotel</a>
+    <a href="/?url=vehiculo/crearvehiculo" class="btn">➕ Nuevo vehículo</a>
 </p>
 
-<?php if (empty($hoteles)): ?>
-    <p>No hay hoteles registrados todavía.</p>
+<?php if (empty($vehiculos)): ?>
+    <p>No hay vehículos registrados todavía.</p>
 <?php else: ?>
     <table>
         <thead>
             <tr>
-                <th>ID Hotel</th>
-                <th>Nombre del Hotel</th>
-                <th>Zona</th>
+                <th>ID Vehículo</th>
+                <th>Descripción</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($hoteles as $hotel): ?>
+            <?php foreach ($vehiculos as $vehiculo): ?>
                 <tr>
-                    <td><?= htmlspecialchars($hotel['id_hotel']) ?></td>
-                    <td><?= htmlspecialchars($hotel['nombre_hotel']) ?></td>
-                    <td><?= htmlspecialchars($hotel['nombre_zona'] ?? 'Sin zona asignada') ?></td>
+                    <td><?= htmlspecialchars($vehiculo['id_vehiculo']) ?></td>
+                    <td><?= htmlspecialchars($vehiculo['descripcion']) ?></td>
                     <td class="acciones">
-                        <a href="/?url=hotel/listarZonas&id=<?= $hotel['id_hotel'] ?>">✏️ Editar</a>
-                        <a href="/?url=hotel/eliminarHotel&id=<?= $hotel['id_hotel'] ?>"
-                           onclick="return confirm('¿Seguro que quieres eliminar este hotel?');">🗑️ Eliminar</a>
+                        <a href="/?url=vehiculo/editarvehiculo&id=<?= $vehiculo['id_vehiculo'] ?>">✏️ Editar</a>
+                        <a href="/?url=vehiculo/eliminarvehiculo&id=<?= $vehiculo['id_vehiculo'] ?>"
+                           onclick="return confirm('¿Seguro que quieres eliminar este vehículo?');">🗑️ Eliminar</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -15,6 +15,109 @@ function h($s){ return htmlspecialchars((string)$s); }
 <head>
   <meta charset="UTF-8">
   <title>Calendario de trayectos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-top: 25px;
+      color: #333;
+    }
+
+    form {
+      margin-bottom: 25px;
+    }
+
+    label {
+      margin-right: 20px;
+      font-weight: bold;
+    }
+
+    select, input[type="date"] {
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-left: 5px;
+    }
+
+    button {
+      padding: 8px 14px;
+      background-color: #007bff;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 750px;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #f3f3f3;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    tr:hover {
+      background-color: #f0f8ff;
+    }
+
+  
+    .mes-dia {
+      height: 110px;
+    }
+
+    .mes-dia small {
+      color: #555;
+    }
+
+    .evento {
+      margin: 6px 0;
+    }
+
+    .sin-eventos {
+      color: #888;
+      font-style: italic;
+    }
+  </style>
 </head>
 <body>
   <h1>Calendario de trayectos</h1>
@@ -41,11 +144,11 @@ function h($s){ return htmlspecialchars((string)$s); }
       <thead><tr><th>Hora</th><th>Reserva</th></tr></thead>
       <tbody>
         <?php
-          // Events del día: el controlador puede pasar $eventosDia ya filtrados
+          
           $eventosDia = $eventosDia ?? array_filter($eventos ?? [], function($e) use ($fecha_base){
             return ($e['fecha_entrada'] === $fecha_base) || ($e['fecha_vuelo_salida'] === $fecha_base);
           });
-          // Orden por hora:
+          
           usort($eventosDia, function($a,$b){
             $ha = $a['hora_entrada'] ?? $a['hora_vuelo_salida'] ?? '00:00:00';
             $hb = $b['hora_entrada'] ?? $b['hora_vuelo_salida'] ?? '00:00:00';
@@ -78,12 +181,11 @@ function h($s){ return htmlspecialchars((string)$s); }
       <thead>
         <tr>
           <?php
-            // El controlador idealmente pasa $diasSemana = [ 'YYYY-MM-DD', ... x7 ]
-            // Si no, construimos una semana simple (L-D) a partir de fecha_base (asumida lunes)
+            
             $diasSemana = $diasSemana ?? []; 
             if (empty($diasSemana)) {
               $base = new DateTime($fecha_base);
-              $dow = (int)$base->format('N'); // 1=Lunes .. 7=Domingo
+              $dow = (int)$base->format('N'); 
               $base->modify('-'.($dow-1).' day');
               for($i=0;$i<7;$i++){
                 $diasSemana[] = $base->format('Y-m-d');
@@ -124,15 +226,14 @@ function h($s){ return htmlspecialchars((string)$s); }
       </tbody>
     </table>
 
-  <?php else: /* mes */ ?>
+  <?php else: ?>
     <h2>Mes de <?= h(substr($fecha_base,0,7)) ?></h2>
     <?php
-      // El controlador puede pasar $diasMes como matriz 6x7; si no, hacemos un grid básico.
-      // Generamos calendario mensual simple:
+     
       $first = new DateTime(date('Y-m-01', strtotime($fecha_base)));
-      $startDow = (int)$first->format('N'); // 1..7 (L..D)
+      $startDow = (int)$first->format('N'); 
       $start = clone $first;
-      $start->modify('-'.($startDow-1).' day'); // Lunes de la semana que arranca el mes
+      $start->modify('-'.($startDow-1).' day'); 
       $cells = [];
       for($i=0;$i<42;$i++){ $cells[] = $start->format('Y-m-d'); $start->modify('+1 day'); }
     ?>
@@ -176,6 +277,6 @@ function h($s){ return htmlspecialchars((string)$s); }
     </table>
   <?php endif; ?>
 
-  <p><a href="/?url=admin/listarReservas">← Volver al listado</a></p>
+  <p><a href="/?url=admin/listarReservas">⬅️ Volver al listado</a></p>
 </body>
 </html>

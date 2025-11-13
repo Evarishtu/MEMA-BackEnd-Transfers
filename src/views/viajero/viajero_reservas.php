@@ -80,7 +80,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <td><?= htmlspecialchars($r['localizador']) ?></td>
                             <td><?= htmlspecialchars($r['fecha_reserva']) ?></td>
                             <td><?= htmlspecialchars($r['TipoReservaDesc'] ?? '-') ?></td>
-                            <td><?= htmlspecialchars($r['HotelId'] ?? '-') ?></td>
+                            <td><?= htmlspecialchars($r['HotelDesc'] ?? '-') ?></td>
                             <td><?= htmlspecialchars($r['ZonaDesc'] ?? '-') ?></td>
                             <td><?= htmlspecialchars($r['num_viajeros'] ?? '-') ?></td>
                             <td><?= htmlspecialchars($r['VehiculoDesc'] ?? '-') ?></td>
