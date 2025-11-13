@@ -21,6 +21,78 @@ if(!$tipo_reserva){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear reserva - Paso 2</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        line-height: 1.6;
+        }
+
+        h1 {
+        color: #007bff;
+        margin-bottom: 20px;
+        }
+
+        form {
+        max-width: 600px;
+        margin-top: 20px;
+        }
+
+        fieldset {
+        margin-bottom: 25px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        }
+
+        legend {
+        font-weight: bold;
+        color: #333;
+        }
+
+        label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        }
+
+        input, select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        }
+
+        button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        }
+
+        button:hover {
+        background-color: #0056b3;
+        }
+
+        a {
+        color: #007bff;
+        text-decoration: none;
+        }
+
+        a:hover {
+        text-decoration: underline;
+        }
+
+        .volver {
+        margin-top: 20px;
+        display: inline-block;
+        }
+  </style>
 </head>
     <body>
         <h1>Datos de la reserva</h1>
@@ -92,6 +164,6 @@ if(!$tipo_reserva){
                 <button type = "submit">Guardar reserva</button>
             </fieldset>
         </form>
-        <p><a href = "/?url=admin/crearReserva">Volver al paso anterior</a></p>   
+        <p><a href = "/?url=admin/crearReserva">⬅️ Volver al paso anterior</a></p>   
     </body>
 </html>

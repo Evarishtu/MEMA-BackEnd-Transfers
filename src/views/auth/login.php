@@ -80,6 +80,6 @@
             </select><br><br>
             <button type = "submit">Entrar</button>
         </form>
-        <p><a href="/"><- Volver a la página principal</a></p>  
+        <p><a href="/">⬅️ Volver a la página principal</a></p>  
     </body>
 </html>

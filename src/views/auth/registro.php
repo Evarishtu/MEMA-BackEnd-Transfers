@@ -84,7 +84,7 @@ $email = $_POST['email'] ?? '';
                 </select><br><br>
                 <button type = "submit">Continuar</button>
             </form> 
-            <p><a href="/"><- Volver a la página principal</a></p>      
+            <p><a href="/">⬅️ Volver a la página principal</a></p>      
         </main>    
     </body>
 </html>

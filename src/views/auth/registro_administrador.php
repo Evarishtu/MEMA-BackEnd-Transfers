@@ -81,6 +81,6 @@
 
             <button type = "submit">Registrar</button>
         </form>
-        <p><a href="/?url=registro/registrar"><- Volver al inicio del registro</a></p>               
+        <p><a href="/?url=registro/registrar">⬅️ Volver al inicio del registro</a></p>               
     </body>
 </html>
