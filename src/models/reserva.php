@@ -160,5 +160,9 @@ class Reserva {
             return false;
         }
     } 
+
+    public function crearlocalizador() {
+        return strtoupper(substr(uniqid('RES-'), -8));
+    }
 }
 ?>

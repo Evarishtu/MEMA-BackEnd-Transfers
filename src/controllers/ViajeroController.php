@@ -12,9 +12,10 @@ class ViajeroController {
     // DASHBOARD PRINCIPAL DEL VIAJERO
     // ===============================
     public function dashboard() {
+       
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
-        }
+        } 
 
         // Seguridad básica: solo viajeros pueden acceder
         if (empty($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
@@ -60,8 +61,13 @@ class ViajeroController {
                 'direccion'    => $_POST['direccion'],
                 'codigoPostal' => $_POST['codigoPostal'],
                 'pais'         => $_POST['pais'],
-                'ciudad'       => $_POST['ciudad']
+                'ciudad'       => $_POST['ciudad'],
             ];
+
+            // Solo actualizar contraseña si el usuario escribió una nueva
+            if (!empty($_POST['password'])) {
+                $datos['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+}
 
             $viajeroModel->actualizarViajero($id, $datos);
             header('Location: /?url=viajero/informacionPersonal');
@@ -137,8 +143,9 @@ class ViajeroController {
         }
 
         require_once __DIR__ . '/../models/viajero_reserva.php';
-        $hotelModel   = new Hotel();              // ✅ nombre correcto
+        $hotelModel   = new Hotel();              
         $reservaModel = new Viajero_Reserva();
+        
 
         // Validación mínima
         $id_hotel        = $_POST['id_hotel']        ?? null;
@@ -151,11 +158,11 @@ class ViajeroController {
             return;
         }
 
-        // 🔎 Obtener id_zona del hotel seleccionado
+        //Obtener id_zona del hotel seleccionado
         $id_zona = $hotelModel->obtenerZonaIdPorHotelId($id_hotel);  // ✅ aquí estaba el typo
 
         // Si tu BD aún usa 'id_destino' con FK a zona, esto lo llena automáticamente
-        $localizador   = strtoupper(substr(uniqid(), -8));
+        $localizador   = $reservaModel->crearlocalizador();
         $fecha_actual  = date('Y-m-d H:i:s');
 
         $datos = [
@@ -165,7 +172,7 @@ class ViajeroController {
             ':email_cliente'        => $_SESSION['user_email'] ?? '',
             ':fecha_reserva'        => $fecha_actual,
             ':fecha_modificacion'   => $fecha_actual,
-            ':id_destino'           => $id_zona ?? null,  // 👈 zona del hotel
+            ':id_destino'           => $id_zona ?? null,  //zona del hotel
             ':fecha_entrada'        => !empty($_POST['fecha_entrada']) ? $_POST['fecha_entrada'] : null,
             ':hora_entrada'         => !empty($_POST['hora_entrada']) ? $_POST['hora_entrada'] : null,
             ':numero_vuelo_entrada' => !empty($_POST['numero_vuelo_entrada']) ? $_POST['numero_vuelo_entrada'] : null,
@@ -175,32 +182,29 @@ class ViajeroController {
             ':numero_vuelo_salida'  => !empty($_POST['numero_vuelo_salida']) ? $_POST['numero_vuelo_salida'] : null,
             ':hora_recogida'        => !empty($_POST['hora_recogida']) ? $_POST['hora_recogida'] : null,
             ':num_viajeros'         => (int)($_POST['num_viajeros'] ?? 1),
-            ':id_vehiculo'          => $id_vehiculo
+            ':id_vehiculo'          => $id_vehiculo,
         ];
 
-        $ok = $reservaModel->crearReserva($datos);
+        $resultado = $reservaModel->crearReserva($datos);
 
-        if ($ok) {
-            // ✅ Mostrar popup y volver al formulario o dashboard
-            echo "
-                <script>
-                    alert('✅ Reserva creada con éxito');
-                    window.location.href = '/?url=viajero/crearReserva';
-                </script>
-            ";
+        if ($resultado) {
+
+            // Preparar datos para la vista
+            $localizador         = $localizador;
+            $email               = $_SESSION['user_email'];
+            $hotel_nombre        = $hotelModel->obtenerNombrePorId($id_hotel);
+            $num_viajeros        = (int)($_POST['num_viajeros'] ?? 1);
+
+            // Obtener texto del tipo de reserva
+            require_once __DIR__ . '/../models/tipo_reserva.php';
+            $tipoModel = new TipoReserva();
+            $tipos = $tipoModel->listarTipos();
+            $tipo_reserva_texto = $tipos[$id_tipo_reserva - 1]['descripcion'] ?? "—";
+
+            // Mostrar vista
+            include __DIR__ . '/../views/viajero/viajero_reserva_confirmacion.php';
             exit;
-        } else {
-            echo "
-                <script>
-                    alert('❌ Error al guardar la reserva. Revisa los datos.');
-                    window.location.href = '/?url=viajero/crearReserva';
-                </script>
-            ";
-            exit;
-}
+        }
     }
-
-
-
 }
 ?>

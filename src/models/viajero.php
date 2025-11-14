@@ -100,7 +100,7 @@ class Viajero {
 
     public function obtenerViajeroPorEmail($email) {
         try {
-            $query = "SELECT id_viajero, nombre, apellido1, apellido2, email, direccion, codigoPostal, pais, ciudad 
+            $query = "SELECT id_viajero, nombre, apellido1, apellido2, email, direccion, codigoPostal, pais, ciudad, password
                         FROM {$this->tabla} WHERE email = :email LIMIT 1";
             $statement = $this->conexion->prepare($query);
             $statement->bindParam(':email', $email);

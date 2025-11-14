@@ -2,13 +2,19 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Protección por rol
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
+    header('Location: /?url=login/login');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Información Personal</title>
+    <title>Información Personal del Administrador</title>
     <style>
         body { font-family: Arial; background: #f7f7f7; margin: 0; padding: 0; }
         .container { width: 70%; margin: 50px auto; background: #fff; padding: 25px; border-radius: 10px; }
@@ -33,62 +39,35 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 <body>
     <div class="container">
-        <h1>Información Personal</h1>
+        <h1>Información Personal del Administrador</h1>
 
-        <form id="infoForm" method="POST" action="/?url=viajero/actualizarInformacionPersonal" class="disabled">
+        <form id="infoForm" method="POST" action="/?url=admin/actualizarInformacionPersonal" class="disabled">
 
-            <input type="hidden" name="id_viajero" 
-                   value="<?= htmlspecialchars($viajero['id_viajero'] ?? '') ?>">
+            <input type="hidden" name="id_admin" 
+                   value="<?= htmlspecialchars($admin['id_admin'] ?? '', ENT_QUOTES) ?>">
 
             <label>Nombre:</label>
             <input type="text" name="nombre" 
-                   value="<?= htmlspecialchars($viajero['nombre'] ?? '') ?>">
-
-            <label>Primer apellido:</label>
-            <input type="text" name="apellido1" 
-                   value="<?= htmlspecialchars($viajero['apellido1'] ?? '') ?>">
-
-            <label>Segundo apellido:</label>
-            <input type="text" name="apellido2" 
-                   value="<?= htmlspecialchars($viajero['apellido2'] ?? '') ?>">
+                   value="<?= htmlspecialchars($admin['nombre'] ?? '', ENT_QUOTES) ?>">
 
             <label>Email:</label>
             <input type="email" name="email" 
-                   value="<?= htmlspecialchars($viajero['email'] ?? '') ?>" readonly>
+                   value="<?= htmlspecialchars($admin['email'] ?? '', ENT_QUOTES) ?>" readonly>
 
-            <label>Dirección:</label>
-            <input type="text" name="direccion" 
-                   value="<?= htmlspecialchars($viajero['direccion'] ?? '') ?>">
-
-            <label>Código postal:</label>
-            <input type="text" name="codigoPostal" 
-                   value="<?= htmlspecialchars($viajero['codigoPostal'] ?? '') ?>">
-
-            <label>País:</label>
-            <input type="text" name="pais" 
-                   value="<?= htmlspecialchars($viajero['pais'] ?? '') ?>">
-
-            <label>Ciudad:</label>
-            <input type="text" name="ciudad" 
-                   value="<?= htmlspecialchars($viajero['ciudad'] ?? '') ?>">
-
-            <!-- CONTRASEÑA REAL MOSTRABLE (práctica universidad) -->
             <label>Contraseña:</label>
             <input type="password" id="passwordField" name="password"
-                   value="" placeholder="Escribe nueva contraseña:" disabled>
-
+                   value="<?= htmlspecialchars($admin['password'] ?? '', ENT_QUOTES) ?>" disabled>
 
             <button type="button" class="toggle-btn" id="togglePassword" disabled>
                 Mostrar contraseña
             </button>
 
-            <!-- Botones -->
             <button type="button" id="editarBtn">Editar</button>
             <button type="submit" id="guardarBtn" style="display:none;">Guardar</button>
 
         </form>
 
-        <p><a href="/?url=viajero/dashboard">← Volver al dashboard</a></p>
+        <p><a href="/?url=admin/dashboard">← Volver al panel</a></p>
     </div>
 
     <script>
@@ -102,7 +81,6 @@ if (session_status() === PHP_SESSION_NONE) {
         // Activar edición
         editarBtn.addEventListener('click', () => {
             form.classList.remove('disabled');
-
             passwordField.disabled = false;
             togglePassword.disabled = false;
 
