@@ -276,6 +276,7 @@ ALTER TABLE `transfer_reservas` CHANGE `email_cliente` `email_cliente` VARCHAR(2
 ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_salida` `numero_vuelo_salida` VARCHAR(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_recogida` `hora_recogida` TIME NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIME NULL;  
+ALTER TABLE `transfer_reservas` CHANGE `fecha_modificacion` `fecha_modificacion` DATE NULL; 
 
 ALTER TABLE transfer_viajeros ADD CONSTRAINT unique_email_viajero UNIQUE (email);
 

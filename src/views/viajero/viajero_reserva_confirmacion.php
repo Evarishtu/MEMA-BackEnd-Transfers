@@ -1,15 +1,15 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
     header('Location: /?url=login/login');
     exit;
 }
 
 $localizador = $localizador ?? '—';
-$email = $email ?? '';
-$tipo_reserva_texto = $tipo_reserva_texto ?? '';
 $hotel_nombre = $hotel_nombre ?? '';
+$tipo_reserva_texto = $tipo_reserva_texto ?? '';
 $num_viajeros = $num_viajeros ?? '';
+$email = $_SESSION['user_email'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -35,12 +35,10 @@ $num_viajeros = $num_viajeros ?? '';
         }
         h1 {
             color: #27ae60;
-            margin-top: 0;
             text-align: center;
         }
         h2 {
             color: #444;
-            margin-bottom: 10px;
         }
         ul {
             background: #fafafa;
@@ -48,7 +46,6 @@ $num_viajeros = $num_viajeros ?? '';
             border-radius: 8px;
             border-left: 4px solid #27ae60;
             list-style: none;
-            margin-top: 10px;
         }
         ul li {
             margin-bottom: 8px;
@@ -60,11 +57,6 @@ $num_viajeros = $num_viajeros ?? '';
             padding: 12px 18px;
             border-radius: 6px;
             margin-top: 20px;
-        }
-        .email-box em {
-            font-style: normal;
-            font-weight: bold;
-            color: #2c3e50;
         }
         .btn {
             display: inline-block;
@@ -88,13 +80,10 @@ $num_viajeros = $num_viajeros ?? '';
             margin-bottom: 20px;
             font-size: 18px;
         }
-        strong {
-            color: #2c3e50;
-        }
     </style>
 </head>
-<body>
 
+<body>
     <div class="container">
 
         <h1>Reserva creada correctamente</h1>
@@ -112,11 +101,11 @@ $num_viajeros = $num_viajeros ?? '';
 
         <div class="email-box">
             Se ha enviado un correo electrónico con los detalles de la reserva a:<br>
-            <em><?= htmlspecialchars($email) ?></em>
+            <strong><?= htmlspecialchars($email) ?></strong>
         </div>
 
-        <a class="btn" href="/?url=admin/dashboard">← Volver al panel</a>
-    </div>
+        <a class="btn" href="/?url=viajero/dashboard">← Volver al panel</a>
 
+    </div>
 </body>
 </html>
