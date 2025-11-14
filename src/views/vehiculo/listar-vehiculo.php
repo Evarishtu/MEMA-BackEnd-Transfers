@@ -48,6 +48,8 @@
 </head>
 <body>
 
+<p><a href="/" class="btn">🏠 Volver al inicio</a></p>
+
 <h2>🚗 Gestión de Vehículos</h2>
 
 <p>

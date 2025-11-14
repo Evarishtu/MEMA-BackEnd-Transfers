@@ -35,6 +35,9 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
         }
         .toggle-btn:hover { background: #565e64; }
         a { text-decoration: none; color: #007BFF; }
+        .disabled #togglePassword {
+            display: none;
+        }
     </style>
 </head>
 <body>

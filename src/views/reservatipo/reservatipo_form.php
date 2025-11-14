@@ -38,6 +38,8 @@
 </head>
 <body>
 
+<p><a href="/" class="btn">🏠 Volver al inicio</a></p>
+
 <h2><?= isset($reservatipo) ? '✏️ Editar tipo de reserva' : '➕ Crear tipo de reserva' ?></h2>
 
 <?php if (!empty($error)): ?>

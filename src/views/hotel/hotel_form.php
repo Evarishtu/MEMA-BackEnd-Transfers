@@ -68,6 +68,7 @@
     </style>
 </head>
 <body>
+    <p><a href="/" class="btn">🏠 Volver al inicio</a></p>
     <h2>🏨 Crear nuevo hotel</h2>
 
     <form method="POST" action="/?url=hotel/crearHotel">

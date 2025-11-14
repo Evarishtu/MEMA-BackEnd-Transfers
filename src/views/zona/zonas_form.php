@@ -38,6 +38,8 @@
 </head>
 <body>
 
+<p><a href="/" class="btn">🏠 Volver al inicio</a></p>
+
 <h2><?= isset($zona) ? '✏️ Editar Zona' : '➕ Crear Nueva Zona' ?></h2>
 
 <?php if (!empty($error)): ?>

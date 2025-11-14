@@ -55,6 +55,8 @@
 </head>
 <body>
 
+    <p><a href="/" class="btn">🏠 Volver al inicio</a></p>
+
     <h2><?= isset($vehiculo) ? '✏️ Editar vehículo' : '🚗 Crear nuevo vehículo' ?></h2>
 
     <form method="POST" action="/?url=vehiculo/<?= isset($vehiculo) ? 'actualizarvehiculo' : 'guardarvehiculo' ?>">
