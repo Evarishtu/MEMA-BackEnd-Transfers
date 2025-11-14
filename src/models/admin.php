@@ -62,6 +62,72 @@ class Admin{
             return [];
         }
     }
+
+    // Obtener información de un administrador por ID
+    public function obtenerAdminPorId($id_admin){
+        try{
+            $query = "SELECT * FROM {$this->tabla} WHERE id_admin = :id_admin";
+            $statement = $this->conexion->prepare($query);
+            $statement->bindParam(':id_admin', $id_admin);
+            $statement->execute();
+
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            echo "Error al obtener administrador: " . $e->getMessage();
+            return null;
+        }
+    }
+
+    public function actualizarAdmin($id_admin, $datos){
+        try{
+            $query = "UPDATE {$this->tabla} SET nombre = :nombre, email = :email WHERE id_admin = :id_admin";
+            $statement = $this->conexion->prepare($query);
+            $statement->bindParam(':nombre', $datos['nombre']);
+            $statement->bindParam(':email', $datos['email']);
+            $statement->bindParam(':id_admin', $id_admin);
+
+            return $statement->execute();
+        }catch (PDOException $e){
+            echo "Error al actualizar administrador: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function InfoAdminPorEmail($email){
+        try{
+            $query = "SELECT * FROM {$this->tabla} WHERE email = :email";
+            $statement = $this->conexion->prepare($query);
+            $statement->bindParam(':email', $email);
+            $statement->execute();
+
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            echo "Error al obtener administrador por email: " . $e->getMessage();
+            return null;
+        }
+    }
+
+    public function actualizarAdminCompleto($id_admin, $datos){
+        try {
+            $query = "UPDATE {$this->tabla}
+                      SET nombre = :nombre,
+                          email  = :email,
+                          password = :password
+                      WHERE id_admin = :id_admin";
+
+            $stmt = $this->conexion->prepare($query);
+
+            $stmt->bindParam(':nombre', $datos['nombre']);
+            $stmt->bindParam(':email', $datos['email']);
+            $stmt->bindParam(':password', $datos['password']);
+            $stmt->bindParam(':id_admin', $id_admin);
+
+            return $stmt->execute();
+        } catch(PDOException $e){
+            error_log("Error al actualizar administrador: " . $e->getMessage());
+            return false;
+        }
+    }
 }
 
 ?>

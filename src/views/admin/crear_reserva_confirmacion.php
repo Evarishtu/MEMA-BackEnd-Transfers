@@ -17,56 +17,17 @@ $num_viajeros = $num_viajeros ?? '';
 <head>
     <meta charset="UTF-8">
     <title>Reserva confirmada</title>
-    <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      line-height: 1.6;
-    }
-
-    h1 {
-      color: #007bff;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      margin-top: 25px;
-      color: #333;
-    }
-
-    ul {
-      margin-top: 10px;
-      padding-left: 20px;
-    }
-
-    li {
-      margin-bottom: 6px;
-    }
-
-    strong {
-      color: #000;
-    }
-
-    em {
-      color: #555;
-    }
-
-    a {
-      color: #007bff;
-      text-decoration: none;
-      margin-top: 20px;
-      display: inline-block;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
 </head>
-    <body>
+<body>
+
+    <div class="container">
+
         <h1>Reserva creada correctamente</h1>
 
-        <p><strong>Localizador:</strong> <?= htmlspecialchars($localizador) ?></p>
+        <div class="localizador-box">
+            <strong>Localizador:</strong> <?= htmlspecialchars($localizador) ?>
+        </div>
+
         <h2>Detalles de la reserva</h2>
         <ul>
             <li><strong>Tipo de trayecto:</strong> <?= htmlspecialchars($tipo_reserva_texto) ?></li>
@@ -74,9 +35,11 @@ $num_viajeros = $num_viajeros ?? '';
             <li><strong>Número de viajeros:</strong> <?= htmlspecialchars($num_viajeros) ?></li>
         </ul>
 
-        <p>Se ha enviado un correo electrónico con los detalles de la reserva a:</p>
-        <p><em><?= htmlspecialchars($email) ?></em></p>
+        <div class="email-box">
+            Se ha enviado un correo electrónico con los detalles de la reserva a:<br>
+            <em><?= htmlspecialchars($email) ?></em>
+        </div>
 
-        <p><a href="/?url=admin/dashboard">⬅️ Volver al panel</a></p>
+        <p><a href="/?url=admin/dashboard">← Volver al panel</a></p>
     </body>
 </html>

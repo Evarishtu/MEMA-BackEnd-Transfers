@@ -38,64 +38,82 @@ class AdminController{
 
     include __DIR__ . '/../views/admin/crear_reserva_datos.php';
     }
-    public function guardarReserva(){
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST'){
-            header('Location: /?url=admin/crearReserva');
-            exit;
-        }
-    
+
+
+    public function guardarReserva() {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Location: /?url=admin/crearReserva');
+        exit;
+    }
+
+    $hotelModel   = new Hotel(); 
+    $viajeroModel = new Viajero();
+    $reservaModel = new Reserva();
+    $tipoModel    = new TipoReserva();
+
     $email_cliente = $_POST['email_cliente'] ?? null;
-    if(empty($email_cliente)){
+    
+    if (empty($email_cliente)) {
         echo "<p>Debe indicar un email de cliente.</p>";
         echo "<a href='/?url=admin/crearReserva'>Volver</a>";
-        exit;
-    }    
-    // require_once __DIR__ . '/../models/viajero.php';
-    $viajeroModel = new Viajero();
-    $tipo_reserva = $_POST['tipo_reserva'] ?? '';
-    if(!$viajeroModel->existeEmail($email_cliente)){
-        header('Location: /?url=admin/crearViajero&email=' . urlencode($email_cliente) . '&tipo_reserva=' . urlencode($tipo_reserva));
         exit;
     }
 
     $tipo_reserva = $_POST['tipo_reserva'] ?? '';
+
+    if (!$viajeroModel->existeEmail($email_cliente)) {
+        header('Location: /?url=admin/crearViajero&email=' . urlencode($email_cliente) . '&tipo_reserva=' . urlencode($tipo_reserva));
+        exit;
+    }
+
+    if (empty($tipo_reserva)) {
+        echo "<p>Debe indicar un tipo de reserva.</p>";
+        echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+        exit;
+    }
+
     $id_hotel = $_POST['id_hotel'] ?? null;
     $numero_viajeros = $_POST['numero_viajeros'] ?? null;
-    // $email_cliente = $_POST['email_cliente'] ?? null;
     $id_vehiculo = $_POST['id_vehiculo'] ?? null;
     $fecha_actual = date('Y-m-d H:i:s');
-    
-    if (empty($email_cliente) || empty($id_hotel) || empty($id_vehiculo) || empty($numero_viajeros)) {
+
+    if (empty($id_hotel) || empty($id_vehiculo) || empty($numero_viajeros)) {
         echo "<p>Faltan datos obligatorios para crear la reserva.</p>";
         echo '<a href="/?url=admin/crearReserva">Volver</a>';
         exit;
     }
 
+    // ----------- CAMPOS DEL TIPO DE RESERVA -----------
     $fecha_entrada = $hora_entrada = $numero_vuelo_entrada = $origen_vuelo_entrada = null;
     $fecha_vuelo_salida = $hora_vuelo_salida = $numero_vuelo_salida = $hora_recogida = null;
-    
-    if($tipo_reserva == "1" || $tipo_reserva == "3"){
-        $fecha_entrada = $_POST['fecha_llegada'] ?? null;
-        $hora_entrada = $_POST['hora_llegada'] ?? null;
+
+    if ($tipo_reserva == "1" || $tipo_reserva == "3") {
+        $fecha_entrada        = $_POST['fecha_llegada'] ?? null;
+        $hora_entrada         = $_POST['hora_llegada'] ?? null;
         $numero_vuelo_entrada = $_POST['numero_vuelo_llegada'] ?? null;
         $origen_vuelo_entrada = $_POST['origen_vuelo'] ?? null;
     }
 
-    if($tipo_reserva == "2" || $tipo_reserva == "3"){
-        $fecha_vuelo_salida = $_POST['fecha_salida'] ?? null;
-        $hora_vuelo_salida = $_POST['hora_salida'] ?? null;
+    if ($tipo_reserva == "2" || $tipo_reserva == "3") {
+        $fecha_vuelo_salida  = $_POST['fecha_salida'] ?? null;
+        $hora_vuelo_salida   = $_POST['hora_salida'] ?? null;
         $numero_vuelo_salida = $_POST['numero_vuelo_salida'] ?? null;
-        $hora_recogida = $_POST['hora_recogida'] ?? null;
+        $hora_recogida       = $_POST['hora_recogida'] ?? null;
     }
 
-     $datos = [
-        'localizador' => strtoupper(uniqid('RES-')),
+    // ----------- OBTENER DESTINO (id_zona) -----------
+    $id_zona = $hotelModel->obtenerZonaIdPorHotelId($id_hotel);
+    $localizador_generado = $reservaModel->crearlocalizador();
+
+    // ----------- DATOS PARA INSERTAR -----------
+    $datos = [
+        'localizador' => $localizador_generado,
         'id_hotel' => $id_hotel,
         'id_tipo_reserva' => $tipo_reserva,
         'email_cliente' => $email_cliente,
         'fecha_reserva' => $fecha_actual,
-        'fecha_modificacion' => null,
-        'id_destino' => null,
+        'fecha_modificacion' => $fecha_actual, 
+        'id_destino' => $id_zona,
         'fecha_entrada' => $fecha_entrada,
         'hora_entrada' => $hora_entrada,
         'numero_vuelo_entrada' => $numero_vuelo_entrada,
@@ -109,32 +127,37 @@ class AdminController{
         'usuario_creacion' => 'admin'
     ];
 
-        $reservaModel = new Reserva();
-        $resultado = $reservaModel->crearReserva($datos);
+    $resultado = $reservaModel->crearReserva($datos);
 
-        if($resultado){
-            $hotelModel = new Hotel();
-            $hotel_nombre = $hotelModel->obtenerNombrePorId($id_hotel);
+    if ($resultado) {
 
-            $tipoModel = new TipoReserva();
-            $tipo = $tipoModel->listarTipos();
-            $tipo_reserva_texto = $tipo[$tipo_reserva - 1]['descripcion'] ?? 'Desconocido';
+        // ---- PREPARAR VARIABLES PARA LA VISTA ----
+        $localizador    = $localizador_generado;
+        $email          = $email_cliente;
+        $num_viajeros   = $numero_viajeros;
+        $hotel_nombre   = $hotelModel->obtenerNombrePorId($id_hotel);
 
-            require_once __DIR__ . '/../utility/EnviarEmail.php';
-            EmailHelper::enviarConfirmacionReserva(
-                $email_cliente, 
-                'Cliente', 
-                $datos['localizador'], 
-                $tipo_reserva_texto, 
-                $hotel_nombre
-            );
+        $tipo = $tipoModel->listarTipos();
+        $tipo_reserva_texto = $tipo[$tipo_reserva - 1]['descripcion'] ?? 'Desconocido';
 
-            include __DIR__ . '/../views/admin/crear_reserva_confirmacion.php';
-        }else{
-            echo "<p>Error al guardar la reserva.</p>";
-            echo '<a href="/?url=admin/crearReserva">Volver</a>';
-        }
+        require_once __DIR__ . '/../utility/EnviarEmail.php';
+        EmailHelper::enviarConfirmacionReserva(
+            $email_cliente,
+            'Cliente',
+            $localizador,
+            $tipo_reserva_texto,
+            $hotel_nombre
+        );
+
+        // ---- MOSTRAR LA VISTA ----
+        include __DIR__ . '/../views/admin/crear_reserva_confirmacion.php';
+
+    } else {
+        echo "<p>Error al guardar la reserva.</p>";
+        echo '<a href="/?url=admin/crearReserva">Volver</a>';
     }
+}
+
     public function crearViajero(){
         if(!isset($_SESSION)){
             session_start();
@@ -325,6 +348,82 @@ class AdminController{
 
         include __DIR__ . '/../views/admin/calendario.php';
     } 
+
+    public function informacionPersonal() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
+            header('Location: /?url=login/login');
+            exit;
+        }
+
+        require_once __DIR__ . '/../models/admin.php';
+        $adminModel = new Admin();
+        $admin = $adminModel->InfoAdminPorEmail($_SESSION['user_email']);
+
+        include __DIR__ . '/../views/admin/admin_info_personal.php';
+    }
+
+
+    public function actualizarInformacionPersonal() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
+            header('Location: /?url=login/login');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /?url=admin/informacionPersonal');
+            exit;
+        }
+
+        require_once __DIR__ . '/../models/admin.php';
+        $adminModel = new Admin();
+
+        $id_admin = $_POST['id_admin'];
+
+        // Recolectar los datos editables
+        $datos = [
+            'nombre'   => $_POST['nombre'],
+            'email'    => $_POST['email'],
+            'password' => $_POST['password']  // OJO: ya viene hash o texto plano
+        ];
+
+        // Si la contraseña ha cambiado, debemos hashearla
+        if (!empty($datos['password'])) {
+
+            // Obtener contraseña actual en BD
+            $adminActual = $adminModel->obtenerAdminPorId($id_admin);
+
+            if ($adminActual['password'] !== $datos['password']) {
+                // Si son distintas, hasheamos la nueva
+                $datos['password'] = password_hash($datos['password'], PASSWORD_BCRYPT);
+            }
+        }
+
+        // Guardar cambios
+        $ok = $adminModel->actualizarAdminCompleto($id_admin, $datos);
+
+        if ($ok) {
+            // Actualizar sesión con el nombre nuevo
+            $_SESSION['user_nombre'] = $datos['nombre'];
+
+            header('Location: /?url=admin/informacionPersonal');
+            exit;
+        } else {
+            echo "<p>Error al actualizar la información.</p>";
+            echo "<a href='/?url=admin/informacionPersonal'>Volver</a>";
+        }
+    }
+    
+
+
+
 }
 
 ?>

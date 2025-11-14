@@ -138,14 +138,8 @@ class viajero_reserva {
         }
     }
 
-
-    public function generarLocalizadorUnico() {
-        $localizador = bin2hex(random_bytes(5)); // Genera un localizador de 10 caracteres hexadecimales
-        // Verificar si el localizador ya existe
-        if ($this->obtenerReservaPorLocalizador($localizador)) {
-            return $this->generarLocalizadorUnico(); // Si existe, generar uno nuevo
-        }
-        return $localizador;
+    public function crearlocalizador() {
+        return strtoupper(substr(uniqid('RES-'), -8));
     }
 
 }
