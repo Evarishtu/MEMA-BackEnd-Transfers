@@ -15,92 +15,152 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Información Personal del Administrador</title>
+
     <style>
-        body { font-family: Arial; background: #f7f7f7; margin: 0; padding: 0; }
-        .container { width: 70%; margin: 50px auto; background: #fff; padding: 25px; border-radius: 10px; }
-        label { font-weight: bold; display: block; margin-top: 10px; }
-        input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; }
-        button { margin-top: 20px; padding: 10px 20px; border: none; background: #007BFF; color: white; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        .disabled input { background: #eee; pointer-events: none; }
-        .toggle-btn {
-            margin-top: 5px; 
-            padding: 5px 10px;
-            background: #6c757d;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            border: none;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            min-height: 100vh;
         }
-        .toggle-btn:hover { background: #565e64; }
-        a { text-decoration: none; color: #007BFF; }
-        .disabled #togglePassword {
-            display: none;
+
+        .card {
+            width: 90%;
+            max-width: 650px;
+            margin: auto;
+            background: rgba(255,255,255,0.35);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 16px;
+            color: #003e60;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 9px;
+            margin-top: 5px;
+            border: 1px solid #bcdff5;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.8);
+        }
+
+        .disabled input {
+            background: rgba(200,200,200,0.4);
+            pointer-events: none;
+        }
+
+        button {
+            margin-top: 18px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #editarBtn {
+            background: #004f7c;
+            color: white;
+        }
+
+        #guardarBtn {
+            background: #007bff;
+            color: white;
+        }
+
+        #togglePassword {
+            background: #6c757d;
+            color: white;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #004f7c;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Información Personal del Administrador</h1>
 
-        <form id="infoForm" method="POST" action="/?url=admin/actualizarInformacionPersonal" class="disabled">
+<div class="card">
 
-            <input type="hidden" name="id_admin" 
-                   value="<?= htmlspecialchars($admin['id_admin'] ?? '', ENT_QUOTES) ?>">
+    <h1>Información Personal del Administrador</h1>
 
-            <label>Nombre:</label>
-            <input type="text" name="nombre" 
-                   value="<?= htmlspecialchars($admin['nombre'] ?? '', ENT_QUOTES) ?>">
+    <form id="infoForm" method="POST" action="/?url=admin/actualizarInformacionPersonal" class="disabled">
 
-            <label>Email:</label>
-            <input type="email" name="email" 
-                   value="<?= htmlspecialchars($admin['email'] ?? '', ENT_QUOTES) ?>" readonly>
+        <input type="hidden" name="id_admin" 
+               value="<?= htmlspecialchars($admin['id_admin'] ?? '') ?>">
 
-            <label>Contraseña:</label>
-            <input type="password" id="passwordField" name="password"
-                   value="<?= htmlspecialchars($admin['password'] ?? '', ENT_QUOTES) ?>" disabled>
+        <label>Nombre:</label>
+        <input type="text" name="nombre" 
+               value="<?= htmlspecialchars($admin['nombre'] ?? '') ?>">
 
-            <button type="button" class="toggle-btn" id="togglePassword" disabled>
-                Mostrar contraseña
-            </button>
+        <label>Email:</label>
+        <input type="email" name="email" 
+               value="<?= htmlspecialchars($admin['email'] ?? '') ?>" readonly>
 
-            <button type="button" id="editarBtn">Editar</button>
-            <button type="submit" id="guardarBtn" style="display:none;">Guardar</button>
+        <label>Contraseña:</label>
+        <input type="password" id="passwordField" name="password"
+               value="<?= htmlspecialchars($admin['password'] ?? '') ?>" disabled>
 
-        </form>
+        <button type="button" id="togglePassword" disabled>Mostrar contraseña</button>
 
-        <p><a href="/?url=admin/dashboard">← Volver al panel</a></p>
-    </div>
+        <button type="button" id="editarBtn">Editar</button>
+        <button type="submit" id="guardarBtn" style="display:none;">Guardar</button>
 
-    <script>
-        const form = document.getElementById('infoForm');
-        const editarBtn = document.getElementById('editarBtn');
-        const guardarBtn = document.getElementById('guardarBtn');
+    </form>
 
-        const passwordField = document.getElementById('passwordField');
-        const togglePassword = document.getElementById('togglePassword');
+    <p style="margin-top:20px; text-align:center;">
+        <a href="/?url=admin/dashboard">← Volver al panel</a>
+    </p>
 
-        // Activar edición
-        editarBtn.addEventListener('click', () => {
-            form.classList.remove('disabled');
-            passwordField.disabled = false;
-            togglePassword.disabled = false;
+</div>
 
-            editarBtn.style.display = 'none';
-            guardarBtn.style.display = 'inline-block';
-        });
+<script>
+    const form = document.getElementById('infoForm');
+    const editarBtn = document.getElementById('editarBtn');
+    const guardarBtn = document.getElementById('guardarBtn');
 
-        // Mostrar / Ocultar contraseña
-        togglePassword.addEventListener('click', () => {
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                togglePassword.textContent = "Ocultar contraseña";
-            } else {
-                passwordField.type = "password";
-                togglePassword.textContent = "Mostrar contraseña";
-            }
-        });
-    </script>
+    const passwordField = document.getElementById('passwordField');
+    const togglePassword = document.getElementById('togglePassword');
+
+    // Activar edición
+    editarBtn.addEventListener('click', () => {
+        form.classList.remove('disabled');
+        passwordField.disabled = false;
+        togglePassword.disabled = false;
+
+        editarBtn.style.display = 'none';
+        guardarBtn.style.display = 'inline-block';
+    });
+
+    // Mostrar / Ocultar contraseña
+    togglePassword.addEventListener('click', () => {
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            togglePassword.textContent = "Ocultar contraseña";
+        } else {
+            passwordField.type = "password";
+            togglePassword.textContent = "Mostrar contraseña";
+        }
+    });
+</script>
+
 </body>
 </html>

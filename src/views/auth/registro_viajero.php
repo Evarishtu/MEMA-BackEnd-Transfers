@@ -1,104 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Cliente Particular</title>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro Cliente Particular</title>
+
+  <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      line-height: 1.6;
+      margin: 0;
+      font-family: "Arial", sans-serif;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 80px;
+      min-height: 100vh;
     }
 
-    header h1 {
-      color: #007bff;
+    .navbar {
+      background: #ffffff;
+      padding: 15px 40px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
     }
 
-    form {
-      margin-top: 20px;
-      max-width: 450px;
+    .navbar a {
+      color: #2c3e50;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 40px;
+      border-radius: 20px;
+      width: 450px;
+      backdrop-filter: blur(4px);
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 28px;
     }
 
     label {
-      display: block;
-      margin-bottom: 5px;
       font-weight: bold;
+      margin-top: 12px;
+      display: block;
     }
 
     input {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 6px;
+      margin-bottom: 18px;
+      font-size: 15px;
     }
 
     button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 16px;
+      width: 100%;
+      padding: 12px;
+      background: #3274ff;
       border: none;
-      border-radius: 4px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
       cursor: pointer;
-      font-size: 14px;
+      font-weight: bold;
+      margin-top: 10px;
     }
 
     button:hover {
-      background-color: #0056b3;
+      background: #195dff;
     }
 
-    a {
-      color: #007bff;
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      color: #aee3ff;
       text-decoration: none;
+      font-weight: bold;
     }
 
-    a:hover {
+    .back:hover {
       text-decoration: underline;
     }
-
-    .volver {
-      display: inline-block;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-</style>
+  </style>
 </head>
-    <body>
-        <h2>Registro de Cliente Particular</h2>
-        <form method = "POST" action = "/?url=registro/registrar">
-            <input type = "hidden" name = "rol" value ="viajero">
 
-            <label for = "email">Email de autenticación de usuario:</label><br>
-            <input type = "email" name = "email" placeholder = "tu email" required><br><br>
+<body>
 
-            <label for = "password">Contraseña de usuario:</label><br>
-            <input type = "password" name = "password" placeholder = "contraseña de usuario" required><br><br>
+  <div class="navbar">
+    <a href="/?url=registro/registrar">⬅️ Volver al inicio del registro</a>
+  </div>
 
-            <label for = "nombre_cliente">Nombre:</label><br>
-            <input type = "text" name = "nombre" placeholder ="tu nombre" required><br><br>
+  <div class="container">
 
-            <label for = "apellido1">Primer apellido:</label><br>
-            <input type = "text" name = "apellido1" placeholder ="tu primer apellido" required><br><br>
+    <h2>🧑‍💼 Registro Cliente Particular</h2>
 
-            <label for = "apellido2">Segundo apellido:</label><br>
-            <input type = "text" name = "apellido2" placeholder ="tu segundo apellido" required><br><br>
+    <form method="POST" action="/?url=registro/registrar">
+      <input type="hidden" name="rol" value="viajero">
 
-            <label for = "direccion">Dirección:</label><br>
-            <input type = "text" name = "direccion" placeholder ="tu dirección" required><br><br>
+      <label>Email:</label>
+      <input type="email" name="email" required>
 
-            <label for = "codigo_postal">Código postal:</label><br>
-            <input type = "text" name = "codigoPostal" placeholder ="tu código postal" required><br><br>
+      <label>Contraseña:</label>
+      <input type="password" name="password" required>
 
-            <label for = "pais">País:</label><br>
-            <input type = "text" name = "pais" placeholder ="tu país" required><br><br>
+      <label>Nombre:</label>
+      <input type="text" name="nombre" required>
 
-            <label for = "ciudad">Ciudad:</label><br>
-            <input type = "text" name = "ciudad" placeholder ="tu ciudad" required><br><br>
+      <label>Primer apellido:</label>
+      <input type="text" name="apellido1" required>
 
-            <button type = "submit">Registrar</button>
-        </form>
-        <p><a href="/?url=registro/registrar">⬅️ Volver al inicio del registro</a></p>
-    </body>
+      <label>Segundo apellido:</label>
+      <input type="text" name="apellido2" required>
+
+      <label>Dirección:</label>
+      <input type="text" name="direccion" required>
+
+      <label>Código postal:</label>
+      <input type="text" name="codigoPostal" required>
+
+      <label>País:</label>
+      <input type="text" name="pais" required>
+
+      <label>Ciudad:</label>
+      <input type="text" name="ciudad" required>
+
+      <button type="submit">Registrar</button>
+    </form>
+
+    <a href="/?url=registro/registrar" class="back">⬅️ Volver al inicio</a>
+  </div>
+
+</body>
 </html>

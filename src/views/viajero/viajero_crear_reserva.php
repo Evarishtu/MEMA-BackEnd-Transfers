@@ -1,12 +1,11 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+  session_start();
 }
 
-// Seguridad básica
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
-    header('Location: /?url=login/login');
-    exit;
+  header('Location: /?url=login/login');
+  exit;
 }
 
 $email_cliente = $_SESSION['user_email'];
@@ -15,153 +14,211 @@ $email_cliente = $_SESSION['user_email'];
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Reserva</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background: #f5f5f5;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-        fieldset {
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            padding: 15px;
-        }
-        legend {
-            font-weight: bold;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, select, button {
-            margin-top: 5px;
-            padding: 8px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .volver {
-            display: inline-block;
-            margin-top: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Reserva</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Arial", sans-serif;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      padding-top: 120px;
+      padding-bottom: 80px;
+      min-height: 100vh;
+    }
+
+    /* TARGETA */
+    .card {
+      width: 90%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      color: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    fieldset {
+      border: none;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    legend {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 0 6px;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    input, select {
+      margin-top: 6px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+    }
+
+    /* BOTONS */
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #1f8fff;
+      border: none;
+      color: #fff;
+      font-size: 17px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #0066cc;
+    }
+
+    a.volver {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+      font-size: 16px;
+      color: #e5f3ff;
+      font-weight: bold;
+    }
+
+    a.volver:hover {
+      text-decoration: underline;
+    }
+  </style>
+
 </head>
 <body>
 
-    <h1>Crear nueva reserva</h1>
+  <div class="card">
+    <h1>📝 Crear Reserva</h1>
 
     <form method="POST" action="/?url=viajero/guardarReserva">
-        
-        <!-- Tipo de reserva -->
-        <fieldset>
-            <legend>Tipo de reserva</legend>
-            <select name="id_tipo_reserva" id="tipo_reserva" required onchange="mostrarCampos()">
-                <option value="">-- Selecciona tipo de reserva --</option>
-                <?php foreach ($tiposReserva as $tipo): ?>
-                    <option value="<?= htmlspecialchars($tipo['id_tipo_reserva']) ?>">
-                        <?= htmlspecialchars($tipo['descripcion']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </fieldset>
 
-        <!-- Datos del vuelo de llegada -->
-        <fieldset id="vuelo_llegada" style="display:none;">
-            <legend>Vuelo de llegada (Aeropuerto → Hotel)</legend>
-            <label>Fecha llegada:</label>
-            <input type="date" name="fecha_entrada">
+      <!-- Tipo de reserva -->
+      <fieldset>
+        <legend>Tipo de reserva</legend>
+        <select name="id_tipo_reserva" id="tipo_reserva" required onchange="mostrarCampos()">
+          <option value="">-- Selecciona tipo de reserva --</option>
+          <?php foreach ($tiposReserva as $tipo): ?>
+            <option value="<?= htmlspecialchars($tipo['id_tipo_reserva']) ?>">
+              <?= htmlspecialchars($tipo['descripcion']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </fieldset>
 
-            <label>Hora llegada:</label>
-            <input type="time" name="hora_entrada">
+      <!-- Vuelo llegada -->
+      <fieldset id="vuelo_llegada" style="display:none;">
+        <legend>Vuelo de llegada (Aeropuerto → Hotel)</legend>
 
-            <label>Número de vuelo:</label>
-            <input type="text" name="numero_vuelo_entrada">
+        <label>Fecha llegada:</label>
+        <input type="date" name="fecha_entrada">
 
-            <label>Aeropuerto de origen:</label>
-            <input type="text" name="origen_vuelo_entrada">
-        </fieldset>
+        <label>Hora llegada:</label>
+        <input type="time" name="hora_entrada">
 
-        <!-- Datos del vuelo de salida -->
-        <fieldset id="vuelo_salida" style="display:none;">
-            <legend>Vuelo de salida (Hotel → Aeropuerto)</legend>
-            <label>Fecha vuelo salida:</label>
-            <input type="date" name="fecha_vuelo_salida">
+        <label>Número de vuelo:</label>
+        <input type="text" name="numero_vuelo_entrada">
 
-            <label>Hora vuelo salida:</label>
-            <input type="time" name="hora_vuelo_salida">
+        <label>Aeropuerto de origen:</label>
+        <input type="text" name="origen_vuelo_entrada">
+      </fieldset>
 
-            <label>Número de vuelo salida:</label>
-            <input type="text" name="numero_vuelo_salida">
+      <!-- Vuelo salida -->
+      <fieldset id="vuelo_salida" style="display:none;">
+        <legend>Vuelo de salida (Hotel → Aeropuerto)</legend>
 
-            <label>Hora recogida en hotel:</label>
-            <input type="time" name="hora_recogida">
-        </fieldset>
+        <label>Fecha vuelo salida:</label>
+        <input type="date" name="fecha_vuelo_salida">
 
-        <!-- Datos adicionales -->
-        <fieldset>
-            <legend>Datos adicionales</legend>
+        <label>Hora vuelo salida:</label>
+        <input type="time" name="hora_vuelo_salida">
 
-            <label>Hotel:</label>
-            <select name="id_hotel" required>
-                <option value="">-- Selecciona un hotel --</option>
-                <?php foreach ($hoteles as $hotel): ?>
-                    <option value="<?= htmlspecialchars($hotel['id_hotel']) ?>">
-                        <?= htmlspecialchars($hotel['nombre']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <label>Número de vuelo salida:</label>
+        <input type="text" name="numero_vuelo_salida">
 
-            <label>Número de viajeros:</label>
-            <input type="number" name="num_viajeros" min="1" required>
+        <label>Hora recogida en hotel:</label>
+        <input type="time" name="hora_recogida">
+      </fieldset>
 
-            <label>Email del cliente:</label>
-            <input type="email" name="email_cliente" value="<?= htmlspecialchars($email_cliente) ?>" readonly>
+      <!-- Datos adicionales -->
+      <fieldset>
+        <legend>Datos adicionales</legend>
 
-            <label>Vehículo:</label>
-            <select name="id_vehiculo" required>
-                <option value="">-- Selecciona un vehículo --</option>
-                <?php foreach ($vehiculos as $vehiculo): ?>
-                    <option value="<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
-                        <?= htmlspecialchars($vehiculo['descripcion']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </fieldset>
+        <label>Hotel:</label>
+        <select name="id_hotel" required>
+          <option value="">-- Selecciona un hotel --</option>
+          <?php foreach ($hoteles as $hotel): ?>
+            <option value="<?= htmlspecialchars($hotel['id_hotel']) ?>">
+              <?= htmlspecialchars($hotel['nombre']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
 
-        <button type="submit">Guardar reserva</button>
+        <label>Número de viajeros:</label>
+        <input type="number" name="num_viajeros" min="1" required>
+
+        <label>Email del cliente:</label>
+        <input type="email" name="email_cliente" value="<?= htmlspecialchars($email_cliente) ?>" readonly>
+
+        <label>Vehículo:</label>
+        <select name="id_vehiculo" required>
+          <option value="">-- Selecciona un vehículo --</option>
+          <?php foreach ($vehiculos as $vehiculo): ?>
+            <option value="<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
+              <?= htmlspecialchars($vehiculo['descripcion']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </fieldset>
+
+      <button type="submit">Guardar reserva</button>
     </form>
 
     <a href="/?url=viajero/dashboard" class="volver">← Volver al dashboard</a>
+  </div>
 
-    <script>
-        function mostrarCampos() {
-            const tipo = document.getElementById('tipo_reserva').value;
-            document.getElementById('vuelo_llegada').style.display = (tipo == "2" || tipo == "3") ? 'block' : 'none';
-            document.getElementById('vuelo_salida').style.display = (tipo == "1" || tipo == "3") ? 'block' : 'none';
-        }
-    </script>
+  <script>
+    function mostrarCampos() {
+      const tipo = document.getElementById('tipo_reserva').value;
+
+      document.getElementById('vuelo_llegada').style.display = 
+        (tipo == "2" || tipo == "3") ? 'block' : 'none';
+
+      document.getElementById('vuelo_salida').style.display = 
+        (tipo == "1" || tipo == "3") ? 'block' : 'none';
+    }
+  </script>
 
 </body>
 </html>

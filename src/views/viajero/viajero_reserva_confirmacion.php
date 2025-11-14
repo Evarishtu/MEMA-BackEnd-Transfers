@@ -20,92 +20,137 @@ $email = $_SESSION['user_email'] ?? '';
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f6f7;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            padding-top: 120px;
+            padding-bottom: 60px;
+            color: #fff;
+            min-height: 100vh;
         }
-        .container {
+
+        .card {
+            width: 92%;
             max-width: 700px;
-            margin: 60px auto;
-            background: white;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.30);
+            backdrop-filter: blur(10px);
             padding: 35px;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
+
         h1 {
-            color: #27ae60;
             text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 30px;
+            color: #e7ffe7;
         }
+
         h2 {
-            color: #444;
+            margin-top: 25px;
+            color: #003b63;
+            font-size: 24px;
+            font-weight: bold;
         }
+
+        .localizador-box {
+            background: rgba(255, 255, 255, 0.55);
+            padding: 15px 18px;
+            border-left: 4px solid #f1c40f;
+            border-radius: 10px;
+            font-size: 18px;
+            color: #003b63;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
         ul {
-            background: #fafafa;
+            background: rgba(255, 255, 255, 0.45);
             padding: 15px 20px;
-            border-radius: 8px;
-            border-left: 4px solid #27ae60;
+            border-radius: 10px;
+            border-left: 4px solid #2ecc71;
             list-style: none;
+            color: #003b63;
+            font-weight: bold;
         }
+
         ul li {
             margin-bottom: 8px;
             font-size: 16px;
         }
+
         .email-box {
-            background: #eef7ff;
+            background: rgba(255, 255, 255, 0.50);
             border-left: 4px solid #3498db;
-            padding: 12px 18px;
-            border-radius: 6px;
-            margin-top: 20px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-top: 22px;
+            color: #003b63;
+            font-weight: bold;
         }
+
         .btn {
             display: inline-block;
-            margin-top: 30px;
-            background: #3498db;
+            margin-top: 35px;
+            background: #004a80;
             color: white;
             padding: 12px 22px;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             transition: 0.2s;
+            text-align: center;
         }
+
         .btn:hover {
-            background: #2980b9;
-        }
-        .localizador-box {
-            background: #fff7e6;
-            border-left: 4px solid #f39c12;
-            padding: 12px 18px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 18px;
+            background: #00345a;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
 
+    <div class="card">
+
+        <!-- ====================== -->
+        <!-- TÍTULO PRINCIPAL -->
+        <!-- ====================== -->
         <h1>Reserva creada correctamente</h1>
 
+        <!-- ====================== -->
+        <!-- LOCALIZADOR -->
+        <!-- ====================== -->
         <div class="localizador-box">
             <strong>Localizador:</strong> <?= htmlspecialchars($localizador) ?>
         </div>
 
+        <!-- ====================== -->
+        <!-- DETALLES DE LA RESERVA -->
+        <!-- ====================== -->
         <h2>Detalles de la reserva</h2>
+
         <ul>
             <li><strong>Tipo de trayecto:</strong> <?= htmlspecialchars($tipo_reserva_texto) ?></li>
             <li><strong>Hotel:</strong> <?= htmlspecialchars($hotel_nombre) ?></li>
             <li><strong>Número de viajeros:</strong> <?= htmlspecialchars($num_viajeros) ?></li>
         </ul>
 
+        <!-- ====================== -->
+        <!-- INFORMACIÓN DEL EMAIL -->
+        <!-- ====================== -->
         <div class="email-box">
             Se ha enviado un correo electrónico con los detalles de la reserva a:<br>
             <strong><?= htmlspecialchars($email) ?></strong>
         </div>
 
+        <!-- ====================== -->
+        <!-- BOTÓN DE VOLVER -->
+        <!-- ====================== -->
         <a class="btn" href="/?url=viajero/dashboard">← Volver al panel</a>
 
     </div>
+
 </body>
 </html>

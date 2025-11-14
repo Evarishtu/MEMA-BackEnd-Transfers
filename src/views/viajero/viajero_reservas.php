@@ -9,51 +9,95 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Reservas</title>
+
     <style>
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            color: #333;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            padding-top: 120px;
+            padding-bottom: 60px;
+            color: #fff;
+            min-height: 100vh;
         }
-        .container {
-            width: 90%;
-            margin: 40px auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+        .card {
+            width: 92%;
+            max-width: 1100px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: #fff;
         }
-        h1, h2 {
+
+        h1 {
             text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 32px;
         }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            margin-top: 40px;
+            font-size: 24px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            background: rgba(255, 255, 255, 0.5);
         }
+
         th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
+            color: #003b63;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            font-weight: bold;
         }
+
         th {
-            background: #007BFF;
-            color: white;
+            background-color: rgba(0, 80, 160, 0.8);
+            color: #fff;
+            border: none;
         }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+
+        tr:nth-child(even) td {
+            background-color: rgba(255, 255, 255, 0.35);
         }
-        .section {
-            margin-bottom: 50px;
+
+        .no-reservas {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
         }
-        a {
+
+        a.back {
+            display: block;
+            text-align: center;
+            margin-top: 35px;
             text-decoration: none;
-            color: #007BFF;
+            color: #e5f3ff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        a.back:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
-<div class="container">
+
+<div class="card">
+
     <h1>Reservas de <?= htmlspecialchars($_SESSION['user_nombre']) ?></h1>
 
     <!-- ====================== -->
@@ -61,6 +105,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- ====================== -->
     <div class="section">
         <h2>✈️ Reservas creadas por <?= htmlspecialchars($_SESSION['user_nombre']) ?></h2>
+
         <?php if (!empty($reservasViajero)) : ?>
             <table>
                 <thead>
@@ -89,15 +134,16 @@ if (session_status() === PHP_SESSION_NONE) {
                 </tbody>
             </table>
         <?php else : ?>
-            <p style="text-align:center;">Aun no hay reservas creadas por ti.</p>
+            <p class="no-reservas">Aún no hay reservas creadas por ti.</p>
         <?php endif; ?>
     </div>
 
     <!-- ====================== -->
-    <!-- RESERVAS CREADAS POR ADMIN -->
+    <!-- RESERVAS CREADAS POR EL ADMINISTRADOR -->
     <!-- ====================== -->
     <div class="section">
         <h2>🧾 Reservas creadas por el administrador</h2>
+
         <?php if (!empty($reservasAdmin)) : ?>
             <table>
                 <thead>
@@ -126,11 +172,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 </tbody>
             </table>
         <?php else : ?>
-            <p style="text-align:center;">Aun no hay reservas creadas por el administrador.</p>
+            <p class="no-reservas">Aún no hay reservas creadas por el administrador.</p>
         <?php endif; ?>
     </div>
 
-    <p style="text-align:center;"><a href="/?url=viajero/dashboard">← Volver al dashboard</a></p>
+    <a class="back" href="/?url=viajero/dashboard">← Volver al dashboard</a>
+
 </div>
+
 </body>
 </html>

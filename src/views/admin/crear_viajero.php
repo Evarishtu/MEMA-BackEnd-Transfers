@@ -14,54 +14,75 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
 <head>
     <meta charset="UTF-8">
     <title>Registrar nuevo cliente</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 40px;
-            line-height: 1.6;
+            margin: 0;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .card {
+            width: 90%;
+            max-width: 450px;
+            margin: auto;
+            background: rgba(255,255,255,0.32);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 16px;
+            color: #003e60;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.20);
         }
 
         h2 {
-            color: #007bff;
-            margin-bottom: 20px;
+            text-align: center;
+            margin-top: 0;
+            color: #eaffff;
         }
 
         form {
-            max-width: 400px;
+            margin-top: 20px;
         }
 
         label {
-            display: block;
-            margin-bottom: 5px;
             font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
         }
 
         input {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 9px;
+            margin-bottom: 14px;
+            border: none;
+            border-radius: 6px;
             font-size: 14px;
         }
 
         button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 16px;
+            width: 100%;
+            background: #006bb3;
+            color: #fff;
+            padding: 12px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 15px;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background: #005c99;
         }
 
         a {
-            color: #007bff;
+            color: #003354;
             text-decoration: none;
+            font-weight: bold;
         }
 
         a:hover {
@@ -69,44 +90,51 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
         }
 
         .volver {
-            margin-top: 15px;
-            display: inline-block;
+            text-align: center;
+            margin-top: 25px;
         }
     </style>
 </head>
-    <body>
-        <h2>Registrar nuevo cliente</h2>
 
-        <form method="POST" action="/?url=admin/guardarViajero">
-            <input type="hidden" name="tipo_reserva" value="<?= htmlspecialchars($_GET['tipo_reserva'] ?? '') ?>">
+<body>
 
-            <label>Email:</label><br>
-            <input type="email" name="email" value="<?= htmlspecialchars($_GET['email'] ?? '') ?>" required><br><br>
+<div class="card">
+    <h2>Registrar nuevo cliente</h2>
 
-            <label>Nombre:</label><br>
-            <input type="text" name="nombre" required><br><br>
+    <form method="POST" action="/?url=admin/guardarViajero">
+        <input type="hidden" name="tipo_reserva" value="<?= htmlspecialchars($_GET['tipo_reserva'] ?? '') ?>">
 
-            <label>Primer apellido:</label><br>
-            <input type="text" name="apellido1" required><br><br>
+        <label>Email:</label>
+        <input type="email" name="email" value="<?= htmlspecialchars($_GET['email'] ?? '') ?>" required>
 
-            <label>Segundo apellido:</label><br>
-            <input type="text" name="apellido2"><br><br>
+        <label>Nombre:</label>
+        <input type="text" name="nombre" required>
 
-            <label>Dirección:</label><br>
-            <input type="text" name="direccion" required><br><br>
+        <label>Primer apellido:</label>
+        <input type="text" name="apellido1" required>
 
-            <label>Código postal:</label><br>
-            <input type="text" name="codigoPostal" required><br><br>
+        <label>Segundo apellido:</label>
+        <input type="text" name="apellido2">
 
-            <label>País:</label><br>
-            <input type="text" name="pais" required><br><br>
+        <label>Dirección:</label>
+        <input type="text" name="direccion" required>
 
-            <label>Ciudad:</label><br>
-            <input type="text" name="ciudad" required><br><br>
+        <label>Código postal:</label>
+        <input type="text" name="codigoPostal" required>
 
-            <button type="submit">Guardar cliente</button>
-        </form>
+        <label>País:</label>
+        <input type="text" name="pais" required>
 
-        <p><a href="/?url=admin/crearReserva">⬅️ Volver a crear reserva</a></p>
-    </body>
+        <label>Ciudad:</label>
+        <input type="text" name="ciudad" required>
+
+        <button type="submit">Guardar cliente</button>
+    </form>
+
+    <p class="volver">
+        <a href="/?url=admin/crearReserva">← Volver a crear reserva</a>
+    </p>
+</div>
+
+</body>
 </html>
