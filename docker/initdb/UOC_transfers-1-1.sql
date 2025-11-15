@@ -17,6 +17,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+USE mema_transfers;
+
 --
 -- Base de datos: `UOC_transfers`
 --
@@ -244,7 +246,7 @@ ALTER TABLE `transfer_reservas`
   ADD CONSTRAINT `FK_RESERVAS_HOTEL` FOREIGN KEY (`id_hotel`) REFERENCES `tranfer_hotel` (`id_hotel`),
   ADD CONSTRAINT `FK_RESERVAS_TIPO` FOREIGN KEY (`id_tipo_reserva`) REFERENCES `transfer_tipo_reserva` (`id_tipo_reserva`),
   ADD CONSTRAINT `FK_RESERVAS_VEHICULO` FOREIGN KEY (`id_vehiculo`) REFERENCES `transfer_vehiculo` (`id_vehiculo`);
-COMMIT;
+
 
 -- Creación de nueva tabla transfer_admin
 CREATE TABLE IF NOT EXISTS `transfer_admin` (
@@ -281,16 +283,16 @@ ALTER TABLE `transfer_reservas` CHANGE `fecha_modificacion` `fecha_modificacion`
 ALTER TABLE `transfer_viajeros` ADD CONSTRAINT `unique_email_viajero` UNIQUE (email);
 
 -- Modificacioness de la tabla inicial transfer_reservas
-ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `password`;
-ALTER TABLE `transfer_reservas` ADD `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `id_vehiculo`; 
+-- ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `password`;
+ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `id_vehiculo`; 
 
 -- Modificaciones de la tabla inicial transfer_tipo_reserva
 ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL;
-ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) NOT NULL; 
 INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `descripcion`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta'); 
 
 -- Modificaciones de la tabla inicial transfer_zona
-ALTER TABLE `transfer_zona` CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL; 
+ALTER TABLE `transfer_zona` CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

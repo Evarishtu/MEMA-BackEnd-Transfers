@@ -77,6 +77,7 @@ public function guardarReserva() {
     // DATOS BÁSICOS
     // ============================
     $email_cliente = $_POST['email_cliente'] ?? null;
+     
 
     if (empty($email_cliente)) {
         echo "<p>Debe indicar un email de cliente.</p>";
@@ -85,7 +86,7 @@ public function guardarReserva() {
     }
 
     $tipo_reserva = $_POST['tipo_reserva'] ?? '';
-
+    
     if (!$viajeroModel->existeEmail($email_cliente)) {
         header('Location: /?url=admin/crearViajero&email=' . urlencode($email_cliente) . '&tipo_reserva=' . urlencode($tipo_reserva));
         exit;
@@ -128,7 +129,7 @@ public function guardarReserva() {
     // ============================
     // VALIDACIONES IGUAL QUE VIAJERO
     // ============================
-
+    
     switch ($tipo_reserva) {
 
         // ========================================
@@ -505,7 +506,7 @@ public function guardarReserva() {
             header('Location: /?url=admin/listarReservas');
             exit;
         }
-
+        $reservaModel = new Reserva();
         $respuesta = $reservaModel->eliminarReserva($id);
 
         if($respuesta){
