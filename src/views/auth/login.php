@@ -134,6 +134,21 @@
   <div class="container">
     <h1>Iniciar sesión</h1>
 
+    <!-- 🔥 MENSAJE DE ERROR -->
+    <?php if (isset($_GET['error']) && $_GET['error'] == 1): ?>
+      <p style="
+            background: rgba(255,0,0,0.3); 
+            padding: 10px; 
+            border-radius: 8px; 
+            text-align: center; 
+            font-weight: bold; 
+            color: #ffdddd;
+            font-size: 15px;
+          ">
+        ❌ Usuario o contraseña incorrectos
+      </p>
+    <?php endif; ?>
+
     <form method="POST" action="/?url=login/login">
       <label>Email:</label>
       <input type="email" name="email" placeholder="tu email" required>

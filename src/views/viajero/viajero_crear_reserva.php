@@ -31,7 +31,6 @@ $email_cliente = $_SESSION['user_email'];
       min-height: 100vh;
     }
 
-    /* TARGETA */
     .card {
       width: 90%;
       max-width: 700px;
@@ -82,7 +81,6 @@ $email_cliente = $_SESSION['user_email'];
       font-size: 15px;
     }
 
-    /* BOTONS */
     button {
       width: 100%;
       padding: 14px;
@@ -137,24 +135,12 @@ $email_cliente = $_SESSION['user_email'];
         </select>
       </fieldset>
 
-      <!-- Vuelo llegada -->
-      <fieldset id="vuelo_llegada" style="display:none;">
-        <legend>Vuelo de llegada (Aeropuerto → Hotel)</legend>
 
-        <label>Fecha llegada:</label>
-        <input type="date" name="fecha_entrada">
 
-        <label>Hora llegada:</label>
-        <input type="time" name="hora_entrada">
 
-        <label>Número de vuelo:</label>
-        <input type="text" name="numero_vuelo_entrada">
-
-        <label>Aeropuerto de origen:</label>
-        <input type="text" name="origen_vuelo_entrada">
-      </fieldset>
-
-      <!-- Vuelo salida -->
+      <!-- =============================== -->
+      <!-- BLOQUE: VUELO SALIDA PRIMERO -->
+      <!-- =============================== -->
       <fieldset id="vuelo_salida" style="display:none;">
         <legend>Vuelo de salida (Hotel → Aeropuerto)</legend>
 
@@ -171,6 +157,29 @@ $email_cliente = $_SESSION['user_email'];
         <input type="time" name="hora_recogida">
       </fieldset>
 
+
+
+
+      <!-- =============================== -->
+      <!-- BLOQUE: VUELO LLEGADA DESPUÉS -->
+      <!-- =============================== -->
+      <fieldset id="vuelo_llegada" style="display:none;">
+        <legend>Vuelo de llegada (Aeropuerto → Hotel)</legend>
+
+        <label>Fecha llegada:</label>
+        <input type="date" name="fecha_entrada">
+
+        <label>Hora llegada:</label>
+        <input type="time" name="hora_entrada">
+
+        <label>Número de vuelo:</label>
+        <input type="text" name="numero_vuelo_entrada">
+
+        <label>Aeropuerto de origen:</label>
+        <input type="text" name="origen_vuelo_entrada">
+      </fieldset>
+
+      
       <!-- Datos adicionales -->
       <fieldset>
         <legend>Datos adicionales</legend>
@@ -212,13 +221,133 @@ $email_cliente = $_SESSION['user_email'];
     function mostrarCampos() {
       const tipo = document.getElementById('tipo_reserva').value;
 
-      document.getElementById('vuelo_llegada').style.display = 
-        (tipo == "2" || tipo == "3") ? 'block' : 'none';
-
       document.getElementById('vuelo_salida').style.display = 
         (tipo == "1" || tipo == "3") ? 'block' : 'none';
+
+      document.getElementById('vuelo_llegada').style.display = 
+        (tipo == "2" || tipo == "3") ? 'block' : 'none';
     }
-  </script>
+
+
+function validarHorasYFechas() {
+
+    const tipo = document.getElementById('tipo_reserva').value;
+
+    // Campos de ida
+    const fechaSalida   = document.querySelector('input[name="fecha_vuelo_salida"]');
+    const horaSalida    = document.querySelector('input[name="hora_vuelo_salida"]');
+
+    // Campos de vuelta
+    const fechaLlegada  = document.querySelector('input[name="fecha_entrada"]');
+    const horaLlegada   = document.querySelector('input[name="hora_entrada"]');
+
+    // Hora de recogida
+    const horaRecogida  = document.querySelector('input[name="hora_recogida"]');
+
+    // Reset de todos los mensajes
+    horaRecogida.setCustomValidity("");
+    fechaSalida.setCustomValidity("");
+    horaSalida.setCustomValidity("");
+
+
+    switch (tipo) {
+        // Hotel → Aeropuerto
+        case "1":
+
+            if (horaRecogida.value && horaSalida.value) {
+                // Recogida > salida
+                if (horaRecogida.value > horaSalida.value) {
+                    horaRecogida.setCustomValidity(
+                        "La hora de recogida no puede ser posterior a la hora del vuelo."
+                    );
+                }
+                // Recogida == salida
+                if (horaRecogida.value === horaSalida.value) {
+                    horaRecogida.setCustomValidity(
+                        "La hora de recogida no puede ser igual a la hora del vuelo."
+                    );
+                }
+            }
+            break;
+
+
+        // Aeropuerto → Hotel
+        case "2":
+            // No hay validaciones específicas para este tipo
+            break;
+
+        //Aeropuerto → Hotel → Aeropuerto)
+        case "3":
+            // Validación de hora recogida 
+            if (horaRecogida.value && horaSalida.value) {
+
+                if (horaRecogida.value > horaSalida.value) {
+                    horaRecogida.setCustomValidity(
+                        "La hora de recogida no puede ser posterior a la hora de salida del vuelo."
+                    );
+                }
+
+                if (horaRecogida.value === horaSalida.value) {
+                    horaRecogida.setCustomValidity(
+                        "La hora de recogida no puede ser igual a la hora de salida del vuelo."
+                    );
+                }
+            }
+
+            //Vuelo ida posterior al vuelo vuelta
+            if (fechaSalida.value && fechaLlegada.value) {
+
+                if (fechaSalida.value > fechaLlegada.value) {
+                    fechaSalida.setCustomValidity(
+                        "La fecha del vuelo de ida no puede ser posterior a la fecha del vuelo de vuelta."
+                    );
+                }
+            }
+
+            // Si son el mismo día → validar horas ida/vuelta
+            if (fechaSalida.value && fechaLlegada.value && fechaSalida.value === fechaLlegada.value) {
+
+                if (horaSalida.value && horaLlegada.value) {
+
+                    if (horaSalida.value > horaLlegada.value) {
+                        horaSalida.setCustomValidity(
+                            "La hora del vuelo de ida no puede ser posterior a la hora del vuelo de vuelta."
+                        );
+                    }
+
+                    if (horaSalida.value === horaLlegada.value) {
+                        horaSalida.setCustomValidity(
+                            "La hora del vuelo de ida no puede ser igual a la hora del vuelo de vuelta."
+                        );
+                    }
+                }
+            }
+
+            break;
+
+        default:
+            break;
+    }
+}
+
+  // ===============================
+  // Conectar eventos
+  // ===============================
+  document.addEventListener("DOMContentLoaded", () => {
+
+      const tipo = document.getElementById('tipo_reserva');
+
+      document.querySelectorAll(
+          'input[name="hora_vuelo_salida"], input[name="hora_recogida"], input[name="hora_entrada"], input[name="hora_vuelo_salida"], input[name="fecha_vuelo_salida"], input[name="fecha_entrada"]'
+      ).forEach(el => {
+          el.addEventListener("change", validarHorasYFechas);
+      });
+
+      tipo.addEventListener("change", validarHorasYFechas);
+  });
+
+    </script>
 
 </body>
 </html>
+

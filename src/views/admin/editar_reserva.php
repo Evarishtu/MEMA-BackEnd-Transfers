@@ -15,6 +15,7 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar reserva</title>
 
+    <!-- 🔵 Aquí Mantén TODO tu CSS EXACTO como lo tenías -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -124,7 +125,7 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
             <legend>Datos generales</legend>
 
             <label>Tipo de reserva:</label>
-            <select name="id_tipo_reserva" required>
+            <select name="id_tipo_reserva" id="tipo_reserva" required onchange="mostrarCampos()">
                 <?php foreach(($tipos_reserva ?? []) as $t): ?>
                     <option value="<?= htmlspecialchars($t['id_tipo_reserva']) ?>"
                         <?= ($tipo_sel === (string)$t['id_tipo_reserva']) ? 'selected' : '' ?>>
@@ -162,46 +163,38 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
             </select>
         </fieldset>
 
-        <!-- AEROPUERTO -> HOTEL -->
-        <fieldset>
+        <!-- AEROPUERTO → HOTEL -->
+        <fieldset id="bloque_llegada">
             <legend>Aeropuerto → Hotel</legend>
 
-            <label>Fecha de llegada:</label>
-            <input type="date" name="fecha_entrada"
-                   value="<?= htmlspecialchars($r['fecha_entrada'] ?? '') ?>">
+            <label>Fecha llegada:</label>
+            <input type="date" name="fecha_entrada" value="<?= htmlspecialchars($r['fecha_entrada'] ?? '') ?>">
 
-            <label>Hora de llegada:</label>
-            <input type="time" name="hora_entrada"
-                   value="<?= htmlspecialchars($r['hora_entrada'] ?? '') ?>">
+            <label>Hora llegada:</label>
+            <input type="time" name="hora_entrada" value="<?= htmlspecialchars($r['hora_entrada'] ?? '') ?>">
 
-            <label>Número de vuelo:</label>
-            <input type="text" name="numero_vuelo_entrada"
-                   value="<?= htmlspecialchars($r['numero_vuelo_entrada'] ?? '') ?>">
+            <label>Número vuelo llegada:</label>
+            <input type="text" name="numero_vuelo_entrada" value="<?= htmlspecialchars($r['numero_vuelo_entrada'] ?? '') ?>">
 
-            <label>Aeropuerto de origen:</label>
-            <input type="text" name="origen_vuelo_entrada"
-                   value="<?= htmlspecialchars($r['origen_vuelo_entrada'] ?? '') ?>">
+            <label>Aeropuerto origen:</label>
+            <input type="text" name="origen_vuelo_entrada" value="<?= htmlspecialchars($r['origen_vuelo_entrada'] ?? '') ?>">
         </fieldset>
 
         <!-- HOTEL → AEROPUERTO -->
-        <fieldset>
+        <fieldset id="bloque_salida">
             <legend>Hotel → Aeropuerto</legend>
 
-            <label>Fecha del vuelo:</label>
-            <input type="date" name="fecha_vuelo_salida"
-                   value="<?= htmlspecialchars($r['fecha_vuelo_salida'] ?? '') ?>">
+            <label>Fecha vuelo salida:</label>
+            <input type="date" name="fecha_vuelo_salida" value="<?= htmlspecialchars($r['fecha_vuelo_salida'] ?? '') ?>">
 
-            <label>Hora del vuelo:</label>
-            <input type="time" name="hora_vuelo_salida"
-                   value="<?= htmlspecialchars($r['hora_vuelo_salida'] ?? '') ?>">
+            <label>Hora vuelo salida:</label>
+            <input type="time" name="hora_vuelo_salida" value="<?= htmlspecialchars($r['hora_vuelo_salida'] ?? '') ?>">
 
-            <label>Número de vuelo:</label>
-            <input type="text" name="numero_vuelo_salida"
-                   value="<?= htmlspecialchars($r['numero_vuelo_salida'] ?? '') ?>">
+            <label>Número vuelo salida:</label>
+            <input type="text" name="numero_vuelo_salida" value="<?= htmlspecialchars($r['numero_vuelo_salida'] ?? '') ?>">
 
-            <label>Hora de recogida:</label>
-            <input type="time" name="hora_recogida"
-                   value="<?= htmlspecialchars($r['hora_recogida'] ?? '') ?>">
+            <label>Hora recogida:</label>
+            <input type="time" name="hora_recogida" value="<?= htmlspecialchars($r['hora_recogida'] ?? '') ?>">
         </fieldset>
 
         <div class="actions">
@@ -212,6 +205,20 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
     </form>
 
 </div>
+
+<script>
+function mostrarCampos() {
+    const tipo = document.getElementById('tipo_reserva').value;
+    const llegada = document.getElementById('bloque_llegada');
+    const salida  = document.getElementById('bloque_salida');
+
+    if (tipo === "1") { llegada.style.display = "none"; salida.style.display = "block"; }
+    else if (tipo === "2") { llegada.style.display = "block"; salida.style.display = "none"; }
+    else { llegada.style.display = "block"; salida.style.display = "block"; }
+}
+
+document.addEventListener("DOMContentLoaded", mostrarCampos);
+</script>
 
 </body>
 </html>

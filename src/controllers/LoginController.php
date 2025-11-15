@@ -10,57 +10,65 @@ class LoginController {
             $password = $_POST['password'] ?? '';
 
             if(empty($rol) || empty($email) || empty($password)){
-                // echo "<p>Por favor, rellene todos los campos.</p>";
-                header('Location: /?url=login/login');
+                header('Location: /?url=login/login&error=1');
                 exit;
             }
+
             if(session_status() === PHP_SESSION_NONE){
                 session_start();
             }
+
             switch($rol){
+
                 case 'administrador': 
                     $adminModel = new Admin();
                     $admin = $adminModel->autenticarAdmin($email, $password);
+
                     if($admin){
-                        
                         $_SESSION['user_id']     = $admin['id_admin'];
                         $_SESSION['user_nombre'] = $admin['nombre'];
                         $_SESSION['user_email']  = $admin['email'];
                         $_SESSION['rol']         = 'administrador';
+
                         header('Location: /?url=admin/dashboard');
                         exit;
-                    }else{
-                        // echo "<p>Credenciales incorrectas.</p>";
-                        header('Location: /?url=login/login');
+                    } else {
+                        header('Location: /?url=login/login&error=1');
                         exit;
                     }
                     break;
+                case 'hotel':
+                    // Aquí iría la lógica para autenticar a un cliente corporativo (hotel)
                 case 'viajero':
                     $viajeroModel = new Viajero();
                     $viajero = $viajeroModel->autenticarViajero($email, $password);
+
                     if($viajero){
-                        
                         $_SESSION['user_id']     = $viajero['id_viajero'];
                         $_SESSION['user_nombre'] = $viajero['nombre'];
                         $_SESSION['user_email']  = $viajero['email'];
                         $_SESSION['rol']         = 'viajero';
+
                         header('Location: /?url=viajero/dashboard');
                         exit;
-                    }
-                    else{
-                        // echo "<p>Credenciales incorrectas.</p>";
-                        header('Location: /?url=login/login');
+                    } else {
+                        header('Location: /?url=login/login&error=1');
                         exit;
                     }
                     break;
+
+
                 default:
-                    // echo "<p>Rol no reconocido</p>";
-                    header('Location: /?url=login/login');
+                    header('Location: /?url=login/login&error=1');
                     exit;
             }
         }
-            include __DIR__ . '/../views/auth/login.php';  
+
+        include __DIR__ . '/../views/auth/login.php';  
     }
+
+
+    //Función para cerrar sesión
     public function logout(){
         if(session_status() === PHP_SESSION_NONE){
             session_start();

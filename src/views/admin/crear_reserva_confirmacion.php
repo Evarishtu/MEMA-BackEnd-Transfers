@@ -9,7 +9,7 @@ $localizador = $localizador ?? '—';
 $email = $email ?? '';
 $tipo_reserva_texto = $tipo_reserva_texto ?? '';
 $hotel_nombre = $hotel_nombre ?? '';
-$num_viajeros = $num_viajeros ?? '';
+$num_viajeros = $numero_viajeros ?? '';
 ?>
 
 <!DOCTYPE html>
