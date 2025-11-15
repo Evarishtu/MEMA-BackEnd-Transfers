@@ -246,6 +246,7 @@ ALTER TABLE `transfer_reservas`
   ADD CONSTRAINT `FK_RESERVAS_VEHICULO` FOREIGN KEY (`id_vehiculo`) REFERENCES `transfer_vehiculo` (`id_vehiculo`);
 COMMIT;
 
+-- Creación de nueva tabla transfer_admin
 CREATE TABLE IF NOT EXISTS `transfer_admin` (
     `id_admin` INT(11) NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(100) NOT NULL,
@@ -254,16 +255,14 @@ CREATE TABLE IF NOT EXISTS `transfer_admin` (
     PRIMARY KEY (`id_admin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-ALTER TABLE `transfer_zona`
-CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL; 
-
+-- Modificaciones de la tabla inicial transfer_hotel
 ALTER TABLE `tranfer_hotel` ADD `nombre` VARCHAR(100) NOT NULL AFTER `id_zona`; 
 
-INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES ('1', 'Vehículo de 4 plazas', 'alfredo@correo.com', '12345'), ('2', 'Vehículo de 8 plazas', 'luis@correo.com', '12345'), ('3', 'Vehículo de 5 plazas', 'sonia@correo.com', '12345');
+-- Modificaciones de la tabla inicial transfer_vehiculo
+-- INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES ('1', 'Vehículo de 4 plazas', 'alfredo@correo.com', '12345'), ('2', 'Vehículo de 8 plazas', 'luis@correo.com', '12345'), ('3', 'Vehículo de 5 plazas', 'sonia@correo.com', '12345');
+ALTER TABLE `transfer_vehiculo` CHANGE `Descripción` `descripcion` VARCHAR(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 
 
-ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) NOT NULL; 
-INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `descripcion`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta');
-
+-- Modificaciones de la tabla inicial transfer_reservass
 ALTER TABLE `transfer_reservas` ADD `numero_vuelo_salida` VARCHAR(10) NOT NULL AFTER `fecha_vuelo_salida`, ADD `hora_recogida` TIME NOT NULL AFTER `numero_vuelo_salida`; 
 ALTER TABLE `transfer_reservas` CHANGE `fecha_entrada` `fecha_entrada` DATE NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_entrada` `hora_entrada` TIME NULL; 
@@ -276,14 +275,22 @@ ALTER TABLE `transfer_reservas` CHANGE `email_cliente` `email_cliente` VARCHAR(2
 ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_salida` `numero_vuelo_salida` VARCHAR(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_recogida` `hora_recogida` TIME NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIME NULL;  
+ALTER TABLE `transfer_reservas` CHANGE `fecha_modificacion` `fecha_modificacion` DATE NULL; 
 
+-- Modificaciones de la tabla inicial transfer_viajeros
 ALTER TABLE `transfer_viajeros` ADD CONSTRAINT `unique_email_viajero` UNIQUE (email);
 
+-- Modificacioness de la tabla inicial transfer_reservas
 ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `password`;
-
-ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 
-ALTER TABLE `transfer_vehiculo` CHANGE `Descripción` `descripcion` VARCHAR(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 
 ALTER TABLE `transfer_reservas` ADD `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `id_vehiculo`; 
+
+-- Modificaciones de la tabla inicial transfer_tipo_reserva
+ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL;
+ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) NOT NULL; 
+INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `descripcion`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta'); 
+
+-- Modificaciones de la tabla inicial transfer_zona
+ALTER TABLE `transfer_zona` CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL; 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -12,9 +12,10 @@ class ViajeroController {
     // DASHBOARD PRINCIPAL DEL VIAJERO
     // ===============================
     public function dashboard() {
+       
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
-        }
+        } 
 
         // Seguridad básica: solo viajeros pueden acceder
         if (empty($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
@@ -60,8 +61,13 @@ class ViajeroController {
                 'direccion'    => $_POST['direccion'],
                 'codigoPostal' => $_POST['codigoPostal'],
                 'pais'         => $_POST['pais'],
-                'ciudad'       => $_POST['ciudad']
+                'ciudad'       => $_POST['ciudad'],
             ];
+
+            // Solo actualizar contraseña si el usuario escribió una nueva
+            if (!empty($_POST['password'])) {
+                $datos['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+}
 
             $viajeroModel->actualizarViajero($id, $datos);
             header('Location: /?url=viajero/informacionPersonal');
@@ -137,13 +143,20 @@ class ViajeroController {
         }
 
         require_once __DIR__ . '/../models/viajero_reserva.php';
-        $hotelModel   = new Hotel();              // ✅ nombre correcto
+        $hotelModel   = new Hotel();              
         $reservaModel = new Viajero_Reserva();
+        
 
         // Validación mínima
-        $id_hotel        = $_POST['id_hotel']        ?? null;
-        $id_tipo_reserva = $_POST['id_tipo_reserva'] ?? null;
-        $id_vehiculo     = $_POST['id_vehiculo']     ?? null;
+        $id_hotel        = $_POST['id_hotel']            ?? null;
+        $id_tipo_reserva = $_POST['id_tipo_reserva']     ?? null;
+        $id_vehiculo     = $_POST['id_vehiculo']         ?? null;
+        $fecha_llegada   = $_POST['fecha_entrada']       ?? null;
+        $hora_llegada    = $_POST['hora_entrada']        ?? null;
+        $fecha_salida    = $_POST['fecha_vuelo_salida']  ?? null;
+        $hora_salida     = $_POST['hora_vuelo_salida']   ?? null;
+        $hora_recogida   = $_POST['hora_recogida']       ?? null;
+
 
         if (!$id_hotel || !$id_tipo_reserva || !$id_vehiculo) {
             echo "<p>Faltan datos obligatorios (hotel / tipo / vehículo).</p>";
@@ -151,11 +164,105 @@ class ViajeroController {
             return;
         }
 
-        // 🔎 Obtener id_zona del hotel seleccionado
+        
+
+        switch ($id_tipo_reserva) {
+
+            //Hotel → Aeropuerto (tipo 1)
+            case 1: 
+                //Validaciones de horas
+                if ($hora_salida && $hora_recogida) {
+                    // Hora de recogida NO puede ser mayor que hora de vuelo
+                    if ($hora_recogida > $hora_salida) {
+                        echo "<p style='color:red; font-weight:bold;'>
+                                La hora de recogida no puede ser posterior a la hora de salida del vuelo.
+                            </p>";
+                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        return;
+                    }
+                    // Hora de recogida NO puede ser igual a hora de vuelo (hay que darle margen)
+                    if ($hora_recogida == $hora_salida) {
+                        echo "<p style='color:red; font-weight:bold;'>
+                                La hora de recogida no puede ser igual a la hora de salida del vuelo.
+                            </p>";
+                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        return;
+                    }
+                }
+                break;
+            //Aeropuerto → Hotel (tipo 2)
+            case 2:
+                //No hay validaciones específicas aún
+                break;
+
+            //Ida y vuelta (tipo 3)
+            case 3:
+                //Validacion horas en vuelo de salida
+                if ($hora_salida && $hora_recogida) {
+
+                    //Hora recogida no puede ser mayor o igual que hora salida
+                    if ($hora_recogida > $hora_salida) {
+                        echo "<p style='color:red;font-weight:bold;'>
+                                La hora de recogida no puede ser posterior a la hora de salida del vuelo.
+                            </p>";
+                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        return;
+                    }
+
+                    //Hora recogida no puede ser igual que hora salida
+                    if ($hora_recogida == $hora_salida) {
+                        echo "<p style='color:red;font-weight:bold;'>
+                                La hora de recogida no puede ser igual a la hora de salida del vuelo.
+                            </p>";
+                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        return;
+                    }
+                }
+
+
+                //Validacion de vuelo de ida vs vuelta
+                //Vuelo de salida no puede ser posterior o igual al vuelo de llegada
+                if ($fecha_salida > $fecha_llegada) {
+                    echo "<p style='color:red;font-weight:bold;'>
+                            La fecha del vuelo de ida no puede ser posterior a la fecha del vuelo de vuelta.
+                        </p>";
+                    echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                    return;
+                }
+
+
+                //Validacion de vuelo de salida misma fecha que vuelo de llegada
+                if ($fecha_salida == $fecha_llegada) {
+
+                    // Hora salida NO puede ser mayor que hora llegada
+                    if ($hora_salida > $hora_llegada) {
+                        echo "<p style='color:red;font-weight:bold;'>
+                                La hora del vuelo de ida no puede ser posterior a la hora del vuelo de vuelta.
+                            </p>";
+                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        return;
+                    }
+
+                    // Hora salida NO puede ser igual a hora llegada
+                    if ($hora_salida == $hora_llegada) {
+                        echo "<p style='color:red;font-weight:bold;'>
+                                La hora del vuelo de ida no puede ser igual a la hora del vuelo de vuelta.
+                            </p>";
+                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        return;
+                    }
+                }
+
+                break;
+            default:
+                // Tipos sin validación especial
+        }
+
+        //Obtener id_zona del hotel seleccionado
         $id_zona = $hotelModel->obtenerZonaIdPorHotelId($id_hotel);  // ✅ aquí estaba el typo
 
         // Si tu BD aún usa 'id_destino' con FK a zona, esto lo llena automáticamente
-        $localizador   = strtoupper(substr(uniqid(), -8));
+        $localizador   = $reservaModel->crearlocalizador();
         $fecha_actual  = date('Y-m-d H:i:s');
 
         $datos = [
@@ -165,7 +272,7 @@ class ViajeroController {
             ':email_cliente'        => $_SESSION['user_email'] ?? '',
             ':fecha_reserva'        => $fecha_actual,
             ':fecha_modificacion'   => $fecha_actual,
-            ':id_destino'           => $id_zona ?? null,  // 👈 zona del hotel
+            ':id_destino'           => $id_zona ?? null,  //zona del hotel
             ':fecha_entrada'        => !empty($_POST['fecha_entrada']) ? $_POST['fecha_entrada'] : null,
             ':hora_entrada'         => !empty($_POST['hora_entrada']) ? $_POST['hora_entrada'] : null,
             ':numero_vuelo_entrada' => !empty($_POST['numero_vuelo_entrada']) ? $_POST['numero_vuelo_entrada'] : null,
@@ -175,32 +282,29 @@ class ViajeroController {
             ':numero_vuelo_salida'  => !empty($_POST['numero_vuelo_salida']) ? $_POST['numero_vuelo_salida'] : null,
             ':hora_recogida'        => !empty($_POST['hora_recogida']) ? $_POST['hora_recogida'] : null,
             ':num_viajeros'         => (int)($_POST['num_viajeros'] ?? 1),
-            ':id_vehiculo'          => $id_vehiculo
+            ':id_vehiculo'          => $id_vehiculo,
         ];
 
-        $ok = $reservaModel->crearReserva($datos);
+        $resultado = $reservaModel->crearReserva($datos);
 
-        if ($ok) {
-            // ✅ Mostrar popup y volver al formulario o dashboard
-            echo "
-                <script>
-                    alert('✅ Reserva creada con éxito');
-                    window.location.href = '/?url=viajero/crearReserva';
-                </script>
-            ";
+        if ($resultado) {
+
+            // Preparar datos para la vista
+            $localizador         = $localizador;
+            $email               = $_SESSION['user_email'];
+            $hotel_nombre        = $hotelModel->obtenerNombrePorId($id_hotel);
+            $num_viajeros        = (int)($_POST['num_viajeros'] ?? 1);
+
+            // Obtener texto del tipo de reserva
+            require_once __DIR__ . '/../models/tipo_reserva.php';
+            $tipoModel = new TipoReserva();
+            $tipos = $tipoModel->listarTipos();
+            $tipo_reserva_texto = $tipos[$id_tipo_reserva - 1]['descripcion'] ?? "—";
+
+            // Mostrar vista
+            include __DIR__ . '/../views/viajero/viajero_reserva_confirmacion.php';
             exit;
-        } else {
-            echo "
-                <script>
-                    alert('❌ Error al guardar la reserva. Revisa los datos.');
-                    window.location.href = '/?url=viajero/crearReserva';
-                </script>
-            ";
-            exit;
-}
+        }
     }
-
-
-
 }
 ?>

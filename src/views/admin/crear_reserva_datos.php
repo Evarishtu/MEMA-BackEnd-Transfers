@@ -13,157 +13,282 @@ if(!$tipo_reserva){
     header('Location: /?url=admin/crearReserva');
     exit;
 }
+
+$nombre_tipo = "";
+switch ($tipo_reserva) {
+    case "1": $nombre_tipo = "HOTEL → AEROPUERTO"; break;
+    case "2": $nombre_tipo = "AEROPUERTO → HOTEL"; break;
+    case "3": $nombre_tipo = "IDA Y VUELTA"; break;
+}
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear reserva - Paso 2</title>
-    <style>
-        body {
+<meta charset="UTF-8">
+<title>Crear reserva - Paso 2</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 60px 0;
         font-family: Arial, sans-serif;
-        margin: 40px;
-        line-height: 1.6;
-        }
-
-        h1 {
-        color: #007bff;
-        margin-bottom: 20px;
-        }
-
-        form {
-        max-width: 600px;
-        margin-top: 20px;
-        }
-
-        fieldset {
-        margin-bottom: 25px;
-        padding: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        }
-
-        legend {
-        font-weight: bold;
-        color: #333;
-        }
-
-        label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        }
-
-        input, select {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
-        }
-
-        button {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 16px;
+        background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+        color: #fff;
+        min-height: 100vh;
+    }
+    .card {
+        width: 90%;
+        max-width: 700px;
+        margin: auto;
+        background: rgba(255, 255, 255, 0.32);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 16px;
+        color: #003e60;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.20);
+    }
+    h1 {
+        text-align: center;
+        color: #eaffff;
+        margin-top: 0;
+    }
+    h2 {
+        text-align: center;
+        color: #003e60;
+        margin-top: -10px;
+    }
+    fieldset {
         border: none;
-        border-radius: 4px;
+        background: rgba(255,255,255,0.35);
+        padding: 18px;
+        border-radius: 12px;
+        margin-bottom: 22px;
+    }
+    legend {
+        font-weight: bold;
+        color: #003e60;
+        padding-bottom: 8px;
+    }
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+    }
+    input, select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        margin-top: 6px;
+        font-size: 15px;
+    }
+    button {
+        width: 100%;
+        background: #007bff;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
         cursor: pointer;
-        font-size: 14px;
-        }
-
-        button:hover {
-        background-color: #0056b3;
-        }
-
-        a {
-        color: #007bff;
+        margin-top: 10px;
+    }
+    button:hover {
+        background: #0056b3;
+    }
+    a {
+        color: #003354;
         text-decoration: none;
-        }
+        font-weight: bold;
+    }
+</style>
 
-        a:hover {
-        text-decoration: underline;
-        }
-
-        .volver {
-        margin-top: 20px;
-        display: inline-block;
-        }
-  </style>
 </head>
-    <body>
-        <h1>Datos de la reserva</h1>
-        <form method = "POST" action = "/?url=admin/guardarReserva">
-        <input type="hidden" name="tipo_reserva" value="<?= htmlspecialchars($tipo_reserva) ?>">
-        <?php if ($tipo_reserva == "1" || $tipo_reserva == "3"): ?>   
-            <!--Datos del vuelo de llegada-->
-            <fieldset>
-                <legend>Vuelo de llegada (Aeropuerto->Hotel)</legend>
-                <label for = "fecha_llegada">Fecha llegada:</label><br>
-                <input type = "date" name = "fecha_llegada"><br><br>
+<body>
 
-                <label for = "hora_llegada">Hora llegada:</label><br>
-                <input type = "time" name = "hora_llegada"><br><br>
+<div class="card">
 
-                <label for = "numero_vuelo_llegada">Número de vuelo:</label><br>
-                <input type = "text" name = "numero_vuelo_llegada"><br><br>
+<h1>Datos de la reserva</h1>
+<h2>Tipo seleccionado: <strong><?= $nombre_tipo ?></strong></h2>
 
-                <label for = "origen_vuelo">Aeropuerto de origen:</label><br>
-                <input type = "text" name ="origen_vuelo"><br><br>
-            </fieldset>
-        <?php endif; ?>
+<form method="POST" action="/?url=admin/guardarReserva">
 
-        <?php if ($tipo_reserva == "2" || $tipo_reserva == "3"): ?>
-            <!--Datos del vuelo de salida-->
-            <fieldset>
-                <legend>Vuelo de salida (Hotel->Aeropuerto)</legend>
-                <label for = "fecha_salida">Fecha vuelo:</label><br>
-                <input type = "date" name = "fecha_salida"><br><br>
+<input type="hidden" name="tipo_reserva" value="<?= htmlspecialchars($tipo_reserva) ?>">
 
-                <label for = "hora_salida">Hora vuelo:</label><br>
-                <input type = "time" name = "hora_salida"><br><br>
+<!-- =============================== -->
+<!--         BLOQUE TIPO 1          -->
+<!--     HOTEL → AEROPUERTO         -->
+<!-- =============================== -->
+<fieldset id="vuelo_salida" style="display:none;">
+    <legend>Vuelo de salida (Hotel → Aeropuerto)</legend>
 
-                <label for = "numero_vuelo_salida">Número de vuelo:</label><br>
-                <input type = "text" name = "numero_vuelo_salida"><br><br>
-                
-                <label for = "hora_recogida">Hora recogida en hotel:</label><br>
-                <input type = "time" name = "hora_recogida"><br><br>
-            </fieldset>
-        <?php endif; ?>
-            <fieldset>
-                <legend>Datos adicionales</legend>
-            <!--Hotel origen destino-->
-                <label for = "hotel">Hotel de origen/destino</label><br>
-                <select id = "hotel" name = "id_hotel" required>
-                    <option value = "">--Selecciona un hotel--</option>
-                    <?php foreach ($hoteles as $hotel): ?>
-                        <option value = "<?= htmlspecialchars($hotel['id_hotel']) ?>">
-                            <?= htmlspecialchars($hotel['nombre'])?>
-                        </option>
-                    <?php endforeach; ?>
-                </select><br><br>
-            <!--Número de viajeros-->
-                <label for = "numero_viajeros">Número de viajeros</label><br>
-                <input type = "number" name = "numero_viajeros"><br><br>
-            <!--Información personal-->
-                <label for = "email_cliente">Email del cliente</label><br>
-                <input type="email" name="email_cliente" value="<?= htmlspecialchars($email_cliente_precargado ?? '') ?>" required><br><br>
-            <!--Vehículo-->
-                <label for = "vehiculo">Vehículo asignado</label><br>
-                <select id = "vehiculo" name = "id_vehiculo" required>
-                    <option value = "">--Selecciona un vehículo--</option>
-                    <?php foreach ($vehiculos as $vehiculo): ?>
-                        <option value = "<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
-                            <?= htmlspecialchars($vehiculo['descripcion']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select><br><br>
-                <button type = "submit">Guardar reserva</button>
-            </fieldset>
-        </form>
-        <p><a href = "/?url=admin/crearReserva">⬅️ Volver al paso anterior</a></p>   
-    </body>
+    <label>Fecha vuelo salida:</label>
+    <input type="date" name="fecha_vuelo_salida">
+
+    <label>Hora vuelo salida:</label>
+    <input type="time" name="hora_vuelo_salida">
+
+    <label>Número de vuelo salida:</label>
+    <input type="text" name="numero_vuelo_salida">
+
+    <label>Hora recogida en hotel:</label>
+    <input type="time" name="hora_recogida">
+</fieldset>
+
+
+<!-- =============================== -->
+<!--         BLOQUE TIPO 2          -->
+<!--     AEROPUERTO → HOTEL         -->
+<!-- =============================== -->
+<fieldset id="vuelo_llegada" style="display:none;">
+    <legend>Vuelo de llegada (Aeropuerto → Hotel)</legend>
+
+    <label>Fecha llegada:</label>
+    <input type="date" name="fecha_entrada">
+
+    <label>Hora llegada:</label>
+    <input type="time" name="hora_entrada">
+
+    <label>Número de vuelo:</label>
+    <input type="text" name="numero_vuelo_entrada">
+
+    <label>Aeropuerto de origen:</label>
+    <input type="text" name="origen_vuelo_entrada">
+</fieldset>
+
+
+<!-- =============================== -->
+<!--        DATOS ADICIONALES       -->
+<!-- =============================== -->
+<fieldset>
+    <legend>Datos adicionales</legend>
+
+    <label>Hotel:</label>
+    <select name="id_hotel" required>
+        <option value="">-- Selecciona un hotel --</option>
+        <?php foreach ($hoteles as $hotel): ?>
+            <option value="<?= htmlspecialchars($hotel['id_hotel']) ?>">
+                <?= htmlspecialchars($hotel['nombre']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+    <label>Número de viajeros:</label>
+    <input type="number" name="numero_viajeros" min="1" required>
+
+    <label>Email del cliente:</label>
+    <input type="email" name="email_cliente" value="<?= htmlspecialchars($email_cliente_precargado ?? '') ?>" required>
+
+    <label>Vehículo:</label>
+    <select name="id_vehiculo" required>
+        <option value="">-- Selecciona un vehículo --</option>
+        <?php foreach ($vehiculos as $vehiculo): ?>
+            <option value="<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
+                <?= htmlspecialchars($vehiculo['descripcion']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+    <button type="submit">Guardar reserva</button>
+</fieldset>
+
+</form>
+
+<a href="/?url=admin/crearReserva">⬅ Volver</a>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!--                SCRIPT EXACTO DEL VIAJERO                  -->
+<!-- ========================================================= -->
+<script>
+function mostrarCampos() {
+    const tipo = "<?= $tipo_reserva ?>";
+
+    document.getElementById('vuelo_salida').style.display = 
+        (tipo == "1" || tipo == "3") ? 'block' : 'none';
+
+    document.getElementById('vuelo_llegada').style.display = 
+        (tipo == "2" || tipo == "3") ? 'block' : 'none';
+}
+
+mostrarCampos(); // Ejecutar al entrar
+
+
+function validarHorasYFechas() {
+
+    const tipo = "<?= $tipo_reserva ?>";
+
+    const fechaSalida   = document.querySelector('input[name="fecha_vuelo_salida"]');
+    const horaSalida    = document.querySelector('input[name="hora_vuelo_salida"]');
+    const fechaLlegada  = document.querySelector('input[name="fecha_entrada"]');
+    const horaLlegada   = document.querySelector('input[name="hora_entrada"]');
+    const horaRecogida  = document.querySelector('input[name="hora_recogida"]');
+
+    horaRecogida.setCustomValidity("");
+    fechaSalida.setCustomValidity("");
+    horaSalida.setCustomValidity("");
+
+    switch (tipo) {
+
+        case "1":
+            if (horaRecogida.value && horaSalida.value) {
+                if (horaRecogida.value > horaSalida.value) {
+                    horaRecogida.setCustomValidity("La hora de recogida no puede ser posterior a la hora del vuelo.");
+                }
+                if (horaRecogida.value === horaSalida.value) {
+                    horaRecogida.setCustomValidity("La hora de recogida no puede ser igual a la hora del vuelo.");
+                }
+            }
+            break;
+
+        case "2":
+            break;
+
+        case "3":
+
+            if (horaRecogida.value && horaSalida.value) {
+                if (horaRecogida.value > horaSalida.value) {
+                    horaRecogida.setCustomValidity("La hora de recogida no puede ser posterior al vuelo.");
+                }
+                if (horaRecogida.value === horaSalida.value) {
+                    horaRecogida.setCustomValidity("La hora de recogida no puede ser igual al vuelo.");
+                }
+            }
+
+            if (fechaSalida.value && fechaLlegada.value) {
+                if (fechaSalida.value > fechaLlegada.value) {
+                    fechaSalida.setCustomValidity("La fecha del vuelo de ida no puede ser posterior al de vuelta.");
+                }
+            }
+
+            if (fechaSalida.value && fechaLlegada.value && fechaSalida.value === fechaLlegada.value) {
+                if (horaSalida.value > horaLlegada.value) {
+                    horaSalida.setCustomValidity("La hora de ida no puede ser posterior a la de vuelta.");
+                }
+                if (horaSalida.value === horaLlegada.value) {
+                    horaSalida.setCustomValidity("La hora de ida no puede ser igual a la de vuelta.");
+                }
+            }
+
+            break;
+    }
+}
+
+
+// Eventos
+document.addEventListener("DOMContentLoaded", () => {
+
+    document.querySelectorAll(
+        'input[name="hora_vuelo_salida"], input[name="hora_recogida"], input[name="hora_entrada"], input[name="fecha_vuelo_salida"], input[name="fecha_entrada"]'
+    ).forEach(el => {
+        el.addEventListener("change", validarHorasYFechas);
+    });
+});
+</script>
+
+
+</body>
 </html>

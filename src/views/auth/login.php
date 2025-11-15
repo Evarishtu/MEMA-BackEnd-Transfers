@@ -1,85 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-<style>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      line-height: 1.6;
+      margin: 0;
+      font-family: "Arial", sans-serif;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 80px;
+      min-height: 100vh;
     }
 
-    header h1 {
-      color: #007bff;
+    .navbar {
+      background: #ffffff;
+      padding: 15px 40px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    form {
-      margin-top: 20px;
-      max-width: 400px;
+    .navbar .left a {
+      color: #2c3e50;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .navbar .right a {
+      padding: 8px 16px;
+      background: #3274ff;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      margin-left: 8px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .navbar .right a:hover {
+      background: #195dff;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 40px;
+      border-radius: 20px;
+      width: 420px;
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 30px;
     }
 
     label {
-      display: block;
-      margin-bottom: 5px;
       font-weight: bold;
+      margin-top: 12px;
+      display: block;
     }
 
     input, select {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 6px;
+      margin-bottom: 18px;
+      font-size: 15px;
     }
 
     button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 16px;
+      width: 100%;
+      padding: 12px;
+      background: #3274ff;
       border: none;
-      border-radius: 4px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
       cursor: pointer;
-      font-size: 14px;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: 0.2s;
     }
 
     button:hover {
-      background-color: #0056b3;
+      background: #195dff;
     }
 
-    a {
-      color: #007bff;
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      color: #aee3ff;
       text-decoration: none;
+      font-weight: bold;
     }
 
-    a:hover {
+    .back:hover {
       text-decoration: underline;
     }
-
-    .volver {
-      display: inline-block;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-</style>
+  </style>
 </head>
-    <body>
-        <h1>Iniciar sesion</h1>
-        <form method = "POST" action = "/?url=login/login">
-            <label>Email:</label><br>
-            <input type = "email" name = "email" placeholder="tu email" autocomplete="new-email" required><br><br>
-            <label>Contraseña</label><br>
-            <input type = "password" name = "password" placeholder="tu contraseña" required><br><br>
-            <label>Tipo de usuario:</label><br>
-            <select name="rol" required>
-                <option value = "viajero">Cliente </option>
-                <option value = "hotel">Cliente corporativo</option>
-                <option value = "administrador">Administrador</option>
-            </select><br><br>
-            <button type = "submit">Entrar</button>
-        </form>
-        <p><a href="/">⬅️ Volver a la página principal</a></p>  
-    </body>
+<body>
+
+  <div class="navbar">
+    <div class="left">
+      <a href="/"><span>🏠</span> Volver al inicio</a>
+    </div>
+    <div class="right">
+      <a href="/?url=registro/registrar">Registrarse</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Iniciar sesión</h1>
+
+    <!-- 🔥 MENSAJE DE ERROR -->
+    <?php if (isset($_GET['error']) && $_GET['error'] == 1): ?>
+      <p style="
+            background: rgba(255,0,0,0.3); 
+            padding: 10px; 
+            border-radius: 8px; 
+            text-align: center; 
+            font-weight: bold; 
+            color: #ffdddd;
+            font-size: 15px;
+          ">
+        ❌ Usuario o contraseña incorrectos
+      </p>
+    <?php endif; ?>
+
+    <form method="POST" action="/?url=login/login">
+      <label>Email:</label>
+      <input type="email" name="email" placeholder="tu email" required>
+
+      <label>Contraseña:</label>
+      <input type="password" name="password" placeholder="tu contraseña" required>
+
+      <label>Tipo de usuario:</label>
+      <select name="rol" required>
+        <option value="viajero">Cliente particular</option>
+        <option value="hotel">Cliente corporativo (Hotel)</option>
+        <option value="administrador">Administrador</option>
+      </select>
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <a href="/" class="back">⬅️ Volver a la página principal</a>
+  </div>
+
+</body>
 </html>

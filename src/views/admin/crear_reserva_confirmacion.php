@@ -9,7 +9,7 @@ $localizador = $localizador ?? '—';
 $email = $email ?? '';
 $tipo_reserva_texto = $tipo_reserva_texto ?? '';
 $hotel_nombre = $hotel_nombre ?? '';
-$num_viajeros = $num_viajeros ?? '';
+$num_viajeros = $numero_viajeros ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -17,66 +17,111 @@ $num_viajeros = $num_viajeros ?? '';
 <head>
     <meta charset="UTF-8">
     <title>Reserva confirmada</title>
+
     <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      line-height: 1.6;
-    }
+        body {
+            margin: 0;
+            padding: 60px 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            color: #fff;
+            min-height: 100vh;
+        }
 
-    h1 {
-      color: #007bff;
-      margin-bottom: 20px;
-    }
+        .card {
+            width: 90%;
+            max-width: 650px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.32);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 16px;
+            color: #003e60;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.20);
+        }
 
-    h2 {
-      margin-top: 25px;
-      color: #333;
-    }
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            color: #eaffff;
+        }
 
-    ul {
-      margin-top: 10px;
-      padding-left: 20px;
-    }
+        .localizador-box {
+            background: #fff7e6;
+            border-left: 4px solid #f39c12;
+            padding: 12px 18px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-size: 18px;
+        }
 
-    li {
-      margin-bottom: 6px;
-    }
+        h2 {
+            color: #003e60;
+            margin-top: 25px;
+        }
 
-    strong {
-      color: #000;
-    }
+        ul {
+            background: rgba(255,255,255,0.35);
+            padding: 15px 20px;
+            border-radius: 8px;
+            list-style: none;
+        }
 
-    em {
-      color: #555;
-    }
+        ul li {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
 
-    a {
-      color: #007bff;
-      text-decoration: none;
-      margin-top: 20px;
-      display: inline-block;
-    }
+        .email-box {
+            background: #eef7ff;
+            border-left: 4px solid #3498db;
+            padding: 12px 18px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
 
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+        a {
+            color: #003354;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .volver {
+            text-align: center;
+            margin-top: 25px;
+        }
+    </style>
 </head>
-    <body>
-        <h1>Reserva creada correctamente</h1>
 
-        <p><strong>Localizador:</strong> <?= htmlspecialchars($localizador) ?></p>
-        <h2>Detalles de la reserva</h2>
-        <ul>
-            <li><strong>Tipo de trayecto:</strong> <?= htmlspecialchars($tipo_reserva_texto) ?></li>
-            <li><strong>Hotel:</strong> <?= htmlspecialchars($hotel_nombre) ?></li>
-            <li><strong>Número de viajeros:</strong> <?= htmlspecialchars($num_viajeros) ?></li>
-        </ul>
+<body>
 
-        <p>Se ha enviado un correo electrónico con los detalles de la reserva a:</p>
-        <p><em><?= htmlspecialchars($email) ?></em></p>
+<div class="card">
 
-        <p><a href="/?url=admin/dashboard">⬅️ Volver al panel</a></p>
-    </body>
+    <h1>Reserva creada correctamente</h1>
+
+    <div class="localizador-box">
+        <strong>Localizador:</strong> <?= htmlspecialchars($localizador) ?>
+    </div>
+
+    <h2>Detalles de la reserva</h2>
+    <ul>
+        <li><strong>Tipo de trayecto:</strong> <?= htmlspecialchars($tipo_reserva_texto) ?></li>
+        <li><strong>Hotel:</strong> <?= htmlspecialchars($hotel_nombre) ?></li>
+        <li><strong>Número de viajeros:</strong> <?= htmlspecialchars($num_viajeros) ?></li>
+    </ul>
+
+    <div class="email-box">
+        Se ha enviado un correo electrónico con los detalles de la reserva a:<br>
+        <strong><?= htmlspecialchars($email) ?></strong>
+    </div>
+
+    <p class="volver"><a href="/?url=admin/dashboard">← Volver al panel</a></p>
+
+</div>
+
+</body>
 </html>
