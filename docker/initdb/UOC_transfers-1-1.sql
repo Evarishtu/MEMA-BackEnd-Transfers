@@ -288,7 +288,7 @@ ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'via
 
 -- Modificaciones de la tabla inicial transfer_tipo_reserva
 ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL;
-INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `descripcion`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta'); 
+-- INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `descripcion`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta'); 
 
 -- Modificaciones de la tabla inicial transfer_zona
 ALTER TABLE `transfer_zona` CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL;
