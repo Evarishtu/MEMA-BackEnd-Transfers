@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `transfer_admin` (
 ALTER TABLE `tranfer_hotel` ADD `nombre` VARCHAR(100) NOT NULL AFTER `id_zona`; 
 
 -- Modificaciones de la tabla inicial transfer_vehiculo
--- INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES ('1', 'Vehículo de 4 plazas', 'alfredo@correo.com', '12345'), ('2', 'Vehículo de 8 plazas', 'luis@correo.com', '12345'), ('3', 'Vehículo de 5 plazas', 'sonia@correo.com', '12345');
+INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES ('1', 'Vehículo de 4 plazas', 'alfredo@correo.com', '12345'), ('2', 'Vehículo de 8 plazas', 'luis@correo.com', '12345'), ('3', 'Vehículo de 10 plazas', 'sonia@correo.com', '12345');
 ALTER TABLE `transfer_vehiculo` CHANGE `Descripción` `descripcion` VARCHAR(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 
 
 -- Modificaciones de la tabla inicial transfer_reservass
@@ -278,17 +278,14 @@ ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_salida` `numero_vuelo_salid
 ALTER TABLE `transfer_reservas` CHANGE `hora_recogida` `hora_recogida` TIME NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIME NULL;  
 ALTER TABLE `transfer_reservas` CHANGE `fecha_modificacion` `fecha_modificacion` DATE NULL; 
+ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `id_vehiculo`;
 
 -- Modificaciones de la tabla inicial transfer_viajeros
 ALTER TABLE `transfer_viajeros` ADD CONSTRAINT `unique_email_viajero` UNIQUE (email);
 
--- Modificacioness de la tabla inicial transfer_reservas
--- ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `password`;
-ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `id_vehiculo`; 
-
 -- Modificaciones de la tabla inicial transfer_tipo_reserva
 ALTER TABLE `transfer_tipo_reserva` CHANGE `Descripción` `descripcion` VARCHAR(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL;
--- INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `descripcion`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta'); 
+INSERT INTO `transfer_tipo_reserva` (`id_tipo_reserva`, `descripcion`) VALUES ('1', 'Hotel->Aeropuerto'), ('2', 'Aeropuerto->Hotel'), ('3', 'Ida y Vuelta'); 
 
 -- Modificaciones de la tabla inicial transfer_zona
 ALTER TABLE `transfer_zona` CHANGE `descripcion` `descripcion` VARCHAR(500) NOT NULL;
