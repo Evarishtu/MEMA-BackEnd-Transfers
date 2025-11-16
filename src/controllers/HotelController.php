@@ -45,7 +45,7 @@ class HotelController {
         $hotelModel->registrarHotel($nombre, $id_zona, $comision, $usuario, $password);
     }
 
-    header('Location: /?url=hotel/listarHoteles');
+    header('Location: ?url=hotel/listarHoteles');
     exit;
     }
 
@@ -58,7 +58,7 @@ class HotelController {
             $hotelModel->eliminarHotel($_GET['id']);
         }
 
-        header('Location: /?url=hotel/listarHoteles');
+        header('Location: ?url=hotel/listarHoteles');
         exit;
     }
 

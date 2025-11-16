@@ -24,7 +24,7 @@ class VehiculoController {
 
             if (empty($descripcion)) {
                 echo "<p>Debe ingresar una descripción.</p>";
-                echo "<a href='/?url=vehiculo/crearvehiculo'>Volver</a>";
+                echo "<a href='?url=vehiculo/crearvehiculo'>Volver</a>";
                 exit;
             }
 
@@ -32,7 +32,7 @@ class VehiculoController {
             $vehiculoModel->crearVehiculo($descripcion, $email_conductor, $password_conductor);
 
             // Redirigimos correctamente al listado
-            header('Location: /?url=vehiculo/listarvehiculos');
+            header('Location: ?url=vehiculo/listarvehiculos');
             exit;
         }
     }
@@ -64,14 +64,14 @@ class VehiculoController {
 
             if (!$id || empty($descripcion)) {
                 echo "<p>Datos incompletos.</p>";
-                echo "<a href='/?url=vehiculo/listarvehiculos'>Volver</a>";
+                echo "<a href='?url=vehiculo/listarvehiculos'>Volver</a>";
                 exit;
             }
 
             $vehiculoModel = new Vehiculo();
             $vehiculoModel->actualizarVehiculo($id, $descripcion);
 
-            header('Location: /?url=vehiculo/listarvehiculos');
+            header('Location: ?url=vehiculo/listarvehiculos');
             exit;
         }
     }
@@ -87,7 +87,7 @@ class VehiculoController {
         $vehiculoModel = new Vehiculo();
         $vehiculoModel->eliminarVehiculo($id);
 
-        header('Location: /?url=vehiculo/listarvehiculos');
+        header('Location: ?url=vehiculo/listarvehiculos');
         exit;
     }
 

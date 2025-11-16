@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 
@@ -148,7 +148,7 @@ $email = $_SESSION['user_email'] ?? '';
         <!-- ====================== -->
         <!-- BOTÓN DE VOLVER -->
         <!-- ====================== -->
-        <a class="btn" href="/?url=viajero/dashboard">← Volver al panel</a>
+        <a class="btn" href="?url=viajero/dashboard">← Volver al panel</a>
 
     </div>
 

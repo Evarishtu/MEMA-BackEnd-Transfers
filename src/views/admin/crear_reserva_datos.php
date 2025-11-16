@@ -4,13 +4,13 @@ if (session_status() === PHP_SESSION_NONE){
 }
 
 if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 
 $tipo_reserva = $_POST['tipo_reserva'] ?? ($_GET['tipo_reserva'] ?? '');
 if(!$tipo_reserva){
-    header('Location: /?url=admin/crearReserva');
+    header('Location: ?url=admin/crearReserva');
     exit;
 }
 
@@ -112,7 +112,7 @@ switch ($tipo_reserva) {
 <h1>Datos de la reserva</h1>
 <h2>Tipo seleccionado: <strong><?= $nombre_tipo ?></strong></h2>
 
-<form method="POST" action="/?url=admin/guardarReserva">
+<form method="POST" action="?url=admin/guardarReserva">
 
 <input type="hidden" name="tipo_reserva" value="<?= htmlspecialchars($tipo_reserva) ?>">
 
@@ -195,7 +195,7 @@ switch ($tipo_reserva) {
 
 </form>
 
-<a href="/?url=admin/crearReserva">⬅ Volver</a>
+<a href="?url=admin/crearReserva">⬅ Volver</a>
 
 </div>
 

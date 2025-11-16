@@ -19,7 +19,7 @@ class ReservaTipoController {
             if (!empty($descripcion)) {
                 $reservatipoModel = new TipoReserva();
                 $reservatipoModel->create_reservatipo($descripcion);
-                header("Location: /?url=reservatipo/index");
+                header("Location: ?url=reservatipo/index");
                 exit;
             } else {
                 $error = "⚠️ La descripción no puede estar vacía.";
@@ -35,7 +35,7 @@ class ReservaTipoController {
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
-            header("Location: /?url=reservatipo/index");
+            header("Location: ?url=reservatipo/index");
             exit;
         }
 
@@ -44,7 +44,7 @@ class ReservaTipoController {
 
             if (!empty($descripcion)) {
                 $reservatipoModel->update_reservatipo($id, $descripcion);
-                header("Location: /?url=reservatipo/index");
+                header("Location: ?url=reservatipo/index");
                 exit;
             } else {
                 $error = "⚠️ La descripción no puede estar vacía.";
@@ -64,7 +64,7 @@ class ReservaTipoController {
             $reservatipoModel->delete_reservatipo($id);
         }
 
-        header("Location: /?url=reservatipo/index");
+        header("Location: ?url=reservatipo/index");
         exit;
     }
 }

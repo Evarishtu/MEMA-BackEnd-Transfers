@@ -124,10 +124,10 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -149,7 +149,7 @@
       </p>
     <?php endif; ?>
 
-    <form method="POST" action="/?url=login/login">
+    <form method="POST" action="?url=login/login">
       <label>Email:</label>
       <input type="email" name="email" placeholder="tu email" required>
 

@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (empty($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 ?>
@@ -105,16 +105,16 @@ if (empty($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
 
   <div class="navbar">
     <div class="navbar-title">Panel del Viajero</div>
-    <a href="/?url=login/logout" class="logout-btn">Cerrar sesión</a>
+    <a href="?url=login/logout" class="logout-btn">Cerrar sesión</a>
   </div>
 
   <div class="container">
     <h1>Hola, <?= htmlspecialchars($_SESSION['user_nombre'] ?? 'Viajero') ?> 👋</h1>
 
     <div class="menu">
-      <a href="/?url=viajero/obtenerReservasPorViajero">📋 Mis reservas</a>
-      <a href="/?url=viajero/crearReserva">✈️ Crear reserva</a>
-      <a href="/?url=viajero/informacionPersonal">👤 Información personal</a>
+      <a href="?url=viajero/obtenerReservasPorViajero">📋 Mis reservas</a>
+      <a href="?url=viajero/crearReserva">✈️ Crear reserva</a>
+      <a href="?url=viajero/informacionPersonal">👤 Información personal</a>
     </div>
   </div>
 

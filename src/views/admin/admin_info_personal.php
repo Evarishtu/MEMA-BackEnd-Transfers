@@ -102,7 +102,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
 
     <h1>Información Personal del Administrador</h1>
 
-    <form id="infoForm" method="POST" action="/?url=admin/actualizarInformacionPersonal" class="disabled">
+    <form id="infoForm" method="POST" action="?url=admin/actualizarInformacionPersonal" class="disabled">
 
         <input type="hidden" name="id_admin" 
                value="<?= htmlspecialchars($admin['id_admin'] ?? '') ?>">
@@ -127,7 +127,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
     </form>
 
     <p style="margin-top:20px; text-align:center;">
-        <a href="/?url=admin/dashboard">← Volver al panel</a>
+        <a href="?url=admin/dashboard">← Volver al panel</a>
     </p>
 
 </div>

@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE){
 }
 
 if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 ?>
@@ -104,17 +104,17 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
         <!-- OPCIONES PRINCIPALES -->
         <!-- ====================== -->
         <ul>
-            <li><a href="/?url=admin/calendario">📅 Calendario de reservas</a></li>
-            <li><a href="/?url=admin/crearReserva">🆕 Crear nueva reserva</a></li>
-            <li><a href="/?url=admin/listarReservas">📋 Consultar y gestionar reservas</a></li>
-            <li><a href="/?url=admin/informacionPersonal">👥 Información personal</a></li>
+            <li><a href="?url=admin/calendario">📅 Calendario de reservas</a></li>
+            <li><a href="?url=admin/crearReserva">🆕 Crear nueva reserva</a></li>
+            <li><a href="?url=admin/listarReservas">📋 Consultar y gestionar reservas</a></li>
+            <li><a href="?url=admin/informacionPersonal">👥 Información personal</a></li>
         </ul>
 
         <!-- ====================== -->
         <!-- BOTÓN DE SALIR -->
         <!-- ====================== -->
         <div class="logout">
-            <a href="/?url=login/logout">🚪 Cerrar sesión</a>
+            <a href="?url=login/logout">🚪 Cerrar sesión</a>
         </div>
 
     </div>

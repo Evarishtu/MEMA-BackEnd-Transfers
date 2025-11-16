@@ -10,7 +10,7 @@ class LoginController {
             $password = $_POST['password'] ?? '';
 
             if(empty($rol) || empty($email) || empty($password)){
-                header('Location: /?url=login/login&error=1');
+                header('Location: ?url=login/login&error=1');
                 exit;
             }
 
@@ -30,10 +30,10 @@ class LoginController {
                         $_SESSION['user_email']  = $admin['email'];
                         $_SESSION['rol']         = 'administrador';
 
-                        header('Location: /?url=admin/dashboard');
+                        header('Location: ?url=admin/dashboard');
                         exit;
                     } else {
-                        header('Location: /?url=login/login&error=1');
+                        header('Location: ?url=login/login&error=1');
                         exit;
                     }
                     break;
@@ -49,17 +49,17 @@ class LoginController {
                         $_SESSION['user_email']  = $viajero['email'];
                         $_SESSION['rol']         = 'viajero';
 
-                        header('Location: /?url=viajero/dashboard');
+                        header('Location: ?url=viajero/dashboard');
                         exit;
                     } else {
-                        header('Location: /?url=login/login&error=1');
+                        header('Location: ?url=login/login&error=1');
                         exit;
                     }
                     break;
 
 
                 default:
-                    header('Location: /?url=login/login&error=1');
+                    header('Location: ?url=login/login&error=1');
                     exit;
             }
         }
@@ -75,7 +75,7 @@ class LoginController {
         }
         
         session_destroy();
-        header('Location: /?url=login/login');
+        header('Location: ?url=login/login');
         exit;
     }
 }

@@ -1,9 +1,11 @@
+// sync test
+
 <?php 
 class Database{
-    private $host = "localhost";
+    private $host = "locahost";
     private $db_nombre = "wordpress5";
     private $username = "wordpress5";
-    private $password = "2ZNG53TdCaOoLpvp";
+    private $password = "2ZNG53TdCa0oLpvp";
     public $conexion;
 
     public function connect(){

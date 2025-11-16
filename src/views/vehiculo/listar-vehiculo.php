@@ -118,11 +118,11 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -130,7 +130,7 @@
 
     <h2>🚗 Gestión de Vehículos</h2>
 
-    <a href="/?url=vehiculo/crearvehiculo" class="btn">➕ Nuevo vehículo</a>
+    <a href="?url=vehiculo/crearvehiculo" class="btn">➕ Nuevo vehículo</a>
 
     <?php if (empty($vehiculos)): ?>
       <p style="margin-top:20px;">No hay vehículos registrados todavía.</p>
@@ -151,8 +151,8 @@
               <td><?= htmlspecialchars($vehiculo['id_vehiculo']) ?></td>
               <td><?= htmlspecialchars($vehiculo['descripcion']) ?></td>
               <td class="acciones">
-                <a href="/?url=vehiculo/editarvehiculo&id=<?= $vehiculo['id_vehiculo'] ?>">✏️ Editar</a>
-                <a href="/?url=vehiculo/eliminarvehiculo&id=<?= $vehiculo['id_vehiculo'] ?>"
+                <a href="?url=vehiculo/editarvehiculo&id=<?= $vehiculo['id_vehiculo'] ?>">✏️ Editar</a>
+                <a href="?url=vehiculo/eliminarvehiculo&id=<?= $vehiculo['id_vehiculo'] ?>"
                    onclick="return confirm('¿Seguro que quieres eliminar este vehículo?');">🗑️ Eliminar</a>
               </td>
             </tr>

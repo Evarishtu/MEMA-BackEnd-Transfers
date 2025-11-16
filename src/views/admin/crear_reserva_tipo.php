@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE){
     session_start();
 }
 if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 ?>
@@ -105,7 +105,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
 
     <p>Seleccione el tipo de trayecto que desea reservar:</p>
 
-    <form method="POST" action="/?url=admin/crearReservaDatos">
+    <form method="POST" action="?url=admin/crearReservaDatos">
 
         <!-- Tipo de trayecto -->
         <label for="tipo_reserva">Tipo de trayecto:</label>
@@ -122,7 +122,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
     </form>
 
     <p class="volver">
-        <a href="/?url=admin/dashboard">⬅️ Volver al panel principal</a>
+        <a href="?url=admin/dashboard">⬅️ Volver al panel principal</a>
     </p>
 
 </div>

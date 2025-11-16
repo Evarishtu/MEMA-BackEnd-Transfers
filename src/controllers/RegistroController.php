@@ -27,7 +27,7 @@ class RegistroController{
                         include __DIR__ . '/../views/auth/registro_hotel.php';
                         return;
                     default:
-                        header('Location: /?url=registro/registrar');
+                        header('Location: ?url=registro/registrar');
                         exit;
                 }
             }
@@ -41,17 +41,17 @@ class RegistroController{
                 $nombre = $_POST['nombre'] ?? '';
 
                 if(empty($email) || empty($password) || empty($nombre)){                   
-                    header('Location: /?url=registro/registrar');
+                    header('Location: ?url=registro/registrar');
                     exit;
                 }
                 $adminModel = new Admin();
                 $resultado = $adminModel->registrarAdmin($nombre, $email, $password);
 
                 if($resultado){                   
-                    header('Location: /?url=login/login');
+                    header('Location: ?url=login/login');
                     exit;
                 }else{
-                    header('Location: /?url=registro/registrar');
+                    header('Location: ?url=registro/registrar');
                     exit;
                 }
             break;
@@ -70,7 +70,7 @@ class RegistroController{
                     empty($apellido1) || empty($apellido2) || empty($direccion) ||
                     empty($codigoPostal) || empty($pais) || empty($ciudad)
                 ) {
-                    header('Location: /?url=registro/registrar');
+                    header('Location: ?url=registro/registrar');
                     exit;
                 }
                 $viajeroModel = new Viajero();
@@ -80,11 +80,11 @@ class RegistroController{
                 );
                 if($resultado){
                     // var_dump ($resultado);
-                    header('Location: /?url=login/login');
+                    header('Location: ?url=login/login');
                     exit;
                 }else{
                     echo "<p>Error al registrar viajero</p>";
-                    echo "<a href='/?url=registro/registrar'>Volver</a>";
+                    echo "<a href='?url=registro/registrar'>Volver</a>";
                     exit;
                 }
             break;
@@ -97,23 +97,23 @@ class RegistroController{
 
                 if(empty($nombre_hotel) || empty($usuario) || empty($password)){
                     echo "<p>Nombre, usuario y contraseña son obligatorios.</p>";
-                    echo "<a href='/?url=registro/registrar'>Volver</a>";
+                    echo "<a href='?url=registro/registrar'>Volver</a>";
                     exit;
                 }
             $hotelModel = new Hotel();
             $resultado = $hotelModel->registrarHotel($nombre_hotel, $id_zona, $comision, $usuario, $password);
             
             if($resultado){
-                header('Location: /?url=login/login');
+                header('Location: ?url=login/login');
                 exit;
             }else{
                 echo "<p>Error al registrar hotel</p>";
-                echo "<a href='/?url=registro/registrar'>Volver</a>";
+                echo "<a href='?url=registro/registrar'>Volver</a>";
                 exit;
             }
             break;
             default:
-                header('Location: /?url=registro/registrar');
+                header('Location: ?url=registro/registrar');
                 exit;
            }
         }else{

@@ -101,11 +101,11 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -113,7 +113,7 @@
 
     <h2><?= isset($vehiculo) ? '✏️ Editar vehículo' : '🚗 Crear nuevo vehículo' ?></h2>
 
-    <form method="POST" action="/?url=vehiculo/<?= isset($vehiculo) ? 'actualizarvehiculo' : 'guardarvehiculo' ?>">
+    <form method="POST" action="?url=vehiculo/<?= isset($vehiculo) ? 'actualizarvehiculo' : 'guardarvehiculo' ?>">
 
       <?php if (isset($vehiculo)): ?>
         <input type="hidden" name="id" value="<?= htmlspecialchars($vehiculo['id_vehiculo']) ?>">
@@ -135,7 +135,7 @@
         <?= isset($vehiculo) ? 'Actualizar vehículo' : 'Guardar vehículo' ?>
       </button>
 
-      <a href="/?url=vehiculo/listarvehiculos" class="btn">⬅️ Volver al listado</a>
+      <a href="?url=vehiculo/listarvehiculos" class="btn">⬅️ Volver al listado</a>
 
     </form>
 

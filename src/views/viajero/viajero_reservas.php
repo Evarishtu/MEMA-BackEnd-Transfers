@@ -176,7 +176,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 
-    <a class="back" href="/?url=viajero/dashboard">← Volver al dashboard</a>
+    <a class="back" href="?url=viajero/dashboard">← Volver al dashboard</a>
 
 </div>
 

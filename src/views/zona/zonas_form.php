@@ -118,11 +118,11 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -135,13 +135,13 @@
     <?php endif; ?>
 
     <form method="POST" 
-          action="<?= isset($zona) ? '/?url=zona/edit&id=' . $zona['id_zona'] : '/?url=zona/create' ?>">
+          action="index.php?url=<?= isset($zona) ? 'zona/edit&id=' . $zona['id_zona'] : 'zona/create' ?>">
 
       <label for="descripcion">Descripción:</label><br>
       <textarea name="descripcion" id="descripcion" required><?= isset($zona) ? htmlspecialchars($zona['descripcion']) : '' ?></textarea>
 
       <button type="submit">💾 Guardar</button>
-      <a href="/?url=zona/index" class="btn">⬅️ Volver</a>
+      <a href="?url=zona/index" class="btn">⬅️ Volver</a>
     </form>
 
   </div>

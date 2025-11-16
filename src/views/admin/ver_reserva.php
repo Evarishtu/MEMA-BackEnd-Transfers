@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
-  header('Location: /?url=login/login'); exit;
+  header('Location: ?url=login/login'); exit;
 }
 
 $r = $reserva ?? [];
@@ -110,8 +110,8 @@ $r = $reserva ?? [];
     </ul>
 
     <div class="acciones">
-        <a href="/?url=admin/editarReserva&id=<?= urlencode($r['id_reserva'] ?? '') ?>">✏️ Editar</a>
-        <a href="/?url=admin/listarReservas">⬅️ Volver</a>
+        <a href="?url=admin/editarReserva&id=<?= urlencode($r['id_reserva'] ?? '') ?>">✏️ Editar</a>
+        <a href="?url=admin/listarReservas">⬅️ Volver</a>
     </div>
 
 </div>

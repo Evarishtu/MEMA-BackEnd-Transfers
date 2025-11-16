@@ -125,11 +125,11 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -137,7 +137,7 @@
 
     <h2>📍 Gestión de Zonas</h2>
 
-    <a href="/?url=zona/create" class="btn">➕ Nueva Zona</a>
+    <a href="?url=zona/create" class="btn">➕ Nueva Zona</a>
 
     <?php if (empty($zonas)): ?>
       <p style="margin-top:20px;">No hay zonas registradas todavía.</p>
@@ -158,8 +158,8 @@
               <td><?= htmlspecialchars($zona['id_zona']) ?></td>
               <td><?= htmlspecialchars($zona['descripcion']) ?></td>
               <td class="acciones">
-                <a href="/?url=zona/edit&id=<?= $zona['id_zona'] ?>">✏️ Editar</a>
-                <a href="/?url=zona/delete&id=<?= $zona['id_zona'] ?>"
+                <a href="?url=zona/edit&id=<?= $zona['id_zona'] ?>">✏️ Editar</a>
+                <a href="?url=zona/delete&id=<?= $zona['id_zona'] ?>"
                    onclick="return confirm('¿Seguro que quieres eliminar esta zona?');">🗑️ Eliminar</a>
               </td>
             </tr>

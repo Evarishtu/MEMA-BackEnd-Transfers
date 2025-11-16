@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 
@@ -178,7 +178,7 @@ function h($s){ return htmlspecialchars((string)$s); }
 
             <button type="submit">Ir</button>
 
-            <a href="/?url=admin/listarReservas">← Volver al listado</a>
+            <a href="?url=admin/listarReservas">← Volver al listado</a>
         </form>
 
         <!-- ============================
@@ -276,7 +276,7 @@ function h($s){ return htmlspecialchars((string)$s); }
                                     $hora = $e['hora_entrada'] ?? $e['hora_vuelo_salida'];
                                 ?>
                                     <div class="evento">
-                                        <a href="/?url=admin/verReserva&id=<?= urlencode($e['id_reserva']) ?>">
+                                        <a href="?url=admin/verReserva&id=<?= urlencode($e['id_reserva']) ?>">
                                             <?= h($e['localizador']) ?>
                                         </a><br>
                                         <small><?= h($e['tipo_descripcion']) ?> · <?= h($hora) ?></small><br>
@@ -339,7 +339,7 @@ function h($s){ return htmlspecialchars((string)$s); }
                                     $hora = $e['hora_entrada'] ?? $e['hora_vuelo_salida'];
                                 ?>
                                     <div class="evento">
-                                        <a href="/?url=admin/verReserva&id=<?= urlencode($e['id_reserva']) ?>">
+                                        <a href="?url=admin/verReserva&id=<?= urlencode($e['id_reserva']) ?>">
                                             <?= h($e['localizador']) ?>
                                         </a><br>
                                         <small><?= h($e['tipo_descripcion']) ?> · <?= h($hora) ?></small>
@@ -356,7 +356,7 @@ function h($s){ return htmlspecialchars((string)$s); }
         <?php endif; ?>
 
         <p style="margin-top:35px;">
-            <a href="/?url=admin/listarReservas">← Volver al listado</a>
+            <a href="?url=admin/listarReservas">← Volver al listado</a>
         </p>
 
     </div>

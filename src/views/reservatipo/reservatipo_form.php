@@ -116,11 +116,11 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -133,13 +133,13 @@
     <?php endif; ?>
 
     <form method="POST" 
-          action="<?= isset($reservatipo) ? '/?url=reservatipo/edit&id=' . $reservatipo['id_tipo_reserva'] : '/?url=reservatipo/create' ?>">
+          action="<?= isset($reservatipo) ? '?url=reservatipo/edit&id=' . $reservatipo['id_tipo_reserva'] : '/?url=reservatipo/create' ?>">
 
       <label for="descripcion">Descripción:</label><br>
       <textarea name="descripcion" id="descripcion" required><?= isset($reservatipo) ? htmlspecialchars($reservatipo['descripcion']) : '' ?></textarea>
 
       <button type="submit">💾 Guardar</button>
-      <a href="/?url=reservatipo/index" class="btn">⬅️ Volver</a>
+      <a href="?url=reservatipo/index" class="btn">⬅️ Volver</a>
     </form>
 
   </div>

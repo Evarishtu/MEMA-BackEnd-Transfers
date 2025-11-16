@@ -1,7 +1,7 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 ?>
@@ -215,7 +215,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
             </label>
 
             <button type="submit">Aplicar</button>
-            <a href="/?url=admin/listarReservas">Limpiar</a>
+            <a href="?url=admin/listarReservas">Limpiar</a>
         </fieldset>
     </form>
 
@@ -224,11 +224,11 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
     ================================ -->
     <p>
         Vista calendario:
-        <a href="/?url=admin/calendario&vista=dia">Día</a>
+        <a href="?url=admin/calendario&vista=dia">Día</a>
         ·
-        <a href="/?url=admin/calendario&vista=semana">Semana</a>
+        <a href="?url=admin/calendario&vista=semana">Semana</a>
         ·
-        <a href="/?url=admin/calendario&vista=mes">Mes</a>
+        <a href="?url=admin/calendario&vista=mes">Mes</a>
     </p>
 
     <!-- ================================
@@ -262,9 +262,9 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
                         <td><?= htmlspecialchars($r['num_viajeros']) ?></td>
 
                         <td class="acciones">
-                            <a href="/?url=admin/verReserva&id=<?= urlencode($r['id_reserva']) ?>">Ver</a>
-                            <a href="/?url=admin/editarReserva&id=<?= urlencode($r['id_reserva']) ?>">Editar</a>
-                            <a href="/?url=admin/cancelarReserva&id=<?= urlencode($r['id_reserva']) ?>"
+                            <a href="?url=admin/verReserva&id=<?= urlencode($r['id_reserva']) ?>">Ver</a>
+                            <a href="?url=admin/editarReserva&id=<?= urlencode($r['id_reserva']) ?>">Editar</a>
+                            <a href="?url=admin/cancelarReserva&id=<?= urlencode($r['id_reserva']) ?>"
                                onclick="return confirm('¿Cancelar esta reserva?');">
                                 Cancelar
                             </a>
@@ -276,7 +276,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
     </div>
 
     <p style="margin-top:25px;">
-        <a href="/?url=admin/dashboard">⬅️ Volver al panel</a>
+        <a href="?url=admin/dashboard">⬅️ Volver al panel</a>
     </p>
 
 </div>

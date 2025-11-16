@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE){
 }
 
 if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 ?>
@@ -101,7 +101,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
 <div class="card">
     <h2>Registrar nuevo cliente</h2>
 
-    <form method="POST" action="/?url=admin/guardarViajero">
+    <form method="POST" action="?url=admin/guardarViajero">
         <input type="hidden" name="tipo_reserva" value="<?= htmlspecialchars($_GET['tipo_reserva'] ?? '') ?>">
 
         <label>Email:</label>
@@ -132,7 +132,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
     </form>
 
     <p class="volver">
-        <a href="/?url=admin/crearReserva">← Volver a crear reserva</a>
+        <a href="?url=admin/crearReserva">← Volver a crear reserva</a>
     </p>
 </div>
 

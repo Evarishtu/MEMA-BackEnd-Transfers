@@ -19,7 +19,7 @@ class ZonaController {
             if (!empty($descripcion)) {
                 $zonaModel = new Zona();
                 $zonaModel->create_zona($descripcion);
-                header("Location: /?url=zona/index");
+                header("Location: ?url=zona/index");
                 exit;
             } else {
                 $error = "⚠️ La descripción no puede estar vacía.";
@@ -35,7 +35,7 @@ class ZonaController {
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
-            header("Location: /?url=zona/index");
+            header("Location: ?url=zona/index");
             exit;
         }
 
@@ -44,7 +44,7 @@ class ZonaController {
 
             if (!empty($descripcion)) {
                 $zonaModel->update_zona($id, $descripcion);
-                header("Location: /?url=zona/index");
+                header("Location: ?url=zona/index");
                 exit;
             } else {
                 $error = "⚠️ La descripción no puede estar vacía.";
@@ -64,7 +64,7 @@ class ZonaController {
             $zonaModel->delete_zona($id);
         }
 
-        header("Location: /?url=zona/index");
+        header("Location: ?url=zona/index");
         exit;
     }
 }

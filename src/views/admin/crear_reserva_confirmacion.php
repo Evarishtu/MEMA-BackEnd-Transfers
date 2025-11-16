@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
-    header('Location: /?url=login/login');
+    header('Location: ?url=login/login');
     exit;
 }
 
@@ -119,7 +119,7 @@ $num_viajeros = $numero_viajeros ?? '';
         <strong><?= htmlspecialchars($email) ?></strong>
     </div>
 
-    <p class="volver"><a href="/?url=admin/dashboard">← Volver al panel</a></p>
+    <p class="volver"><a href="?url=admin/dashboard">← Volver al panel</a></p>
 
 </div>
 

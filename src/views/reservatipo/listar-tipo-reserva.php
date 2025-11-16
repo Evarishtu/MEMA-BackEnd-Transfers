@@ -113,11 +113,11 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -125,7 +125,7 @@
 
     <h2>📍 Gestión de tipo de reservas</h2>
 
-    <a href="/?url=reservatipo/create" class="btn">➕ Nuevo tipo de reserva</a>
+    <a href="?url=reservatipo/create" class="btn">➕ Nuevo tipo de reserva</a>
 
     <?php if (empty($reservatipo)): ?>
       <p style="margin-top:20px;">Todavía no hay tipo de reservas registrado.</p>
@@ -146,8 +146,8 @@
               <td><?= htmlspecialchars($r['id_tipo_reserva']) ?></td>
               <td><?= htmlspecialchars($r['descripcion']) ?></td>
               <td class="acciones">
-                <a href="/?url=reservatipo/edit&id=<?= $r['id_tipo_reserva'] ?>">✏️ Editar</a>
-                <a href="/?url=reservatipo/delete&id=<?= $r['id_tipo_reserva'] ?>"
+                <a href="?url=reservatipo/edit&id=<?= $r['id_tipo_reserva'] ?>">✏️ Editar</a>
+                <a href="?url=reservatipo/delete&id=<?= $r['id_tipo_reserva'] ?>"
                    onclick="return confirm('¿Seguro que quieres eliminar este tipo de reserva?');">🗑️ Eliminar</a>
               </td>
             </tr>

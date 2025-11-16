@@ -130,8 +130,8 @@
       <span>📍</span> <span>Gestión de zonas</span>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -147,14 +147,14 @@
       <div class="card">
         <h2>📌 Formularios auxiliares<br><small>(Plantillas)</small></h2>
         <ul>
-          <li><a href="/?url=zona/index">Gestión de zonas</a></li>
-          <li><a href="/?url=zona/create">Crear nueva zona</a></li>
-          <li><a href="/?url=reservatipo/index">Gestión de tipos de reserva</a></li>
-          <li><a href="/?url=reservatipo/create">Crear nuevo tipo de reserva</a></li>
-          <li><a href="/?url=hotel/index">Gestión de hoteles</a></li>
-          <li><a href="/?url=hotel/listarZonas">Crear nuevo hotel</a></li>
-          <li><a href="/?url=vehiculo/listarvehiculos">Gestión de vehículos</a></li>
-          <li><a href="/?url=vehiculo/crearvehiculo">Crear nuevo vehículo</a></li>
+          <li><a href="?url=zona/index">Gestión de zonas</a></li>
+          <li><a href="?url=zona/create">Crear nueva zona</a></li>
+          <li><a href="?url=reservatipo/index">Gestión de tipos de reserva</a></li>
+          <li><a href="?url=reservatipo/create">Crear nuevo tipo de reserva</a></li>
+          <li><a href="?url=hotel/index">Gestión de hoteles</a></li>
+          <li><a href="?url=hotel/listarZonas">Crear nuevo hotel</a></li>
+          <li><a href="?url=vehiculo/listarvehiculos">Gestión de vehículos</a></li>
+          <li><a href="?url=vehiculo/crearvehiculo">Crear nuevo vehículo</a></li>
         </ul>
       </div>
     </div>

@@ -119,11 +119,11 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -131,7 +131,7 @@
 
     <h2>🏨 Gestión de Hoteles</h2>
 
-    <a href="/?url=hotel/listarZonas" class="btn">➕ Nuevo hotel</a>
+    <a href="?url=hotel/listarZonas" class="btn">➕ Nuevo hotel</a>
 
     <?php if (empty($hoteles)): ?>
       <p style="margin-top:20px;">No hay hoteles registrados todavía.</p>
@@ -154,8 +154,8 @@
               <td><?= htmlspecialchars($hotel['nombre_hotel']) ?></td>
               <td><?= htmlspecialchars($hotel['nombre_zona'] ?? 'Sin zona asignada') ?></td>
               <td class="acciones">
-                <a href="/?url=hotel/listarZonas&id=<?= $hotel['id_hotel'] ?>">✏️ Editar</a>
-                <a href="/?url=hotel/eliminarHotel&id=<?= $hotel['id_hotel'] ?>"
+                <a href="?url=hotel/listarZonas&id=<?= $hotel['id_hotel'] ?>">✏️ Editar</a>
+                <a href="?url=hotel/eliminarHotel&id=<?= $hotel['id_hotel'] ?>"
                    onclick="return confirm('¿Seguro que quieres eliminar este hotel?');">🗑️ Eliminar</a>
               </td>
             </tr>

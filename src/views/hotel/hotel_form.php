@@ -105,11 +105,11 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="/"><span>🏠</span> Volver al inicio</a>
+      <a href="./"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="/?url=login/login">Iniciar sesión</a>
-      <a href="/?url=registro/registrar">Registrarse</a>
+      <a href="?url=login/login">Iniciar sesión</a>
+      <a href="?url=registro/registrar">Registrarse</a>
     </div>
   </div>
 
@@ -117,7 +117,7 @@
 
     <h2>🏨 Crear nuevo hotel</h2>
 
-    <form method="POST" action="/?url=hotel/crearHotel">
+    <form method="POST" action="?url=hotel/crearHotel">
 
       <label for="nombre">Nombre del hotel:</label>
       <input type="text" name="nombre" required>
@@ -142,7 +142,7 @@
       <input type="password" name="password">
 
       <button type="submit">Guardar hotel</button>
-      <a href="/?url=hotel/listarHoteles" class="btn">⬅️ Volver al listado</a>
+      <a href="?url=hotel/listarHoteles" class="btn">⬅️ Volver al listado</a>
 
     </form>
 

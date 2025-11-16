@@ -19,7 +19,7 @@ class ViajeroController {
 
         // Seguridad básica: solo viajeros pueden acceder
         if (empty($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
 
@@ -70,7 +70,7 @@ class ViajeroController {
 }
 
             $viajeroModel->actualizarViajero($id, $datos);
-            header('Location: /?url=viajero/informacionPersonal');
+            header('Location: ?url=viajero/informacionPersonal');
             exit;
         }
     }
@@ -107,7 +107,7 @@ class ViajeroController {
 
         // Verificamos que el usuario sea viajero
         if (empty($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
 
@@ -138,7 +138,7 @@ class ViajeroController {
         if (session_status() === PHP_SESSION_NONE) session_start();
 
         if (empty($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
 
@@ -160,7 +160,7 @@ class ViajeroController {
 
         if (!$id_hotel || !$id_tipo_reserva || !$id_vehiculo) {
             echo "<p>Faltan datos obligatorios (hotel / tipo / vehículo).</p>";
-            echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+            echo "<a href='?url=viajero/crearReserva'>Volver</a>";
             return;
         }
 
@@ -177,7 +177,7 @@ class ViajeroController {
                         echo "<p style='color:red; font-weight:bold;'>
                                 La hora de recogida no puede ser posterior a la hora de salida del vuelo.
                             </p>";
-                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        echo "<a href='?url=viajero/crearReserva'>Volver</a>";
                         return;
                     }
                     // Hora de recogida NO puede ser igual a hora de vuelo (hay que darle margen)
@@ -185,7 +185,7 @@ class ViajeroController {
                         echo "<p style='color:red; font-weight:bold;'>
                                 La hora de recogida no puede ser igual a la hora de salida del vuelo.
                             </p>";
-                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        echo "<a href='?url=viajero/crearReserva'>Volver</a>";
                         return;
                     }
                 }
@@ -205,7 +205,7 @@ class ViajeroController {
                         echo "<p style='color:red;font-weight:bold;'>
                                 La hora de recogida no puede ser posterior a la hora de salida del vuelo.
                             </p>";
-                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        echo "<a href='?url=viajero/crearReserva'>Volver</a>";
                         return;
                     }
 
@@ -214,7 +214,7 @@ class ViajeroController {
                         echo "<p style='color:red;font-weight:bold;'>
                                 La hora de recogida no puede ser igual a la hora de salida del vuelo.
                             </p>";
-                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        echo "<a href='?url=viajero/crearReserva'>Volver</a>";
                         return;
                     }
                 }
@@ -226,7 +226,7 @@ class ViajeroController {
                     echo "<p style='color:red;font-weight:bold;'>
                             La fecha del vuelo de ida no puede ser posterior a la fecha del vuelo de vuelta.
                         </p>";
-                    echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                    echo "<a href='?url=viajero/crearReserva'>Volver</a>";
                     return;
                 }
 
@@ -239,7 +239,7 @@ class ViajeroController {
                         echo "<p style='color:red;font-weight:bold;'>
                                 La hora del vuelo de ida no puede ser posterior a la hora del vuelo de vuelta.
                             </p>";
-                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        echo "<a href='?url=viajero/crearReserva'>Volver</a>";
                         return;
                     }
 
@@ -248,7 +248,7 @@ class ViajeroController {
                         echo "<p style='color:red;font-weight:bold;'>
                                 La hora del vuelo de ida no puede ser igual a la hora del vuelo de vuelta.
                             </p>";
-                        echo "<a href='/?url=viajero/crearReserva'>Volver</a>";
+                        echo "<a href='?url=viajero/crearReserva'>Volver</a>";
                         return;
                     }
                 }

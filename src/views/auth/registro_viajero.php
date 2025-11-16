@@ -106,14 +106,14 @@
 <body>
 
   <div class="navbar">
-    <a href="/?url=registro/registrar">⬅️ Volver al inicio del registro</a>
+    <a href="?url=registro/registrar">⬅️ Volver al inicio del registro</a>
   </div>
 
   <div class="container">
 
     <h2>🧑‍💼 Registro Cliente Particular</h2>
 
-    <form method="POST" action="/?url=registro/registrar">
+    <form method="POST" action="?url=registro/registrar">
       <input type="hidden" name="rol" value="viajero">
 
       <label>Email:</label>
@@ -146,7 +146,7 @@
       <button type="submit">Registrar</button>
     </form>
 
-    <a href="/?url=registro/registrar" class="back">⬅️ Volver al inicio</a>
+    <a href="?url=registro/registrar" class="back">⬅️ Volver al inicio</a>
   </div>
 
 </body>

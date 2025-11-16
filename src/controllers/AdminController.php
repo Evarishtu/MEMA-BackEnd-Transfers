@@ -604,10 +604,6 @@ public function guardarReserva() {
             echo "<a href='/?url=admin/informacionPersonal'>Volver</a>";
         }
     }
-    
-
-
-
 }
 
 ?>

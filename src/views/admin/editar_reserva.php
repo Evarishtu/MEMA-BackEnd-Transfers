@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
-  header('Location: /?url=login/login'); exit;
+  header('Location: ?url=login/login'); exit;
 }
 
 $r = $reserva ?? [];
@@ -116,7 +116,7 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
 
     <h1>Editar reserva <?= htmlspecialchars($r['localizador'] ?? '') ?></h1>
 
-    <form method="POST" action="/?url=admin/actualizarReserva">
+    <form method="POST" action="?url=admin/actualizarReserva">
 
         <input type="hidden" name="id_reserva" value="<?= htmlspecialchars($r['id_reserva'] ?? '') ?>">
 
@@ -199,7 +199,7 @@ $tipo_sel = (string)($r['id_tipo_reserva'] ?? '');
 
         <div class="actions">
             <button type="submit">Guardar cambios</button>
-            <a href="/?url=admin/verReserva&id=<?= urlencode($r['id_reserva'] ?? '') ?>">Cancelar</a>
+            <a href="?url=admin/verReserva&id=<?= urlencode($r['id_reserva'] ?? '') ?>">Cancelar</a>
         </div>
 
     </form>

@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'viajero') {
-  header('Location: /?url=login/login');
+  header('Location: ?url=login/login');
   exit;
 }
 
@@ -120,7 +120,7 @@ $email_cliente = $_SESSION['user_email'];
   <div class="card">
     <h1>📝 Crear Reserva</h1>
 
-    <form method="POST" action="/?url=viajero/guardarReserva">
+    <form method="POST" action="?url=viajero/guardarReserva">
 
       <!-- Tipo de reserva -->
       <fieldset>
@@ -214,7 +214,7 @@ $email_cliente = $_SESSION['user_email'];
       <button type="submit">Guardar reserva</button>
     </form>
 
-    <a href="/?url=viajero/dashboard" class="volver">← Volver al dashboard</a>
+    <a href="?url=viajero/dashboard" class="volver">← Volver al dashboard</a>
   </div>
 
   <script>

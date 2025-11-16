@@ -6,13 +6,15 @@
 
 //Cargar la configuración y controladores
 
-require_once __DIR__ . '/../config/database.php';
+define('BASE_PATH', __DIR__ . '/src');
+
+require_once BASE_PATH . '/config/database.php';
 
 //Capturar la ruta
 $url = $_GET['url'] ?? '';
 
 if(empty($url)){
-    include __DIR__ . '/../views/home.php';
+    include BASE_PATH . '/views/home.php';
     exit;
 }
 
@@ -22,7 +24,7 @@ $modulo = strtolower($partes[0] ?? '');
 $accion = $partes[1] ?? 'index';
 
 $controllerName = ucfirst($modulo) . 'Controller';
-$controllerFile = __DIR__ . "/../controllers/{$controllerName}.php";
+$controllerFile = BASE_PATH . "/controllers/{$controllerName}.php";
 
 // Verificar que el controlador existe
 if (!file_exists($controllerFile)) {
@@ -44,11 +46,11 @@ if (!class_exists($controllerName)) {
 $controller = new $controllerName();
 
 // Verificar que la acción existe
-if (!file_exists($controllerFile)) {
+if (!method_exists($controller, $accion)) {
     http_response_code(404);
-    echo "<h2>Error 404: Controlador <strong>$controllerName</strong> no encontrado.</h2>";
+    echo "<h2>Error 404: Acción <strong>$accion</strong> no encontrada en <strong>$controllerName</strong>.</h2>";
     echo "<p>Ruta solicitada: <strong>$url</strong></p>";
-    echo "<a href='/'>Volver al inicio</a>";
+    echo "<a href='/~uocx5/'>Volver al inicio</a>";
     exit;
 }
 

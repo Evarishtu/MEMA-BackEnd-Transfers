@@ -118,7 +118,7 @@ if (session_status() === PHP_SESSION_NONE) {
   <div class="card">
     <h1>👤 Información Personal</h1>
 
-    <form id="infoForm" method="POST" action="/?url=viajero/actualizarInformacionPersonal" class="disabled">
+    <form id="infoForm" method="POST" action="?url=viajero/actualizarInformacionPersonal" class="disabled">
 
       <input type="hidden" name="id_viajero" 
       value="<?= htmlspecialchars($viajero['id_viajero'] ?? '') ?>">
@@ -168,7 +168,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
     </form>
 
-    <a class="back" href="/?url=viajero/dashboard">← Volver al dashboard</a>
+    <a class="back" href="?url=viajero/dashboard">← Volver al dashboard</a>
   </div>
 
   <script>
