@@ -195,7 +195,7 @@ public function guardarReserva() {
             // VALIDACIÓN FECHAS IDA/VUELTA
             if ($fecha_vuelo_salida && $fecha_entrada) {
 
-                if ($fecha_vuelo_salida > $fecha_entrada) {
+                if ($fecha_vuelo_salida < $fecha_entrada) {
                     echo "<p style='color:red;font-weight:bold;'>
                             La fecha del vuelo de ida no puede ser posterior al vuelo de vuelta.
                           </p>";

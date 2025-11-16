@@ -190,7 +190,7 @@ switch ($tipo_reserva) {
         <?php endforeach; ?>
     </select>
 
-    <button type="submit">Guardar reserva</button>
+    <button type="submit">Guardar Reserva</button>
 </fieldset>
 
 </form>
@@ -259,7 +259,7 @@ function validarHorasYFechas() {
             }
 
             if (fechaSalida.value && fechaLlegada.value) {
-                if (fechaSalida.value > fechaLlegada.value) {
+                if (fechaSalida.value < fechaLlegada.value) {
                     fechaSalida.setCustomValidity("La fecha del vuelo de ida no puede ser posterior al de vuelta.");
                 }
             }
