@@ -64,7 +64,7 @@ class AdminController{
 public function guardarReserva() {
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: /?url=admin/crearReserva');
+        header('Location: ?url=admin/crearReserva');
         exit;
     }
 
@@ -81,20 +81,20 @@ public function guardarReserva() {
 
     if (empty($email_cliente)) {
         echo "<p>Debe indicar un email de cliente.</p>";
-        echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+        echo "<a href='?url=admin/crearReserva'>Volver</a>";
         exit;
     }
 
     $tipo_reserva = $_POST['tipo_reserva'] ?? '';
     
     if (!$viajeroModel->existeEmail($email_cliente)) {
-        header('Location: /?url=admin/crearViajero&email=' . urlencode($email_cliente) . '&tipo_reserva=' . urlencode($tipo_reserva));
+        header('Location: ?url=admin/crearViajero&email=' . urlencode($email_cliente) . '&tipo_reserva=' . urlencode($tipo_reserva));
         exit;
     }
 
     if (empty($tipo_reserva)) {
         echo "<p>Debe indicar un tipo de reserva.</p>";
-        echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+        echo "<a href='?url=admin/crearReserva'>Volver</a>";
         exit;
     }
 
@@ -104,7 +104,7 @@ public function guardarReserva() {
 
     if (empty($id_hotel) || empty($id_vehiculo) || empty($numero_viajeros)) {
         echo "<p>Faltan datos obligatorios para crear la reserva.</p>";
-        echo '<a href="/?url=admin/crearReserva">Volver</a>';
+        echo '<a href="?url=admin/crearReserva">Volver</a>';
         exit;
     }
 
@@ -143,7 +143,7 @@ public function guardarReserva() {
                     echo "<p style='color:red;font-weight:bold;'>
                             La hora de recogida no puede ser posterior a la hora del vuelo.
                           </p>";
-                    echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+                    echo "<a href='?url=admin/crearReserva'>Volver</a>";
                     return;
                 }
 
@@ -151,7 +151,7 @@ public function guardarReserva() {
                     echo "<p style='color:red;font-weight:bold;'>
                             La hora de recogida no puede ser igual a la hora del vuelo.
                           </p>";
-                    echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+                    echo "<a href='?url=admin/crearReserva'>Volver</a>";
                     return;
                 }
             }
@@ -179,7 +179,7 @@ public function guardarReserva() {
                     echo "<p style='color:red;font-weight:bold;'>
                             La hora de recogida no puede ser posterior a la hora de salida del vuelo.
                           </p>";
-                    echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+                    echo "<a href='?url=admin/crearReserva'>Volver</a>";
                     return;
                 }
 
@@ -187,7 +187,7 @@ public function guardarReserva() {
                     echo "<p style='color:red;font-weight:bold;'>
                             La hora de recogida no puede ser igual a la hora de salida del vuelo.
                           </p>";
-                    echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+                    echo "<a href='?url=admin/crearReserva'>Volver</a>";
                     return;
                 }
             }
@@ -199,7 +199,7 @@ public function guardarReserva() {
                     echo "<p style='color:red;font-weight:bold;'>
                             La fecha del vuelo de ida no puede ser posterior al vuelo de vuelta.
                           </p>";
-                    echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+                    echo "<a href='?url=admin/crearReserva'>Volver</a>";
                     return;
                 }
 
@@ -209,7 +209,7 @@ public function guardarReserva() {
                         echo "<p style='color:red;font-weight:bold;'>
                                 La hora del vuelo de ida no puede ser posterior a la hora del vuelo de vuelta.
                               </p>";
-                        echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+                        echo "<a href='?url=admin/crearReserva'>Volver</a>";
                         return;
                     }
 
@@ -217,7 +217,7 @@ public function guardarReserva() {
                         echo "<p style='color:red;font-weight:bold;'>
                                 La hora del vuelo de ida no puede ser igual a la hora del vuelo de vuelta.
                               </p>";
-                        echo "<a href='/?url=admin/crearReserva'>Volver</a>";
+                        echo "<a href='?url=admin/crearReserva'>Volver</a>";
                         return;
                     }
                 }
@@ -285,7 +285,7 @@ public function guardarReserva() {
     } 
     else {
         echo "<p>Error al guardar la reserva.</p>";
-        echo '<a href="/?url=admin/crearReserva">Volver</a>';
+        echo '<a href="?url=admin/crearReserva">Volver</a>';
     }
 }
 
@@ -320,7 +320,7 @@ public function guardarReserva() {
 
         } else {
             echo "<p>Error al guardar la reserva.</p>";
-            echo '<a href="/?url=admin/crearReserva">Volver</a>';
+            echo '<a href="?url=admin/crearReserva">Volver</a>';
         }*/ 
 
 
@@ -331,7 +331,7 @@ public function guardarReserva() {
         }
 
         if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
 
@@ -345,7 +345,7 @@ public function guardarReserva() {
     // Guardar viajero
     public function guardarViajero(){
         if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-            header('Location: /?url=admin/dashboard');
+            header('Location: ?url=admin/dashboard');
             exit;
         }
         $viajeroModel = new Viajero();
@@ -367,7 +367,7 @@ public function guardarReserva() {
         empty($direccion) || empty($codigoPostal) || empty($pais) || empty($ciudad)
         ) {
             echo "<p>Todos los campos son obligatorios.</p>";
-            echo "<a href='/?url=admin/crearViajero'>Volver</a>";
+            echo "<a href='?url=admin/crearViajero'>Volver</a>";
             exit;
         }
 
@@ -378,19 +378,19 @@ public function guardarReserva() {
 
         if ($resultado === "email_duplicado") {
             echo "<p>El email ya existe en el sistema.</p>";
-            echo "<a href='/?url=admin/crearViajero'>Volver</a>";
+            echo "<a href='?url=admin/crearViajero'>Volver</a>";
             exit;
         }
 
         if ($resultado) {
             echo "<h2>Cliente registrado correctamente.</h2>";
             echo "<p>Contraseña temporal generada: <strong>{$passwordTemporal}</strong></p>";
-            echo "<a href='/?url=admin/crearReservaDatos&email=" . urlencode($email) . "&tipo_reserva=" . urlencode($tipo_reserva) . "'>
+            echo "<a href='?url=admin/crearReservaDatos&email=" . urlencode($email) . "&tipo_reserva=" . urlencode($tipo_reserva) . "'>
             Volver a crear reserva con este cliente</a>";
             
         } else {
             echo "<p>Error al registrar el cliente.</p>";
-            echo "<a href='/?url=admin/crearViajero'>Volver</a>";
+            echo "<a href='?url=admin/crearViajero'>Volver</a>";
         }
     }
 
@@ -398,7 +398,7 @@ public function guardarReserva() {
     public function listarReservas(){
         if(session_status() === PHP_SESSION_NONE) session_start();
         if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
         $reservaModel = new Reserva();
@@ -416,7 +416,7 @@ public function guardarReserva() {
     public function verReserva(){
         if (session_status() === PHP_SESSION_NONE) session_start();
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
 
@@ -424,7 +424,7 @@ public function guardarReserva() {
 
         $id = $_GET['id'] ?? null;
         if (!$id){
-            header('Location: /?url=admin/listarReservas');
+            header('Location: ?url=admin/listarReservas');
             exit;
         } 
 
@@ -437,7 +437,7 @@ public function guardarReserva() {
     public function editarReserva(){
         if (session_status() === PHP_SESSION_NONE) session_start();
         if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
         $reservaModel = new Reserva();
@@ -447,7 +447,7 @@ public function guardarReserva() {
 
         $id = $_GET['id'] ?? null;
         if(!$id){
-            header('Location: /?url=admin/listarReservas');
+            header('Location: ?url=admin/listarReservas');
             exit;
         }
         
@@ -462,7 +462,7 @@ public function guardarReserva() {
     // Actualizar reserva
     public function actualizarReserva(){
         if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-            header('Location: /?url=admin/listarReservas'); 
+            header('Location: ?url=admin/listarReservas'); 
             exit;
         }
 
@@ -488,32 +488,32 @@ public function guardarReserva() {
         $respuesta = $reservaModel->actualizarReserva($datos);
 
         if($respuesta){
-            header('Location: /?url=admin/verReserva&id=' . urlencode($datos['id_reserva']));
+            header('Location: ?url=admin/verReserva&id=' . urlencode($datos['id_reserva']));
         }else{
             echo "<p>Error al actualizar la reserva</p>";
-            echo "<a href='/?url=admin/listarReservas'>Volver</a>";
+            echo "<a href='?url=admin/listarReservas'>Volver</a>";
         }
     }
     public function cancelarReserva(){
         if (session_status() === PHP_SESSION_NONE) session_start();
         if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
 
         $id = $_GET['id'] ?? null;
         if (!$id){
-            header('Location: /?url=admin/listarReservas');
+            header('Location: ?url=admin/listarReservas');
             exit;
         }
         $reservaModel = new Reserva();
         $respuesta = $reservaModel->eliminarReserva($id);
 
         if($respuesta){
-            header('Location: /?url=admin/listarReservas');
+            header('Location: ?url=admin/listarReservas');
         }else{
             echo "<p>No se pudo eliminar la reserva</p>";
-            echo "<a href='/?url=admin/listarReservas'>Volver</a>";
+            echo "<a href='?url=admin/listarReservas'>Volver</a>";
         }
     }
 
@@ -521,7 +521,7 @@ public function guardarReserva() {
     public function calendario(){
         if (session_status() === PHP_SESSION_NONE) session_start();
         if(!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador'){
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
         $reservaModel = new Reserva();
@@ -539,7 +539,7 @@ public function guardarReserva() {
         }
 
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
 
@@ -557,12 +557,12 @@ public function guardarReserva() {
         }
 
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'administrador') {
-            header('Location: /?url=login/login');
+            header('Location: ?url=login/login');
             exit;
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /?url=admin/informacionPersonal');
+            header('Location: ?url=admin/informacionPersonal');
             exit;
         }
 
@@ -597,11 +597,11 @@ public function guardarReserva() {
             // Actualizar sesión con el nombre nuevo
             $_SESSION['user_nombre'] = $datos['nombre'];
 
-            header('Location: /?url=admin/informacionPersonal');
+            header('Location: ?url=admin/informacionPersonal');
             exit;
         } else {
             echo "<p>Error al actualizar la información.</p>";
-            echo "<a href='/?url=admin/informacionPersonal'>Volver</a>";
+            echo "<a href='?url=admin/informacionPersonal'>Volver</a>";
         }
     }
 }

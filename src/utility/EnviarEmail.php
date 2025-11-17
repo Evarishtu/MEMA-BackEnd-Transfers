@@ -9,8 +9,8 @@ class EmailHelper{
         try{
             $mail = new PHPMailer(true);
             $mail->isSMTP();
-            $mail->Host = 'mailhog';
-            $mail->Port = 1025;
+            $mail->Host = 'localhost';
+            $mail->Port = 25;
             $mail->SMTPAuth = false;
 
             $mail->setFrom('reserva@tuempresa.com', 'Reservas Transfer');
@@ -29,8 +29,7 @@ class EmailHelper{
                 </ul>
                 <p>Gracias por confiar en nosotros.</p>
             ";
-            
-            $mail->send();
+                        $mail->send();
             return true;
         } catch (Exception $e){
             error_log("Error al enviar email: " . $e->getMessage());
