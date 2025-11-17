@@ -133,7 +133,7 @@
     <?php endif; ?>
 
     <form method="POST" 
-          action="<?= isset($reservatipo) ? '?url=reservatipo/edit&id=' . $reservatipo['id_tipo_reserva'] : '/?url=reservatipo/create' ?>">
+          action="<?= isset($reservatipo) ? '?url=reservatipo/edit&id=' . $reservatipo['id_tipo_reserva'] : '?url=reservatipo/create' ?>">
 
       <label for="descripcion">Descripción:</label><br>
       <textarea name="descripcion" id="descripcion" required><?= isset($reservatipo) ? htmlspecialchars($reservatipo['descripcion']) : '' ?></textarea>
