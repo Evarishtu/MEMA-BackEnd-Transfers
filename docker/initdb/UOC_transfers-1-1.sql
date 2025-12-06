@@ -265,6 +265,7 @@ INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor
 ALTER TABLE `transfer_vehiculo` CHANGE `Descripción` `descripcion` VARCHAR(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL; 
 
 -- Modificaciones de la tabla inicial transfer_reservass
+RENAME TABLE `mema_transfers_p3`.`tranfer_hotel` TO `mema_transfers_p3`.`transfer_hotel`; 
 ALTER TABLE `transfer_reservas` ADD `numero_vuelo_salida` VARCHAR(10) NOT NULL AFTER `fecha_vuelo_salida`, ADD `hora_recogida` TIME NOT NULL AFTER `numero_vuelo_salida`; 
 ALTER TABLE `transfer_reservas` CHANGE `fecha_entrada` `fecha_entrada` DATE NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_entrada` `hora_entrada` TIME NULL; 

@@ -5,7 +5,9 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Hotel;
 use App\Models\Viajero;
+use App\Models\TransferZona;
 use Illuminate\Support\Facades\Hash;
+
 
 class RegistroController extends Controller{
     public function index(){
@@ -27,8 +29,8 @@ class RegistroController extends Controller{
     }
     public function storeViajero(Request $request){
         $request->validate([
-            'email'        => 'required|email|unique:viajeros,email',
-            'password'     => 'required|min=4',
+            'email'        => 'required|email|unique:transfer_viajeros,email',
+            'password'     => 'required|min:4',
             'nombre'       => 'required',
             'apellido1'    => 'required',
             'apellido2'    => 'required',
@@ -51,15 +53,16 @@ class RegistroController extends Controller{
         return redirect()->route('login')->with('success', 'Viajero registrado correctamente');
     }
     public function registroHotel(){
-        return view('auth.registro.hotel');
+        $zonas = TransferZona::orderBy('descripcion')->get();
+        return view('auth.registro.hotel', compact('zonas'));
     }
     public function storeHotel(Request $request){
         $request->validate([
             'nombre'    => 'required',
-            'usuario'   => 'required|unique:hoteles,usuario',
-            'password'  => 'required|min=4',
-            'id_zona'   => 'nullable|numeric',
-            'comision'  => 'nullable|numeric|min=0|max=100',
+            'usuario'   => 'required|unique:transfer_hotel,usuario',
+            'password'  => 'required|min:4',
+            'id_zona'   => 'nullable|exists:transfer_zona,id_zona',
+            'comision'  => 'nullable|numeric|min:0|max:100',
         ]);
         Hotel::create([
             'nombre'   => $request->nombre,
@@ -75,12 +78,14 @@ class RegistroController extends Controller{
     }
     public function storeAdmin(Request $request){
         $request->validate([
-            'email'    => 'required|email|unique:admins,email',
-            'password' => 'required|min=4',
+            'email'    => 'required|email|unique:transfer_admin,email',
+            'password' => 'required|min:4',
+            'nombre' => 'required',
         ]);
         Admin::create([
             'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'nombre' => $request->nombre,
         ]);
         return redirect()->route('login')->with('success', 'Administrador registrado correctamente');
     }

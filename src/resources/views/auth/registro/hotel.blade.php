@@ -120,9 +120,17 @@
       <label>Nombre del hotel:</label>
       <input type="text" name="nombre" placeholder="Nombre del hotel" required>
 
-      <label>ID de zona (opcional):</label>
-      <input type="number" name="id_zona" placeholder="ID zona">
-
+      <label>ID de zona:</label>
+      <select name="id_zona">
+        <option value ="">--Selecciona una zona--</option>
+        @foreach($zonas as $zona)
+          <option value = "{{$zona->id_zona}}"
+            {{old('id_zona') == $zona->id_zona ? 'selected' : '' }}>
+            {{$zona->descripcion}}
+          </option>
+        @endforeach
+      </select>
+         
       <label>Comisión (%):</label>
       <input type="number" name="comision" placeholder="Ej. 10" min="0" max="100">
 
