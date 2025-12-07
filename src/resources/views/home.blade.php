@@ -149,12 +149,10 @@
         <ul>
           <li><a href="{{route('zona.index')}}">Gestión de zonas</a></li>
           <li><a href="{{route('zona.create')}}">Crear nueva zona</a></li>
-          <li><a href="#">Gestión de tipos de reserva</a></li>
-          <li><a href="#">Crear nuevo tipo de reserva</a></li>
-          <li><a href="#">Gestión de hoteles</a></li>
-          <li><a href="#">Crear nuevo hotel</a></li>
-          <li><a href="#">Gestión de vehículos</a></li>
-          <li><a href="#">Crear nuevo vehículo</a></li>
+          <li><a href="{{route('reservatipo.index')}}">Gestión de tipos de reserva</a></li>
+          <li><a href="{{route('reservatipo.create')}}">Crear nuevo tipo de reserva</a></li>
+          <li><a href="{{route('vehiculo.index')}}">Gestión de vehículos</a></li>
+          <li><a href="{{route('vehiculo.create')}}">Crear nuevo vehículo</a></li>
         </ul>
       </div>
     </div>
