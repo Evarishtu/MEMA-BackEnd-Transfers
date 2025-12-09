@@ -118,39 +118,43 @@
     .back:hover {
       text-decoration: underline;
     }
+
+    .alert-error {
+      background: rgba(255,0,0,0.3);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      color: #ffdddd;
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
 
   <div class="navbar">
     <div class="left">
-      <a href="{{url('/')}}"><span>🏠</span> Volver al inicio</a>
+      <a href="{{ url('/') }}"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-        <a href="{{route('registro.index')}}">Registrarse</a>
-      
+      <a href="{{ route('registro.index') }}">Registrarse</a>
     </div>
   </div>
 
   <div class="container">
     <h1>Iniciar sesión</h1>
 
-    <!-- 🔥 MENSAJE DE ERROR -->
-    <?php if (isset($_GET['error']) && $_GET['error'] == 1): ?>
-      <p style="
-            background: rgba(255,0,0,0.3); 
-            padding: 10px; 
-            border-radius: 8px; 
-            text-align: center; 
-            font-weight: bold; 
-            color: #ffdddd;
-            font-size: 15px;
-          ">
-        ❌ Usuario o contraseña incorrectos
+    {{-- Mensaje de error desde el controlador (back()->with('error', true)) --}}
+    @if(session('error'))
+      <p class="alert-error">
+        ❌ Usuario, contraseña o tipo de usuario incorrectos
       </p>
-    <?php endif; ?>
+    @endif
 
-    <form method="POST" action="{{route('login.attempt')}}">
+    <form method="POST" action="{{ route('login.attempt') }}">
+      @csrf
+
       <label>Email:</label>
       <input type="email" name="email" placeholder="tu email" required>
 
@@ -161,13 +165,13 @@
       <select name="rol" required>
         <option value="viajero">Cliente particular</option>
         <option value="hotel">Cliente corporativo (Hotel)</option>
-        <option value="administrador">Administrador</option>
+        <option value="admin">Administrador</option>
       </select>
 
       <button type="submit">Entrar</button>
     </form>
 
-    <a href="{{url('/')}}" class="back">⬅️ Volver a la página principal</a>
+    <a href="{{ url('/') }}" class="back">⬅️ Volver a la página principal</a>
   </div>
 
 </body>

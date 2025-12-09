@@ -27,5 +27,13 @@ class LoginController extends Controller{
         }
         return back()->with('error', true);
     }
+
+    public function logout(Request $request){
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
 }
 ?>

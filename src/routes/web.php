@@ -5,27 +5,51 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Controllers\TipoReservaController;
+use App\Http\Controllers\HotelController;
 use App\Http\Controllers\VehiculoController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
+//LOGIN ROUTES
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
 
+
+//REGISTOS
 Route::get('/registro', [RegistroController::class, 'index'])->name('registro.index');
 Route::post('/registro/seleccionar', [RegistroController::class, 'seleccionar'])->name('registro.seleccionar');
 
+//REG - VIAJERO
 Route::get('/registro/viajero', [RegistroController::class, 'registroViajero'])->name('registro.viajero');
 Route::post('/registro/viajero', [RegistroController::class, 'storeViajero'])->name('registro.viajero.store');
 
+//REG - HOTEL
 Route::get('/registro/hotel', [RegistroController::class, 'registroHotel'])->name('registro.hotel');
 Route::post('/registro/hotel', [RegistroController::class, 'storeHotel'])->name('registro.hotel.store');
 
+//REG - ADMIN
 Route::get('/registro/admin', [RegistroController::class, 'registroAdmin'])->name('registro.admin');
 Route::post('/registro/admin', [RegistroController::class, 'storeAdmin'])->name('registro.admin.store');
+Route::prefix('admin')->middleware('auth:admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+    //INFORMACIÓN PERSONAL
+    Route::get('/info', [AdminController::class, 'informacionPersonal'])->name('admin.info');                
+    Route::put('/info', [AdminController::class, 'actualizarInformacionPersonal'])->name('admin.info.update');
+    // RESERVAS
+    Route::prefix('admin')->middleware('auth:admin')->group(function () {
+        Route::get('/reservas', [AdminController::class, 'listarReservas'])->name('admin.reservas.index');
+        Route::get('/reservas/{id}', [AdminController::class, 'verReserva'])->name('admin.reservas.ver');
+        Route::get('/reservas/{id}/editar', [AdminController::class, 'editarReserva'])->name('admin.reservas.editar');
+        Route::put('/reservas/{id}', [AdminController::class, 'actualizarReserva'])->name('admin.reservas.actualizar');
+        Route::delete('/reservas/{id}', [AdminController::class, 'cancelarReserva'])->name('admin.reservas.cancelar');
+    });
+});
 
+//ZONAS
 Route::get('/zona', [ZonaController::class, 'index'])->name('zona.index');
 Route::get('/zona/create', [ZonaController::class, 'create'])->name('zona.create');
 Route::post('/zona/create', [ZonaController::class, 'store'])->name('zona.store');
@@ -33,16 +57,26 @@ Route::get('/zona/{id}/edit', [ZonaController::class, 'edit'])->name('zona.edit'
 Route::post('/zona{id}/edit', [ZonaController::class, 'update'])->name('zona.update');
 Route::delete('/zona/{id}', [ZonaController::class, 'destroy'])->name('zona.destroy');
 
+//TIPO RESERVA
 Route::get('/reservatipo', [TipoReservaController::class, 'index'])->name('reservatipo.index');
 Route::get('/reservatipo/create', [TipoReservaController::class, 'create'])->name('reservatipo.create');
 Route::post('/reservatipo', [TipoReservaController::class, 'store'])->name('reservatipo.store');
 Route::get('/reservatipo/{id}/edit', [TipoReservaController::class, 'edit'])->name('reservatipo.edit');
-Route::post('/reservatipo{id}/edit', [TipoReservaController::class, 'update'])->name('reservatipo.update');
+Route::put('/reservatipo/{id}', [TipoReservaController::class, 'update'])->name('reservatipo.update');
 Route::delete('/reservatipo/{id}', [TipoReservaController::class, 'destroy'])->name('reservatipo.destroy');
 
+//HOTELES
+Route::get('/hotel', [HotelController::class, 'index'])->name('hotel.index');
+Route::get('/hotel/create', [HotelController::class, 'create'])->name('hotel.create');
+Route::post('/hotel', [HotelController::class, 'store'])->name('hotel.store');
+Route::get('/hotel/{id}/edit', [HotelController::class, 'edit'])->name('hotel.edit');
+Route::put('/hotel/{id}', [HotelController::class, 'update'])->name('hotel.update');
+Route::delete('/hotel/{id}', [HotelController::class, 'destroy'])->name('hotel.destroy');
+
+//VEHÍCULOS
 Route::get('/vehiculo', [VehiculoController::class, 'index'])->name('vehiculo.index');
 Route::get('/vehiculo/create', [VehiculoController::class, 'create'])->name('vehiculo.create');
-Route::post('/vehiculo', [VehiculoController::class, 'store'])->name('vehiculo.store');
+Route::post('/vehiculo/store', [VehiculoController::class, 'store'])->name('vehiculo.store');
 Route::get('/vehiculo/{id}/edit', [VehiculoController::class, 'edit'])->name('vehiculo.edit');
 Route::put('/vehiculo/{id}', [VehiculoController::class, 'update'])->name('vehiculo.update');
 Route::delete('/vehiculo/{id}', [VehiculoController::class, 'destroy'])->name('vehiculo.destroy');

@@ -33,22 +33,6 @@
       gap: 6px;
     }
 
-    .navbar .right a {
-      padding: 8px 16px;
-      background: #3274ff;
-      color: #fff;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: bold;
-      transition: 0.2s;
-      margin-left: 8px;
-    }
-
-    .navbar .right a:hover {
-      background: #195dff;
-    }
-
     .container {
       max-width: 1200px;
       margin: 50px auto;
@@ -58,7 +42,6 @@
     }
 
     h2 {
-      margin-top: 0;
       font-size: 30px;
     }
 
@@ -70,6 +53,7 @@
       border-radius: 8px;
       text-decoration: none;
       font-weight: bold;
+      transition: 0.2s;
     }
 
     .btn:hover {
@@ -89,7 +73,6 @@
       background: rgba(255,255,255,0.2);
       padding: 12px;
       text-align: left;
-      font-size: 15px;
     }
 
     td {
@@ -101,16 +84,33 @@
       border-bottom: none;
     }
 
+
+    /* ESTILO ORIGINAL PARA BOTONES EDITAR Y ELIMINAR */
     .acciones a {
       margin-right: 12px;
       color: #aee3ff;
       text-decoration: none;
       font-weight: bold;
+      transition: 0.2s;
     }
 
     .acciones a:hover {
       text-decoration: underline;
     }
+
+    .acciones button {
+      color: #aee3ff;
+      background: none;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .acciones button:hover {
+      text-decoration: underline;
+    }
+
   </style>
 
 </head>
@@ -118,11 +118,7 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="{{route('home')}}"><span>🏠</span> Volver al inicio</a>
-    </div>
-    <div class="right">
-      <a href="{{route('login')}}">Iniciar sesión</a>
-      <a href="{{route('registro.index')}}">Registrarse</a>
+      <a href="/">🏠 Volver al inicio</a>
     </div>
   </div>
 
@@ -130,11 +126,12 @@
 
     <h2>🚗 Gestión de Vehículos</h2>
 
-    <a href="{{route('vehiculo.create')}}" class="btn">➕ Nuevo vehículo</a>
+    <a href="{{ route('vehiculo.create') }}" class="btn">➕ Nuevo vehículo</a>
 
-    @if($vehiculos->isEmpty())
+    @if ($vehiculos->isEmpty())
       <p style="margin-top:20px;">No hay vehículos registrados todavía.</p>
     @else
+
       <table>
         <thead>
           <tr>
@@ -145,23 +142,36 @@
         </thead>
 
         <tbody>
-          @foreach ($vehiculos as $vehiculo)
+          @foreach ($vehiculos as $v)
             <tr>
-              <td>{{$vehiculo->id_vehiculo}}</td>
-              <td>{{$vehiculo->descripcion}}</td>
+              <td>{{ $v->id_vehiculo }}</td>
+              <td>{{ $v->descripcion }}</td>
+
               <td class="acciones">
-                <a href="{{route('vehiculo.edit', $vehiculo->id_vehiculo)}}">✏️ Editar</a>
-                <form action = "{{route('vehiculo.destroy', $vehiculo->id_vehiculo)}}" method = "POST" style="display:inline">
-                    @csrf
-                    @method('DELETE')
-                   <button type="submit" onclick="return confirm('¿Seguro que quieres eliminar este vehículo?');">🗑️ Eliminar</button>
+
+                <!-- Botón EDITAR (idéntico a PHP) -->
+                <a href="{{ route('vehiculo.edit', $v->id_vehiculo) }}">✏️ Editar</a>
+
+                <!-- Botón ELIMINAR (idéntico a PHP) -->
+                <form action="{{ route('vehiculo.destroy', $v->id_vehiculo) }}"
+                      method="POST"
+                      style="display:inline-block">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit"
+                          onclick="return confirm('¿Seguro que quieres eliminar este vehículo?');">
+                    🗑️ Eliminar
+                  </button>
                 </form>
+
               </td>
             </tr>
           @endforeach
         </tbody>
       </table>
+
     @endif
+
   </div>
 
 </body>

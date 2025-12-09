@@ -1,48 +1,67 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers;
 
+use App\Models\Vehiculo;
 use Illuminate\Http\Request;
-use App\Models\TransferVehiculo;
-use Illuminate\Support\Facades\Hash;
 
-class VehiculoController extends Controller{
-    public function index(){
-        $vehiculos = TransferVehiculo::orderBy('id_vehiculo')->get();
+class VehiculoController extends Controller
+{
+    // LISTAR VEHÍCULOS
+    public function index()
+    {
+        $vehiculos = Vehiculo::orderBy('id_vehiculo')->get();
         return view('vehiculo.index', compact('vehiculos'));
     }
-    public function create(){
+
+    // FORMULARIO CREAR
+    public function create()
+    {
         return view('vehiculo.form');
     }
-    public function store(Request $request){
+
+    // GUARDAR NUEVO VEHÍCULO
+    public function store(Request $request)
+    {
         $request->validate([
-            'descripcion' => 'required|max:225',
-            'email_conductor' => 'nullable|email',
-            'password' => 'required|min:4',
+            'descripcion' => 'required',
         ]);
-        TransferVehiculo::create([
+
+        Vehiculo::create([
             'descripcion' => $request->descripcion,
             'email_conductor' => $request->email_conductor,
-            'password' => $request->password ? Hash::make($request->password) : null,
+            'password' => $request->password_conductor
         ]);
-        return redirect()->route('vehiculo.index')->with('success', 'vehiculo creado correctamente');
+
+        return redirect()->route('vehiculo.index');
     }
-    public function edit($id){
-        $vehiculo = TransferVehiculo::findOrFail($id);
+
+    // FORMULARIO EDITAR
+    public function edit($id)
+    {
+        $vehiculo = Vehiculo::findOrFail($id);
         return view('vehiculo.form', compact('vehiculo'));
     }
-    public function update(Request $request, $id){
+
+    // ACTUALIZAR
+    public function update(Request $request, $id)
+    {
         $request->validate([
-            'descripcion' => 'required|max:255',
+            'descripcion' => 'required'
         ]);
-        $vehiculo = TransferVehiculo::findOrFail($id);
+
+        $vehiculo = Vehiculo::findOrFail($id);
         $vehiculo->update([
-            'descripcion' => $request->descripcion,
+            'descripcion' => $request->descripcion
         ]);
-        return redirect()->route('vehiculo.index')->with('success', 'Vehiculo actualizado correctamente');
+
+        return redirect()->route('vehiculo.index');
     }
-    public function destroy($id){
-        TransferVehiculo::destroy($id);
-        return redirect()->route('vehiculo.index')->with('success', 'Vehiculo eliminado correctamente');
+
+    // ELIMINAR
+    public function destroy($id)
+    {
+        Vehiculo::destroy($id);
+        return redirect()->route('vehiculo.index');
     }
 }
-?>

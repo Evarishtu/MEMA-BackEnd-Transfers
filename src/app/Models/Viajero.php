@@ -8,7 +8,8 @@ class Viajero extends Authenticatable
 {
     protected $table = 'transfer_viajeros';
     protected $primaryKey = 'id_viajero';
-    public $timestamps = false; 
+    public $timestamps = false;
+
     protected $fillable = [
         'email',
         'password',
@@ -18,6 +19,13 @@ class Viajero extends Authenticatable
         'direccion',
         'codigoPostal',
         'pais',
-        'ciudad',
+        'ciudad'
     ];
+
+    protected $hidden = ['password'];
+
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class, 'email_cliente', 'email');
+    }
 }

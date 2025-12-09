@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>{{isset($reservatipo) ? 'Editar tipo de reserva' : 'Crear tipo de reserva'}}</title>
+  <title>{{ isset($reservatipo) ? 'Editar tipo de reserva' : 'Crear tipo de reserva' }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -33,81 +33,67 @@
       gap: 6px;
     }
 
-    .navbar .right a {
-      padding: 8px 16px;
-      background: #3274ff;
-      color: #fff;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: bold;
-      transition: 0.2s;
-      margin-left: 8px;
-    }
-
-    .navbar .right a:hover {
-      background: #195dff;
-    }
-
     .container {
       max-width: 800px;
       margin: 50px auto;
-      background: rgba(0,0,0,0.25);
-      border-radius: 20px;
       padding: 40px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
     }
 
     h2 {
       margin-top: 0;
-      font-size: 30px;
-    }
-
-    form {
-      margin-top: 20px;
+      font-size: 28px;
     }
 
     label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
       font-weight: bold;
-      font-size: 15px;
     }
 
-    textarea {
+    input[type="text"] {
       width: 100%;
-      height: 100px;
-      margin-top: 8px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      border: none;
       padding: 12px;
-      font-size: 15px;
-      resize: vertical;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 20px;
+      font-size: 16px;
     }
 
-    .btn, button {
-      display: inline-block;
+    .btn {
       padding: 10px 18px;
       background: #3274ff;
       color: white;
-      border: none;
       border-radius: 8px;
       text-decoration: none;
-      cursor: pointer;
       font-weight: bold;
       transition: 0.2s;
-      margin-right: 10px;
+      border: none;
+      cursor: pointer;
     }
 
-    .btn:hover, button:hover {
+    .btn:hover {
       background: #195dff;
     }
 
-    .error {
-      background: rgba(255, 0, 0, 0.3);
-      color: #ffdddd;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 20px;
+    .back-link {
+      margin-left: 15px;
+      color: #aee3ff;
+      text-decoration: none;
       font-weight: bold;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .error-box {
+      background: rgba(255, 0, 0, 0.25);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 15px;
     }
   </style>
 
@@ -116,35 +102,43 @@
 
   <div class="navbar">
     <div class="left">
-      <a href="{{route('home')}}"><span>🏠</span> Volver al inicio</a>
-    </div>
-    <div class="right">
-      <a href="{{route('login')}}">Iniciar sesión</a>
-      <a href="{{route('registro.index')}}">Registrarse</a>
+      <a href="{{ route('reservatipo.index') }}"><span>📋</span> Volver a la lista</a>
     </div>
   </div>
 
   <div class="container">
-
-    <h2>{{isset($reservatipo) ? '✏️ Editar tipo de reserva' : '➕ Crear tipo de reserva'}}</h2>
+    <h2>
+      {{ isset($reservatipo) ? '✏️ Editar tipo de reserva' : '➕ Crear nuevo tipo de reserva' }}
+    </h2>
 
     @if ($errors->any())
-      <div class="error">
+      <div class="error-box">
         <ul>
-            @foreach($errors->all() as $err)
-            <li>{{$err}}</li>
-            @endforeach
+          @foreach ($errors->all() as $e)
+            <li>{{ $e }}</li>
+          @endforeach
         </ul>
       </div>
     @endif
-    <form method="POST" 
-          action = "{{isset($reservatipo) ? route('reservatipo.update', $reservatipo->id_tipo_reserva): route('reservatipo.store')}}">
-        @csrf
-      <label for="descripcion">Descripción:</label><br>
-      <textarea name="descripcion" id="descripcion" required>{{old('description', $reservatipo->descripciom ?? '')}}</textarea>
 
-      <button type="submit">💾 Guardar</button>
-      <a href="{{route('reservatipo.index')}}" class="btn">⬅️ Volver</a>
+    <form method="POST"
+          action="{{ isset($reservatipo) ? route('reservatipo.update', $reservatipo->id_tipo_reserva) : route('reservatipo.store') }}">
+
+      @csrf
+
+      @if(isset($reservatipo))
+        @method('PUT')
+      @endif
+
+      <label>Descripción del tipo de reserva:</label>
+      <input type="text" name="descripcion"
+             value="{{ $reservatipo->descripcion ?? old('descripcion') }}"
+             required>
+
+      <button type="submit" class="btn">Guardar</button>
+
+      <a href="{{ route('reservatipo.index') }}" class="back-link">Volver</a>
+
     </form>
 
   </div>
