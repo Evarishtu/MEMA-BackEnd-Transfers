@@ -33,7 +33,7 @@
       gap: 6px;
     }
 
-    .navbar .right a {
+    .right a {
       padding: 8px 16px;
       margin-left: 10px;
       background: #3274ff;
@@ -44,7 +44,7 @@
       transition: 0.2s;
     }
 
-    .navbar .right a:hover {
+    .right a:hover {
       background: #195dff;
     }
 
@@ -70,6 +70,7 @@
       text-decoration: none;
       font-weight: bold;
       transition: 0.2s;
+      margin-top: 10px;
     }
 
     .btn:hover {
@@ -89,6 +90,7 @@
       background: rgba(255, 255, 255, 0.2);
       padding: 12px;
       text-align: left;
+      color: #fff;
     }
 
     td {
@@ -106,18 +108,17 @@
     .acciones a:hover {
       text-decoration: underline;
     }
-
   </style>
+
 </head>
 <body>
 
   <div class="navbar">
     <div class="left">
-      <a href="{{route('home')}}"><span>🏠</span> Volver al inicio</a>
+      <a href="{{ url('/') }}"><span>🏠</span> Volver al inicio</a>
     </div>
     <div class="right">
-      <a href="{{route('login')}}">Iniciar sesión</a>
-      <a href="/{{route('registro.index')}}">Registrarse</a>
+      <a href="{{ route('reservatipo.create') }}">Nuevo tipo de reserva</a>
     </div>
   </div>
 
@@ -125,10 +126,11 @@
 
     <h2>📍 Gestión de tipo de reservas</h2>
 
-    <a href="{{route('reservatipo.create')}}" class="btn">➕ Nuevo tipo de reserva</a>
+    <a href="{{ route('reservatipo.create') }}" class="btn">➕ Nuevo tipo de reserva</a>
 
-    @if ($reservas->isEmpty())
-      <p style="margin-top:20px;">Todavía no hay tipo de reservas registrado.</p>
+    @if ($reservatipo->isEmpty())
+      <p style="margin-top:20px;">Todavía no hay tipos de reserva registrados.</p>
+
     @else
       <table>
         <thead>
@@ -140,19 +142,22 @@
         </thead>
 
         <tbody>
-          @foreach ($reservas as $r)
+          @foreach ($reservatipo as $r)
             <tr>
-              <td>{{$r->id_tipo_reserva}}</td>
-              <td>{{$r->descripcion}}</td>
+              <td>{{ $r->id_tipo_reserva }}</td>
+              <td>{{ $r->descripcion }}</td>
               <td class="acciones">
-                <a href="{{route('reservatipo.edit', $r->id_tipo_reserva)}}">✏️ Editar</a>
-                <form action = "{{route('reservatipo.destroy', $r->id_tipo_reserva)}}"
-                    method="POST" style ="display:inline">
-                    @csrf
-                    @method('DELETE')
-                   <button onclick="return confirm('¿Seguro que quieres eliminar este tipo de reserva?');">
+                <a href="{{ route('reservatipo.edit', $r->id_tipo_reserva) }}">✏️ Editar</a>
+
+                <form action="{{ route('reservatipo.destroy', $r->id_tipo_reserva) }}"
+                      method="POST" style="display:inline-block">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit"
+                      style="background:none;border:none;color:#aee3ff;cursor:pointer;font-weight:bold"
+                      onclick="return confirm('¿Seguro que quieres eliminar este tipo de reserva?');">
                     🗑️ Eliminar
-                   </button>
+                  </button>
                 </form>
               </td>
             </tr>
@@ -160,6 +165,7 @@
         </tbody>
       </table>
     @endif
+
   </div>
 
 </body>

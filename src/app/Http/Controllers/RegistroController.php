@@ -73,15 +73,20 @@ class RegistroController extends Controller{
         ]);
         return redirect()->route('login')->with('success', 'Hotel registrado correctamente');
     }
+
+
     public function registroAdmin(){
         return view('auth.registro.admin');
     }
+
     public function storeAdmin(Request $request){
+
         $request->validate([
             'email'    => 'required|email|unique:transfer_admin,email',
-            'password' => 'required|min:4',
+            //'password' => 'required|min:4',
             'nombre' => 'required',
         ]);
+
         Admin::create([
             'email'    => $request->email,
             'password' => Hash::make($request->password),
@@ -90,6 +95,4 @@ class RegistroController extends Controller{
         return redirect()->route('login')->with('success', 'Administrador registrado correctamente');
     }
 }
-
-
 ?>

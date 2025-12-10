@@ -105,31 +105,59 @@
 
 <body>
 
+  <!-- NAVBAR -->
   <div class="navbar">
-    <a href="{{route('registro.index')}}">⬅️ Volver al inicio del registro</a>
+    <a href="{{ route('registro.index') }}">⬅️ Volver al inicio del registro</a>
   </div>
 
   <div class="container">
 
     <h2>🛡️ Registro Administrador</h2>
 
-    <form method="POST" action="{{route('registro.admin.store')}}">
-        @csrf
+    <!-- BLOQUE DE ERRORES DE VALIDACIÓN -->
+    @if ($errors->any())
+      <div style="background: #ffdddd; color:#900; padding: 15px; 
+                  border-radius: 10px; margin-bottom: 20px;">
+        <strong>Por favor corrige los siguientes errores:</strong>
+        <ul style="margin-top:10px; padding-left: 20px;">
+          @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
+
+    <!-- FORMULARIO -->
+    <form method="POST" action="{{ route('registro.admin.store') }}">
+      @csrf
+
       <input type="hidden" name="rol" value="admin">
 
       <label>Email:</label>
-      <input type="email" name="email" placeholder="tu email" required>
+      <input type="email"
+             name="email"
+             placeholder="tu email"
+             value="{{ old('email') }}"
+             required>
 
       <label>Contraseña:</label>
-      <input type="password" name="password" placeholder="contraseña" required>
+      <input type="password"
+             name="password"
+             placeholder="mínimo 4 caracteres"
+             required>
 
       <label>Nombre:</label>
-      <input type="text" name="nombre" placeholder="tu nombre" required>
+      <input type="text"
+             name="nombre"
+             placeholder="tu nombre"
+             value="{{ old('nombre') }}"
+             required>
 
       <button type="submit">Registrar</button>
     </form>
 
-<a href="{{route('registro.index')}}" class="back">⬅️ Volver al inicio</a>
+    <a href="{{ route('registro.index') }}" class="back">⬅️ Volver al inicio</a>
+
   </div>
 
 </body>
