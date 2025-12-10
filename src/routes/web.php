@@ -34,19 +34,31 @@ Route::post('/registro/hotel', [RegistroController::class, 'storeHotel'])->name(
 Route::get('/registro/admin', [RegistroController::class, 'registroAdmin'])->name('registro.admin');
 Route::post('/registro/admin', [RegistroController::class, 'storeAdmin'])->name('registro.admin.store');
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
+    //DASHBOARD
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    //LOGOUT
     Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
-    //INFORMACIÓN PERSONAL
+    //INFO PERSONAL
     Route::get('/info', [AdminController::class, 'informacionPersonal'])->name('admin.info');                
     Route::put('/info', [AdminController::class, 'actualizarInformacionPersonal'])->name('admin.info.update');
-    // RESERVAS
-    Route::prefix('admin')->middleware('auth:admin')->group(function () {
-        Route::get('/reservas', [AdminController::class, 'listarReservas'])->name('admin.reservas.index');
-        Route::get('/reservas/{id}', [AdminController::class, 'verReserva'])->name('admin.reservas.ver');
-        Route::get('/reservas/{id}/editar', [AdminController::class, 'editarReserva'])->name('admin.reservas.editar');
-        Route::put('/reservas/{id}', [AdminController::class, 'actualizarReserva'])->name('admin.reservas.actualizar');
-        Route::delete('/reservas/{id}', [AdminController::class, 'cancelarReserva'])->name('admin.reservas.cancelar');
-    });
+    //CREAR RESERVA – Paso 1
+    Route::get('/reservas/crear', [AdminController::class, 'crearReserva'])->name('admin.reservas.crear');
+    //CREAR RESERVA – Paso 2
+    Route::match(['GET', 'POST'], '/reservas/datos', [AdminController::class, 'crearReservaDatos'])->name('admin.reservas.datos');
+    //CREAR RESERVA – Paso 3 (guardar)
+    Route::post('/reservas/guardar', [AdminController::class, 'guardarReserva'])->name('admin.reservas.guardar');
+    Route::get('/reservas/confirmacion', [AdminController::class, 'confirmacionReserva'])->name('admin.reservas.confirmacion');
+    //CREAR VIAJERO DESDE ADMIN
+    Route::post('/viajero/registrar', [AdminController::class, 'registrarViajeroDesdeAdmin'])->name('admin.viajero.store');
+    //LISTADO RESERVAS
+    Route::get('/reservas', [AdminController::class, 'listarReservas'])->name('admin.reservas.index');
+    Route::get('/reservas/{id}', [AdminController::class, 'verReserva'])->name('admin.reservas.ver');
+    Route::get('/reservas/{id}/editar', [AdminController::class, 'editarReserva'])->name('admin.reservas.editar');
+    Route::put('/reservas/{id}', [AdminController::class, 'actualizarReserva'])->name('admin.reservas.actualizar');
+    Route::delete('/reservas/{id}', [AdminController::class, 'cancelarReserva'])->name('admin.reservas.cancelar');
+    //CALENDARIO
+    Route::get('/calendario', [AdminController::class, 'calendario'])->name('admin.calendario');
+
 });
 
 //ZONAS

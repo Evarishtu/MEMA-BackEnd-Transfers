@@ -12,8 +12,11 @@ class TipoReserva extends Model
 
     protected $fillable = ['descripcion'];
 
-    public function reservas()
-    {
+    public function reservas(){
         return $this->hasMany(Reserva::class, 'id_tipo_reserva', 'id_tipo_reserva');
+    }
+
+    public static function TipoReservaDesc($id_tipo_reserva){
+        return self::where('id_tipo_reserva', $id_tipo_reserva)->value('descripcion');
     }
 }

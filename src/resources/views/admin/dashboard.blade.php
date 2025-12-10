@@ -90,8 +90,8 @@
         </h1>
 
         <ul>
-            <li><a href="#">📅 Calendario de reservas</a></li>
-            <li><a href="#">🆕 Crear nueva reserva</a></li>
+            <li><a href="{{ route('admin.calendario') }}">📅 Calendario de reservas</a></li>
+            <li><a href="{{ route('admin.reservas.crear') }}">🆕 Crear nueva reserva</a></li>
             <li><a href="{{ route('admin.reservas.index') }}">📋 Consultar y gestionar reservas</a></li>
             <li><a href="{{ route('admin.info') }}">👥 Información personal</a></li>
         </ul>
