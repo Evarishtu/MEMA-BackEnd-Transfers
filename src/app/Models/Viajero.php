@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Reserva;
 
 class Viajero extends Authenticatable
 {
@@ -26,6 +27,6 @@ class Viajero extends Authenticatable
 
     public function reservas()
     {
-        return $this->hasMany(Reserva::class, 'email_cliente', 'email');
+        return $this->hasMany(Reserva::class, 'id_viajero', 'id_viajero');
     }
 }
