@@ -8,6 +8,7 @@ use App\Http\Controllers\TipoReservaController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ViajeroController;
 
 Route::get('/', function () {
     return view('home');
@@ -25,6 +26,19 @@ Route::post('/registro/seleccionar', [RegistroController::class, 'seleccionar'])
 //REG - VIAJERO
 Route::get('/registro/viajero', [RegistroController::class, 'registroViajero'])->name('registro.viajero');
 Route::post('/registro/viajero', [RegistroController::class, 'storeViajero'])->name('registro.viajero.store');
+Route::prefix('viajero')->middleware('auth:viajero')->group(function () {
+    Route::get('/dashboard', [ViajeroController::class, 'dashboard'])->name('viajero.dashboard');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('viajero.logout');
+    // INFORMACIÓN PERSONAL
+    Route::get('/info', [ViajeroController::class, 'informacionPersonal'])->name('viajero.info');
+    Route::put('/info', [ViajeroController::class, 'actualizarInformacionPersonal'])->name('viajero.info.update');
+    // RESERVAS
+    Route::get('/reservas', [ViajeroController::class, 'listarReservas'])->name('viajero.reservas.index');
+    Route::get('/reservas/crear', [ViajeroController::class, 'crearReserva'])->name('viajero.reservas.crear');
+    Route::post('/reservas', [ViajeroController::class, 'guardarReserva'])->name('viajero.reservas.store');
+    Route::get('/reservas/{id}', [ViajeroController::class, 'verReserva'])->name('viajero.reservas.ver');
+    Route::delete('/reservas/{id}', [ViajeroController::class, 'cancelarReserva'])->name('viajero.reservas.cancelar');
+});
 
 //REG - HOTEL
 Route::get('/registro/hotel', [RegistroController::class, 'registroHotel'])->name('registro.hotel');
