@@ -325,12 +325,44 @@ class AdminController extends Controller
     // ===============================
     // LISTAR RESERVAS
     // ===============================
-    public function listarReservas(Request $request)
-    {
-        $reservas = Reserva::with(['hotel', 'tipo'])
-            ->orderBy('fecha_reserva', 'desc')
-            ->get();
+    public function listarReservas(Request $request){
+        $query = Reserva::with(['hotel', 'tipo'])
+            ->orderBy('fecha_reserva', 'desc');
 
+        // FILTRO: Desde
+        if ($request->filled('desde')) {
+            $query->whereDate('fecha_reserva', '>=', $request->desde);
+        }
+
+        // FILTRO: Hasta
+        if ($request->filled('hasta')) {
+            $query->whereDate('fecha_reserva', '<=', $request->hasta);
+        }
+
+        // FILTRO: Tipo de reserva
+        if ($request->filled('tipo')) {
+            $query->where('id_tipo_reserva', $request->tipo);
+        }
+
+        // FILTRO: Hotel
+        if ($request->filled('hotel')) {
+            $query->where('id_hotel', $request->hotel);
+        }
+
+        // FILTRO: Búsqueda general
+        if ($request->filled('q')) {
+            $q = $request->q;
+
+            $query->where(function ($sub) use ($q) {
+                $sub->where('localizador', 'LIKE', "%$q%")
+                    ->orWhere('email_cliente', 'LIKE', "%$q%");
+            });
+        }
+
+        // Obtener resultados
+        $reservas = $query->get();
+
+        // Datos para selects de filtros
         $tipos = TipoReserva::all();
         $hoteles = Hotel::all();
 
@@ -338,13 +370,14 @@ class AdminController extends Controller
     }
 
 
+
     // ===============================
     // VER RESERVA
     // ===============================
-    public function verReserva($id)
-    {
-        $reserva = Reserva::findOrFail($id);
-        return view('admin.reservas.ver', compact('reserva'));
+    public function verReserva($id){
+        $reserva = Reserva::with(['hotel', 'tipo_reserva', 'vehiculo'])->findOrFail($id);
+
+        return view('admin.ver', compact('reserva'));
     }
 
     // ===============================
@@ -357,7 +390,7 @@ class AdminController extends Controller
         $vehiculos = Vehiculo::all();
         $tipos = TipoReserva::all();
 
-        return view('admin.reservas.editar', compact('reserva', 'hoteles', 'vehiculos', 'tipos'));
+        return view('admin.editar', compact('reserva', 'hoteles', 'vehiculos', 'tipos'));
     }
 
     public function actualizarReserva(Request $request, $id)
@@ -376,8 +409,7 @@ class AdminController extends Controller
     public function cancelarReserva($id)
     {
         Reserva::destroy($id);
-        return redirect()->route('admin.reservas.listar')
-            ->with('success', 'Reserva eliminada.');
+        return redirect()->route('admin.reservas.index')->with('success', 'Reserva eliminada.');
     }
 
     // ===============================
