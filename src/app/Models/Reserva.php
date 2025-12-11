@@ -35,28 +35,27 @@ class Reserva extends Model
     ];
 
     // ===== RELACIONES =====
-    public function hotel()
-    {
+    public function hotel(){
         return $this->belongsTo(Hotel::class, 'id_hotel', 'id_hotel');
     }
 
-    public function tipo()
-    {
+    public function tipo(){
         return $this->belongsTo(TipoReserva::class, 'id_tipo_reserva', 'id_tipo_reserva');
     }
 
-    public function viajero()
-    {
+    public function tipo_reserva(){
+        return $this->belongsTo(TipoReserva::class, 'id_tipo_reserva', 'id_tipo_reserva');
+    }
+
+    public function viajero(){
         return $this->belongsTo(Viajero::class, 'email_cliente', 'email');
     }
 
-    public function vehiculo()
-    {
+    public function vehiculo(){
         return $this->belongsTo(Vehiculo::class, 'id_vehiculo', 'id_vehiculo');
     }
 
-    public function zona()
-    {
+    public function zona(){
         return $this->belongsTo(TransferZona::class, 'id_destino', 'id_zona');
     }
 

@@ -116,7 +116,7 @@
 
     <!-- BOTÓN VOLVER AL PANEL -->
     <a href="{{ route('admin.dashboard') }}" class="btn-volver">
-        ← Volver al panel
+        Volver al panel
     </a>
 
 </div>
