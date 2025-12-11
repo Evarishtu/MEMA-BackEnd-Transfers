@@ -62,18 +62,35 @@
             margin-left: 5px;
         }
 
+        .filtros-acciones {
+            margin-top: 15px;
+        }
+
         button {
             background: #007bff;
             border: none;
-            padding: 10px 18px;
+            padding: 10px 20px;
             border-radius: 8px;
             color: #fff;
             cursor: pointer;
             font-weight: bold;
+            margin-right: 10px;
         }
-
         button:hover {
             background: #0056b3;
+        }
+
+        .btn-limpiar {
+            background: #555;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-limpiar:hover {
+            background: #333;
         }
 
         .table-container {
@@ -108,9 +125,57 @@
             background: rgba(0, 150, 200, 0.20);
         }
 
-        .acciones a, .acciones form {
+        tr {
+            border-bottom: 1px solid rgba(0,0,0,0.15);
+        }
+
+        .btn-accion {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            margin-right: 6px;
             display: inline-block;
         }
+
+        .btn-ver { background: #1e88e5; }
+        .btn-ver:hover { background: #1565c0; }
+
+        .btn-editar { background: #43a047; }
+        .btn-editar:hover { background: #2e7d32; }
+
+        .btn-cancelar {
+            background: #e53935;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-cancelar:hover {
+            background: #b71c1c;
+        }
+
+        /* --------------------------- */
+        /* Botón VOLVER AL PANEL       */
+        /* --------------------------- */
+        .btn-volver {
+            display: inline-block;
+            margin-top: 30px;
+            background: #003e60;
+            padding: 12px 22px;
+            color: #fff;
+            border-radius: 10px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .btn-volver:hover {
+            background: #002b44;
+        }
+
     </style>
 </head>
 
@@ -140,8 +205,7 @@
                 <select name="tipo">
                     <option value="">(Todos)</option>
                     @foreach($tipos as $t)
-                        <option value="{{ $t->id_tipo_reserva }}"
-                            {{ request('tipo') == $t->id_tipo_reserva ? 'selected' : '' }}>
+                        <option value="{{ $t->id_tipo_reserva }}" {{ request('tipo') == $t->id_tipo_reserva ? 'selected' : '' }}>
                             {{ $t->descripcion }}
                         </option>
                     @endforeach
@@ -153,8 +217,7 @@
                 <select name="hotel">
                     <option value="">(Todos)</option>
                     @foreach($hoteles as $h)
-                        <option value="{{ $h->id_hotel }}"
-                            {{ request('hotel') == $h->id_hotel ? 'selected' : '' }}>
+                        <option value="{{ $h->id_hotel }}" {{ request('hotel') == $h->id_hotel ? 'selected' : '' }}>
                             {{ $h->nombre }}
                         </option>
                     @endforeach
@@ -166,12 +229,15 @@
                 <input type="text" name="q" value="{{ request('q') }}" placeholder="Localizador o email">
             </label>
 
-            <button type="submit">Aplicar</button>
-            <a href="{{ route('admin.reservas.index') }}">Limpiar</a>
+            <div class="filtros-acciones">
+                <button type="submit">Aplicar</button>
+                <a class="btn-limpiar" href="{{ route('admin.reservas.index') }}">Limpiar</a>
+            </div>
+
         </fieldset>
     </form>
 
-    <!-- TABLA DE RESULTADOS -->
+    <!-- TABLA -->
     <div class="table-container">
         <table>
             <thead>
@@ -187,41 +253,39 @@
             </thead>
 
             <tbody>
-                @forelse($reservas as $r)
-                    <tr>
-                        <td>{{ $r->localizador }}</td>
-                        <td>{{ $r->fecha_reserva }}</td>
-                        <td>{{ $r->tipo->descripcion }}</td>
-                        <td>{{ $r->hotel->nombre }}</td>
-                        <td>{{ $r->email_cliente }}</td>
-                        <td>{{ $r->num_viajeros }}</td>
+            @forelse($reservas as $r)
+                <tr>
+                    <td>{{ $r->localizador }}</td>
+                    <td>{{ $r->fecha_reserva }}</td>
+                    <td>{{ $r->tipo->descripcion }}</td>
+                    <td>{{ $r->hotel->nombre }}</td>
+                    <td>{{ $r->email_cliente }}</td>
+                    <td>{{ $r->num_viajeros }}</td>
 
-                        <td class="acciones">
-                            <a href="{{ route('admin.reservas.ver', $r->id_reserva) }}">Ver</a>
-                            <a href="{{ route('admin.reservas.editar', $r->id_reserva) }}">Editar</a>
+                    <td class="acciones">
+                        <a class="btn-accion btn-ver" href="{{ route('admin.reservas.ver', $r->id_reserva) }}">Ver</a>
 
-                            <form action="{{ route('admin.reservas.cancelar', $r->id_reserva) }}"
-                                  method="POST"
-                                  onsubmit="return confirm('¿Cancelar esta reserva?');"
-                                  style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button>Cancelar</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7"><em>No hay resultados</em></td>
-                    </tr>
-                @endforelse
+                        <a class="btn-accion btn-editar" href="{{ route('admin.reservas.editar', $r->id_reserva) }}">Editar</a>
+
+                        <form action="{{ route('admin.reservas.cancelar', $r->id_reserva) }}"
+                              method="POST"
+                              style="display:inline;"
+                              onsubmit="return confirm('¿Cancelar esta reserva?');">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn-cancelar">Cancelar</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr><td colspan="7"><em>No hay resultados</em></td></tr>
+            @endforelse
             </tbody>
         </table>
     </div>
 
-    <p style="margin-top:25px;">
-        <a href="{{ route('admin.dashboard') }}">⬅️ Volver al panel</a>
-    </p>
+    <!-- Botón Volver al panel con estilo uniforme -->
+    <a class="btn-volver" href="{{ route('admin.dashboard') }}">Volver al panel</a>
 
 </div>
 

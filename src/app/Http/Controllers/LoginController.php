@@ -10,26 +10,37 @@ class LoginController extends Controller{
         return view('auth.login');
     }
     public function login(Request $request){
-        $credentials = $request->only('email', 'password');
-        $rol = $request->rol;
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'rol' => 'required'
+        ]);
 
-        $guard = match($rol){
+        $credentials = $request->only('email', 'password');
+
+        $guard = match($request->rol){
             'admin' => 'admin',
             'hotel' => 'hotel',
             'viajero' => 'viajero',
             default => null,
         };
+
         if(!$guard){
             return back()->with('error', true);
         }
+        
         if(Auth::guard($guard)->attempt($credentials)){
-            return redirect()->route($rol . '.dashboard');
+            return redirect()->route($request->rol . '.dashboard');
         }
         return back()->with('error', true);
     }
 
     public function logout(Request $request){
-        Auth::guard('admin')->logout();
+        foreach(['admin', 'hotel', 'viajero'] as $guard){
+            if(Auth::guard($guard)->check()){
+                Auth::guard($guard)->logout();
+            }
+        }
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

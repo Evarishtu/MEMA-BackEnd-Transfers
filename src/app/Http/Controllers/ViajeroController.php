@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Viajero;
 use App\Models\Reserva;
-use App\Models\TransferTipoReserva;
+use App\Models\TipoReserva;
 use App\Models\Hotel;
-use App\Models\TransferVehiculo;
+use App\Models\Vehiculo;
 
 class ViajeroController extends Controller {
     public function dashboard(){
@@ -19,38 +19,38 @@ class ViajeroController extends Controller {
         $viajero = Auth::guard('viajero')->user();
         return view('viajero.info', compact('viajero'));
     }
-    // public function actualizarInformacionPersonal(Request $request){
-    //     $viajero = Auth::guard('viajero')->user();
-
-    //     $request->validate([
-    //         'nombre' => 'required',
-    //         'apellido1' => 'required',
-    //         'direccion' => 'required',
-    //         'codigoPostal' => 'required',
-    //         'pais' => 'required',
-    //         'ciudad' => 'required',
-    //         'password' => 'nullable|min:4'
-    //     ]);
-
-    //     $viajero->update([
-    //         'nombre' => $request->nombre,
-    //         'apellido1' => $request->apellido1,
-    //         'apellido2' => $request->apellido2,
-    //         'direccion' => $request->direccion,
-    //         'codigoPostal' => $request->codigoPostal,
-    //         'pais' => $request->pais,
-    //         'ciudad' => $request->ciudad,
-    //         'password' => $request->password ? bcrypt($request->password) : $viajero->password
-    //     ]);
-    //     return back()->with('success', 'Información actualizada correctamente');
-    // }
-    public function crearReserva(){
-        $tiposReserva = TransferTipoReserva::all();
-        $hoteles = Hotel::all();
-        $vehiculos = TransferVehiculo::all();
+    public function actualizarInformacionPersonal(Request $request){
         $viajero = Auth::guard('viajero')->user();
 
-        return view('viajero.reservas.create', compact('tiposReserva', 'hoteles', 'vehiculos', 'viajero'));
+        $request->validate([
+            'nombre' => 'required',
+            'apellido1' => 'required',
+            'direccion' => 'required',
+            'codigoPostal' => 'required',
+            'pais' => 'required',
+            'ciudad' => 'required',
+            'password' => 'nullable|min:4'
+        ]);
+
+        $viajero->update([
+            'nombre' => $request->nombre,
+            'apellido1' => $request->apellido1,
+            'apellido2' => $request->apellido2,
+            'direccion' => $request->direccion,
+            'codigoPostal' => $request->codigoPostal,
+            'pais' => $request->pais,
+            'ciudad' => $request->ciudad,
+            'password' => $request->password ? bcrypt($request->password) : $viajero->password
+        ]);
+        return back()->with('success', 'Información actualizada correctamente');
+    }
+    public function crearReserva(){
+        $tiposReserva = TipoReserva::all();
+        $hoteles = Hotel::all();
+        $vehiculos = Vehiculo::all();
+        $viajero = Auth::guard('viajero')->user();
+
+        return view('viajero.datos', compact('tiposReserva', 'hoteles', 'vehiculos', 'viajero'));
     }
     public function guardarReserva(Request $request){
         $viajero = Auth::guard('viajero')->user();
@@ -61,20 +61,40 @@ class ViajeroController extends Controller {
             'id_vehiculo' => 'required|integer',
             'num_viajeros' => 'required|integer|min:1',
         ]);
+
+        $localizador = Reserva::generarLocalizador();
+
         $data = $request->all();
         $data['id_viajero'] = $viajero->id_viajero;
         $data['email_cliente'] = $viajero->email;
-        $data['usuario_creacion'] = $viajero->email;
+        $data['usuario_creacion'] = 'viajero';
 
         Reserva::create($data);
 
-        return redirect()->route('viajero.reservas.index')->with('success', 'Reserva creada correctamente');
+        return redirect()->route('viajero.reservas.confirmacion', $localizador);
+    }
+    public function confirmacionReserva($localizador){
+        $viajero = Auth::guard('viajero')->user();
+
+        $reserva = Reserva::where('localizador', $localizador)->firstOrFail();
+
+        return view('viajero.reservas.confirmacion', [
+            'localizador' => $reserva->localizador,
+            'hotel_nombre' => $reserva->hotel->nombre ?? '',
+            'tipo_reserva_texto' => $reserva->hotel->descripcion ?? '',
+            'num_viajeros' => $reserva->num_viajeros,
+            'email' => $viajero->email,
+        ]);
     }
     public function listarReservas(){
         $viajero = Auth::guard('viajero')->user();
-        $reservas = Reserva::where('id_viajero', $viajero->id_viajero)->get();
 
-        return view('viajero.reservas.index', compact('reservas'));
+        $reservas = Reserva::whith(['tipo', 'hotel', 'zona', 'vehiculo'])
+        ->where('id_viajero', $viajero->id_viajero)
+        ->orderBy('fecha_reserva', 'desc')
+        ->get();
+        ;
+        return view('viajero.reservas.listar', compact('reservas'));
     }
     public function verReserva($id){
         $reserva = Reserva::findOrFail($id);
