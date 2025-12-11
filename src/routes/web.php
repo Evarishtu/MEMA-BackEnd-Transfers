@@ -33,11 +33,12 @@ Route::prefix('viajero')->middleware('auth:viajero')->group(function () {
     Route::get('/info', [ViajeroController::class, 'informacionPersonal'])->name('viajero.info');
     Route::put('/info', [ViajeroController::class, 'actualizarInformacionPersonal'])->name('viajero.info.update');
     // RESERVAS
-    Route::get('/reservas', [ViajeroController::class, 'listarReservas'])->name('viajero.reservas.index');
-    Route::get('/reservas/crear', [ViajeroController::class, 'crearReserva'])->name('viajero.reservas.crear');
+    Route::get('/reservas', [ViajeroController::class, 'listarReservas'])->name('viajero.listar');
+    Route::get('/datos', [ViajeroController::class, 'crearReserva'])->name('viajero.datos');
     Route::post('/reservas', [ViajeroController::class, 'guardarReserva'])->name('viajero.reservas.store');
     Route::get('/reservas/{id}', [ViajeroController::class, 'verReserva'])->name('viajero.reservas.ver');
     Route::delete('/reservas/{id}', [ViajeroController::class, 'cancelarReserva'])->name('viajero.reservas.cancelar');
+    Route::get('/reservas/confirmacion/{localizador}',[ViajeroController::class, 'confirmacionReserva'])->name('viajero.reservas.confirmacion');
 });
 
 //REG - HOTEL
