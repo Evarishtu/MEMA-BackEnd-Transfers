@@ -5,76 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\Hotel;
 use App\Models\Zona;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class HotelController extends Controller
-{
-    public function index()
-    {
-        $hoteles = Hotel::with('zona')->orderBy('id_hotel', 'ASC')->get();
-        return view('hotel.index', compact('hoteles'));
+
+class HotelController extends Controller{
+    public function create(){
+        $zonas = Zona::all();
+        return view('admin.crearhotel', compact('zonas'));
     }
-
-    public function create()
-    {
-        $zonas = Zona::orderBy('descripcion')->get();
-        return view('hotel.form', compact('zonas'));
-    }
-
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $request->validate([
-            'nombre' => 'required',
-            'id_zona' => 'required',
-            'comision' => 'nullable|numeric',
-            'usuario' => 'required',
-            'password' => 'required'
+            'nombre' => 'required|string|max:100',
+            'usuario' => 'required|string|max:25|unique:transfer_hotel,usuario',
+            'password' => 'required|min:4',
+            'id_zona' => 'nullable|exists:transfer_zona,id_zona',
+            'comision' => 'nullable|integer|min:0|max:100',
         ]);
-
         Hotel::create([
-            'id_zona' => $request->id_zona,
             'nombre' => $request->nombre,
-            'comision' => $request->comision,
             'usuario' => $request->usuario,
-            'password' => Hash::make($request->password)
-        ]);
-
-        return redirect()->route('hotel.index');
-    }
-
-    public function edit($id)
-    {
-        $hotel = Hotel::findOrFail($id);
-        $zonas = Zona::orderBy('descripcion')->get();
-
-        return view('hotel.form', compact('hotel', 'zonas'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nombre' => 'required',
-            'id_zona' => 'required',
-            'comision' => 'nullable|numeric',
-            'usuario' => 'required'
-        ]);
-
-        $hotel = Hotel::findOrFail($id);
-
-        $hotel->update([
-            'nombre' => $request->nombre,
+            'password' => bcrypt($request->password),
             'id_zona' => $request->id_zona,
             'comision' => $request->comision,
-            'usuario' => $request->usuario,
-            'password' => $request->password ? Hash::make($request->password) : $hotel->password
         ]);
-
-        return redirect()->route('hotel.index');
-    }
-
-    public function destroy($id)
-    {
-        Hotel::destroy($id);
-        return redirect()->route('hotel.index');
+        return redirect()
+            ->route('admin.dashboard')
+            ->with('success', 'Hotel creado correctamente');
     }
 }
+
+?>

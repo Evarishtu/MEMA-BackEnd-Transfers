@@ -1,7 +1,9 @@
-@extends('layouts.app')
-
-@section('content')
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listar Reservas</title>
 <style>
     body {
         margin: 0;
@@ -76,46 +78,47 @@
         text-decoration: underline;
     }
 </style>
+</head>
+    <body>
+        <div class="card">
 
-<div class="card">
+            <h1>Reservas de {{ $viajero->nombre }}</h1>
 
-    <h1>Reservas de {{ $viajero->nombre }}</h1>
+            @if ($reservas->count())
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Localizador</th>
+                            <th>Fecha Reserva</th>
+                            <th>Tipo</th>
+                            <th>Hotel / Destino</th>
+                            <th>Zona</th>
+                            <th>Nº Viajeros</th>
+                            <th>Vehículo</th>
+                            <th>Creado por</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($reservas as $r)
+                            <tr>
+                                <td>{{ $r->localizador }}</td>
+                                <td>{{ $r->fecha_reserva }}</td>
+                                <td>{{ $r->tipo->descripcion ?? '-' }}</td>
+                                <td>{{ $r->hotel->nombre ?? '-' }}</td>
+                                <td>{{ $r->zona->descripcion ?? '-' }}</td>
+                                <td>{{ $r->num_viajeros }}</td>
+                                <td>{{ $r->vehiculo->descripcion ?? '-' }}</td>
+                                <td>{{ $r->usuario_creacion }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p class="no-reservas">Aún no tienes reservas registradas.</p>
+            @endif
 
-    @if ($reservas->count())
-        <table>
-            <thead>
-                <tr>
-                    <th>Localizador</th>
-                    <th>Fecha Reserva</th>
-                    <th>Tipo</th>
-                    <th>Hotel / Destino</th>
-                    <th>Zona</th>
-                    <th>Nº Viajeros</th>
-                    <th>Vehículo</th>
-                    <th>Creado por</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($reservas as $r)
-                    <tr>
-                        <td>{{ $r->localizador }}</td>
-                        <td>{{ $r->fecha_reserva }}</td>
-                        <td>{{ $r->tipo->descripcion ?? '-' }}</td>
-                        <td>{{ $r->hotel->nombre ?? '-' }}</td>
-                        <td>{{ $r->zona->descripcion ?? '-' }}</td>
-                        <td>{{ $r->num_viajeros }}</td>
-                        <td>{{ $r->vehiculo->descripcion ?? '-' }}</td>
-                        <td>{{ $r->usuario_creacion }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p class="no-reservas">Aún no tienes reservas registradas.</p>
-    @endif
+            <a class="back" href="{{ route('viajero.dashboard') }}">← Volver al panel</a>
 
-    <a class="back" href="{{ route('viajero.dashboard') }}">← Volver al panel</a>
-
-</div>
-
-@endsection
+        </div>
+    </body>
+</html>

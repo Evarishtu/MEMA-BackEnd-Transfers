@@ -1,6 +1,9 @@
-@extends('layouts.app')
-
-@section('content')
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reserva confirmada</title>
 <style>
     body {
         margin: 0;
@@ -91,30 +94,27 @@
         background: #00345a;
     }
 </style>
+    </head>
+    <body>
+        <div class="card">
+            <h1>Reserva creada correctamente</h1>
 
-<div class="card">
+            <div class="localizador-box">
+                <strong>Localizador:</strong> {{ $localizador }}
+            </div>
 
-    <h1>Reserva creada correctamente</h1>
+            <ul>
+                <li><strong>Tipo de trayecto:</strong> {{ $tipo_reserva_texto }}</li>
+                <li><strong>Hotel:</strong> {{ $hotel_nombre }}</li>
+                <li><strong>Número de viajeros:</strong> {{ $num_viajeros }}</li>
+            </ul>
 
-    <div class="localizador-box">
-        <strong>Localizador:</strong> {{ $localizador }}
-    </div>
+            <div class="email-box">
+                Se ha enviado un correo a <strong>{{ $email }}</strong>
+            </div>
 
-    <h2>Detalles de la reserva</h2>
+            <a class="btn-return" href="{{ route('viajero.dashboard') }}">← Volver al panel</a>
+        </div>
+    </body>
+</html>
 
-    <ul>
-        <li><strong>Tipo de trayecto:</strong> {{ $tipo_reserva_texto }}</li>
-        <li><strong>Hotel:</strong> {{ $hotel_nombre }}</li>
-        <li><strong>Número de viajeros:</strong> {{ $num_viajeros }}</li>
-    </ul>
-
-    <div class="email-box">
-        Se ha enviado un correo electrónico con los detalles de la reserva a:<br>
-        <strong>{{ $email }}</strong>
-    </div>
-
-    <a class="btn-return" href="{{ route('viajero.dashboard') }}">← Volver al panel</a>
-
-</div>
-
-@endsection
