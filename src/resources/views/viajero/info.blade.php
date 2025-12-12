@@ -1,7 +1,9 @@
-@extends('layouts.app')
-
-@section('content')
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel del Viajero</title>
 <style>
     body {
         margin: 0;
@@ -103,95 +105,94 @@
         text-decoration: underline;
     }
 </style>
+</head>
+    <body>
+        <div class="card">
+            <h1>👤 Información Personal</h1>
 
+            {{-- MENSAJE DE ÉXITO --}}
+            @if(session('success'))
+                <div style="padding:12px;background:#28a745;border-radius:8px;margin-bottom:20px;">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-<div class="card">
-    <h1>👤 Información Personal</h1>
+            <form id="infoForm" 
+                method="POST" 
+                action="{{ route('viajero.info.update') }}" 
+                class="disabled">
 
-    {{-- MENSAJE DE ÉXITO --}}
-    @if(session('success'))
-        <div style="padding:12px;background:#28a745;border-radius:8px;margin-bottom:20px;">
-            {{ session('success') }}
+                @csrf
+                @method('PUT')
+
+                <input type="hidden" name="id_viajero" value="{{ $viajero->id_viajero }}">
+
+                <label>Nombre:</label>
+                <input type="text" name="nombre" value="{{ $viajero->nombre }}">
+
+                <label>Primer apellido:</label>
+                <input type="text" name="apellido1" value="{{ $viajero->apellido1 }}">
+
+                <label>Segundo apellido:</label>
+                <input type="text" name="apellido2" value="{{ $viajero->apellido2 }}">
+
+                <label>Email:</label>
+                <input type="email" name="email" value="{{ $viajero->email }}" readonly>
+
+                <label>Dirección:</label>
+                <input type="text" name="direccion" value="{{ $viajero->direccion }}">
+
+                <label>Código postal:</label>
+                <input type="text" name="codigoPostal" value="{{ $viajero->codigoPostal }}">
+
+                <label>País:</label>
+                <input type="text" name="pais" value="{{ $viajero->pais }}">
+
+                <label>Ciudad:</label>
+                <input type="text" name="ciudad" value="{{ $viajero->ciudad }}">
+
+                <label>Contraseña:</label>
+                <input type="password" id="passwordField" name="password" placeholder="Escribe nueva contraseña:" disabled>
+
+                <button type="button" class="toggle-btn" id="togglePassword" disabled>
+                    Mostrar contraseña
+                </button>
+
+                <button type="button" id="editarBtn">Editar</button>
+                <button type="submit" id="guardarBtn" style="display:none;">Guardar</button>
+
+            </form>
+
+            <a class="back" href="{{ route('viajero.dashboard') }}">← Volver al dashboard</a>
         </div>
-    @endif
+        <script>
+            const form = document.getElementById('infoForm');
+            const editarBtn = document.getElementById('editarBtn');
+            const guardarBtn = document.getElementById('guardarBtn');
 
-    <form id="infoForm" 
-          method="POST" 
-          action="{{ route('viajero.info.update') }}" 
-          class="disabled">
+            const passwordField = document.getElementById('passwordField');
+            const togglePassword = document.getElementById('togglePassword');
 
-        @csrf
-        @method('PUT')
+            editarBtn.addEventListener('click', () => {
+                form.classList.remove('disabled');
 
-        <input type="hidden" name="id_viajero" value="{{ $viajero->id_viajero }}">
+                passwordField.disabled = false;
+                togglePassword.disabled = false;
 
-        <label>Nombre:</label>
-        <input type="text" name="nombre" value="{{ $viajero->nombre }}">
+                editarBtn.style.display = 'none';
+                guardarBtn.style.display = 'inline-block';
+            });
 
-        <label>Primer apellido:</label>
-        <input type="text" name="apellido1" value="{{ $viajero->apellido1 }}">
+            togglePassword.addEventListener('click', () => {
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    togglePassword.textContent = "Ocultar contraseña";
+                } else {
+                    passwordField.type = "password";
+                    togglePassword.textContent = "Mostrar contraseña";
+                }
+            });
+        </script>
+    </body>
+</html>
 
-        <label>Segundo apellido:</label>
-        <input type="text" name="apellido2" value="{{ $viajero->apellido2 }}">
-
-        <label>Email:</label>
-        <input type="email" name="email" value="{{ $viajero->email }}" readonly>
-
-        <label>Dirección:</label>
-        <input type="text" name="direccion" value="{{ $viajero->direccion }}">
-
-        <label>Código postal:</label>
-        <input type="text" name="codigoPostal" value="{{ $viajero->codigoPostal }}">
-
-        <label>País:</label>
-        <input type="text" name="pais" value="{{ $viajero->pais }}">
-
-        <label>Ciudad:</label>
-        <input type="text" name="ciudad" value="{{ $viajero->ciudad }}">
-
-        <label>Contraseña:</label>
-        <input type="password" id="passwordField" name="password" placeholder="Escribe nueva contraseña:" disabled>
-
-        <button type="button" class="toggle-btn" id="togglePassword" disabled>
-            Mostrar contraseña
-        </button>
-
-        <button type="button" id="editarBtn">Editar</button>
-        <button type="submit" id="guardarBtn" style="display:none;">Guardar</button>
-
-    </form>
-
-    <a class="back" href="{{ route('viajero.dashboard') }}">← Volver al dashboard</a>
-</div>
-
-
-<script>
-    const form = document.getElementById('infoForm');
-    const editarBtn = document.getElementById('editarBtn');
-    const guardarBtn = document.getElementById('guardarBtn');
-
-    const passwordField = document.getElementById('passwordField');
-    const togglePassword = document.getElementById('togglePassword');
-
-    editarBtn.addEventListener('click', () => {
-        form.classList.remove('disabled');
-
-        passwordField.disabled = false;
-        togglePassword.disabled = false;
-
-        editarBtn.style.display = 'none';
-        guardarBtn.style.display = 'inline-block';
-    });
-
-    togglePassword.addEventListener('click', () => {
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            togglePassword.textContent = "Ocultar contraseña";
-        } else {
-            passwordField.type = "password";
-            togglePassword.textContent = "Mostrar contraseña";
-        }
-    });
-</script>
-
-@endsection

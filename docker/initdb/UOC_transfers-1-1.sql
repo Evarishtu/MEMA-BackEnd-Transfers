@@ -259,6 +259,8 @@ CREATE TABLE IF NOT EXISTS `transfer_admin` (
 
 -- Modificaciones de la tabla inicial transfer_hotel
 ALTER TABLE `tranfer_hotel` ADD `nombre` VARCHAR(100) NOT NULL AFTER `id_zona`; 
+ALTER TABLE `transfer_hotel` CHANGE `usuario` `usuario` VARCHAR(25) NOT NULL; 
+ALTER TABLE `transfer_hotel` CHANGE `Comision` `comision` INT NULL DEFAULT NULL; 
 
 -- Modificaciones de la tabla inicial transfer_vehiculo
 INSERT INTO `transfer_vehiculo` (`id_vehiculo`, `Descripción`, `email_conductor`, `password`) VALUES ('1', 'Vehículo de 4 plazas', 'alfredo@correo.com', '12345'), ('2', 'Vehículo de 8 plazas', 'luis@correo.com', '12345'), ('3', 'Vehículo de 10 plazas', 'sonia@correo.com', '12345');

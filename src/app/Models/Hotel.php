@@ -21,7 +21,7 @@ class Hotel extends Authenticatable
     protected $hidden = ['password'];
 
     public function zona(){
-        return $this->belongsTo(TransferZona::class, 'id_zona', 'id_zona');
+        return $this->belongsTo(Zona::class, 'id_zona', 'id_zona');
     }
 
     public function reservas(){

@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Hotel;
 use App\Models\Viajero;
-use App\Models\TransferZona;
+use App\Models\Zona;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -53,7 +53,7 @@ class RegistroController extends Controller{
         return redirect()->route('login')->with('success', 'Viajero registrado correctamente');
     }
     public function registroHotel(){
-        $zonas = TransferZona::orderBy('descripcion')->get();
+        $zonas = Zona::orderBy('descripcion')->get();
         return view('auth.registro.hotel', compact('zonas'));
     }
     public function storeHotel(Request $request){

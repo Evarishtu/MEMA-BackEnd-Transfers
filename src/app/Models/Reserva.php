@@ -52,7 +52,7 @@ class Reserva extends Model
     }
 
     public function zona(){
-        return $this->belongsTo(TransferZona::class, 'id_destino', 'id_zona');
+        return $this->belongsTo(Zona::class, 'id_destino', 'id_zona');
     }
 
     public static function listarEventosCalendario(){

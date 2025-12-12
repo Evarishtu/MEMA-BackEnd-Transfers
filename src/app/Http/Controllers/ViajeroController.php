@@ -65,23 +65,24 @@ class ViajeroController extends Controller {
         $localizador = Reserva::generarLocalizador();
 
         $data = $request->all();
-        $data['id_viajero'] = $viajero->id_viajero;
+        $data['localizador'] = $localizador;
+        $data['fecha_reserva'] = now();
         $data['email_cliente'] = $viajero->email;
         $data['usuario_creacion'] = 'viajero';
 
         Reserva::create($data);
 
-        return redirect()->route('viajero.reservas.confirmacion', $localizador);
+        return redirect()->route('viajero.confirmacion', $localizador);
     }
     public function confirmacionReserva($localizador){
         $viajero = Auth::guard('viajero')->user();
 
         $reserva = Reserva::where('localizador', $localizador)->firstOrFail();
 
-        return view('viajero.reservas.confirmacion', [
+        return view('viajero.confirmacion', [
             'localizador' => $reserva->localizador,
             'hotel_nombre' => $reserva->hotel->nombre ?? '',
-            'tipo_reserva_texto' => $reserva->hotel->descripcion ?? '',
+            'tipo_reserva_texto' => $reserva->tipo->descripcion ?? '',
             'num_viajeros' => $reserva->num_viajeros,
             'email' => $viajero->email,
         ]);
@@ -89,12 +90,12 @@ class ViajeroController extends Controller {
     public function listarReservas(){
         $viajero = Auth::guard('viajero')->user();
 
-        $reservas = Reserva::whith(['tipo', 'hotel', 'zona', 'vehiculo'])
-        ->where('id_viajero', $viajero->id_viajero)
+        $reservas = Reserva::with(['tipo', 'hotel', 'zona', 'vehiculo'])
+        ->where('email_cliente', $viajero->email)
         ->orderBy('fecha_reserva', 'desc')
         ->get();
         ;
-        return view('viajero.reservas.listar', compact('reservas'));
+        return view('viajero.listar', compact('reservas', 'viajero'));
     }
     public function verReserva($id){
         $reserva = Reserva::findOrFail($id);

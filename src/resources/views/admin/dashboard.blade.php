@@ -77,6 +77,7 @@
         .logout button:hover {
             background: #00345a;
         }
+        
     </style>
 </head>
 
@@ -93,6 +94,7 @@
             <li><a href="{{ route('admin.calendario') }}">📅 Calendario de reservas</a></li>
             <li><a href="{{ route('admin.reservas.crear') }}">🆕 Crear nueva reserva</a></li>
             <li><a href="{{ route('admin.reservas.index') }}">📋 Consultar y gestionar reservas</a></li>
+            <li><a href="{{ route('admin.hotel.crear') }}">🏨 Dar de alta usuario corporativo</a></li>
             <li><a href="{{ route('admin.info') }}">👥 Información personal</a></li>
         </ul>
 
