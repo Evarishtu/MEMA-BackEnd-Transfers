@@ -152,7 +152,7 @@
         <button type="submit">Crear hotel</button>
     </form>
 
-    <a href="{{ route('admin.dashboard') }}" class="btn-volver">← Volver al panel</a>
+    <a href="{{ route('admin.dashboard') }}" class="btn-volver">Volver al panel</a>
 </div>
 
 </body>
