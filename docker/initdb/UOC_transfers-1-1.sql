@@ -281,7 +281,7 @@ ALTER TABLE `transfer_reservas` CHANGE `numero_vuelo_salida` `numero_vuelo_salid
 ALTER TABLE `transfer_reservas` CHANGE `hora_recogida` `hora_recogida` TIME NULL; 
 ALTER TABLE `transfer_reservas` CHANGE `hora_vuelo_salida` `hora_vuelo_salida` TIME NULL;  
 ALTER TABLE `transfer_reservas` CHANGE `fecha_modificacion` `fecha_modificacion` DATE NULL; 
-ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero') NOT NULL DEFAULT 'viajero' AFTER `id_vehiculo`;
+ALTER TABLE `transfer_reservas` ADD COLUMN `usuario_creacion` ENUM('admin', 'viajero', 'corporativo') NOT NULL DEFAULT 'viajero' AFTER `id_vehiculo`;
 
 -- Modificaciones de la tabla inicial transfer_viajeros
 ALTER TABLE `transfer_viajeros` ADD CONSTRAINT `unique_email_viajero` UNIQUE (email);

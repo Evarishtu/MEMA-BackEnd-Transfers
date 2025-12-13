@@ -526,21 +526,32 @@ class AdminController extends Controller
     }
 
 
+
     public function comisionesHoteles(Request $request){
-        $mes = $request->get('mes', now()->format('Y-m'));
 
-        $comisiones = Reserva::select(
-            'hoteles.id_hotel',
-            'hoteles.nombre as hotel',
-            DB::raw('SUM(reservas.precio_total * hoteles.comision / 100) as total_comision'),
-            DB::raw('COUNT(reservas.id) as total_reservas')
-        )
-        ->join('hoteles', 'reservas.id_hotel', '=', 'hoteles.id_hotel')
-        ->whereRaw("DATE_FORMAT(reservas.created_at, '%Y-%m') = ?", [$mes])
-        ->groupBy('hoteles.id_hotel', 'hoteles.nombre')
-        ->orderByDesc('total_comision')
-        ->get();
+        $mes       = $request->get('mes', now()->format('Y-m'));
+        $inicioMes = $mes . '-01 00:00:00';
+        $finMes    = date('Y-m-t 23:59:59', strtotime($inicioMes));
 
-        return view('admin.comisiones', compact('comisiones', 'mes'));
+        $datos = DB::table('transfer_hotel')->leftJoin('transfer_reservas', function ($join) use ($inicioMes, $finMes) {
+        $join->on('transfer_hotel.id_hotel', '=', 'transfer_reservas.id_hotel')->whereBetween('transfer_reservas.fecha_reserva', [$inicioMes, $finMes]);
+            })->select('transfer_hotel.id_hotel','transfer_hotel.nombre as hotel','transfer_hotel.comision as comision_hotel',
+                // Reservas por tipo
+                    DB::raw("SUM(CASE WHEN transfer_reservas.usuario_creacion = 'admin' THEN 1 ELSE 0 END) AS reservas_admin"),
+                    DB::raw("SUM(CASE WHEN transfer_reservas.usuario_creacion = 'viajero' THEN 1 ELSE 0 END) AS reservas_viajero"),
+                    DB::raw("SUM(CASE WHEN transfer_reservas.usuario_creacion = 'corporativo' THEN 1 ELSE 0 END) AS reservas_corporativo"),
+
+                // Total comisiones corporativo (por reserva)
+                    DB::raw("(SUM(CASE WHEN transfer_reservas.usuario_creacion = 'corporativo' THEN 1 ELSE 0 END) * 10 * (1 + transfer_hotel.comision / 100)
+                    ) AS total_comisiones")
+            )->groupBy('transfer_hotel.id_hotel',
+                        'transfer_hotel.nombre',
+                        'transfer_hotel.comision')
+            ->orderByDesc('total_comisiones')
+            ->get();
+
+        return view('admin.comisiones', compact('datos', 'mes'));
     }
+
 }
+?>
