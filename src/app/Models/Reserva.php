@@ -43,6 +43,10 @@ class Reserva extends Model
         return $this->belongsTo(TipoReserva::class, 'id_tipo_reserva', 'id_tipo_reserva');
     }
 
+    public function tipo_reserva(){ //NO ELIMINAR 
+        return $this->belongsTo(TipoReserva::class, 'id_tipo_reserva', 'id_tipo_reserva');
+    }
+
     public function viajero(){
         return $this->belongsTo(Viajero::class, 'email_cliente', 'email');
     }
@@ -52,7 +56,7 @@ class Reserva extends Model
     }
 
     public function zona(){
-        return $this->belongsTo(TransferZona::class, 'id_destino', 'id_zona');
+        return $this->belongsTo(Zona::class, 'id_destino', 'id_zona');
     }
 
     public static function listarEventosCalendario(){

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TransferZona;
+use App\Models\Zona;
 use Illuminate\Http\Request;
 
 class ZonaController extends Controller
 {
     public function index(){
-        $zonas = TransferZona::orderBy('id_zona')->get();
+        $zonas = Zona::orderBy('id_zona')->get();
         return view('zona.index', compact('zonas'));
     }
 
@@ -19,20 +19,20 @@ class ZonaController extends Controller
         $request->validate([
             'descripcion'=>'required|max:500',
         ]);
-        TransferZona::create([
+        Zona::create([
             'descripcion' => $request->descripcion,
         ]);
         return redirect()->route('zona.index')->with('success', 'Zona creada correctamente');
     }
     public function edit($id){
-        $zona = TransferZona::findOrFail($id);
+        $zona = Zona::findOrFail($id);
         return view('zona.form', compact('zona'));
     }
     public function update(Request $request, $id){
         $request->validate([
             'descripcion' => 'required|max:500',
         ]);
-        $zona = TransferZona::findOrFail($id);
+        $zona = Zona::findOrFail($id);
         $zona->update([
             'descripcion' =>$request->descripcion,
         ]);
@@ -40,7 +40,7 @@ class ZonaController extends Controller
     }
     public function destroy($id)
     {
-        TransferZona::destroy($id);
+        Zona::destroy($id);
 
         return redirect()->route('zona.index')->with('success', 'Zona eliminada correctamente');
     }
