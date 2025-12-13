@@ -37,26 +37,51 @@
         ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         ul li {
+            position: relative;
             background: rgba(255, 255, 255, 0.45);
-            padding: 14px;
+            padding: 16px;
             margin: 12px 0;
             border-radius: 10px;
-            border-left: 4px solid #004a80;
             transition: 0.2s;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Barra decorativa SIN afectar centrado */
+        ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: #004a80;
+            border-radius: 10px 0 0 10px;
         }
 
         ul li:hover {
             background: rgba(255, 255, 255, 0.60);
         }
 
-        a {
+        ul li a {
             text-decoration: none;
             color: #003b63;
             font-weight: bold;
             font-size: 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            width: 100%;
+            text-align: center;
         }
 
         .logout {
@@ -77,7 +102,6 @@
         .logout button:hover {
             background: #00345a;
         }
-        
     </style>
 </head>
 
@@ -86,7 +110,7 @@
     <div class="card">
 
         <h1>
-            Panel de Administración — Bienvenido, 
+            Panel de Administración — Bienvenido,
             {{ Auth::guard('admin')->user()->nombre }}
         </h1>
 
@@ -94,7 +118,7 @@
             <li><a href="{{ route('admin.calendario') }}">📅 Calendario de reservas</a></li>
             <li><a href="{{ route('admin.reservas.crear') }}">🆕 Crear nueva reserva</a></li>
             <li><a href="{{ route('admin.reservas.index') }}">📋 Consultar y gestionar reservas</a></li>
-            <li><a href="{{ route('admin.comisiones') }}"> 💰 Comisiones por hotel</a></li>
+            <li><a href="{{ route('admin.comisiones') }}">💰 Comisiones por hotel</a></li>
             <li><a href="{{ route('admin.hotel.crear') }}">🏨 Dar de alta usuario corporativo</a></li>
             <li><a href="{{ route('admin.info') }}">👥 Información personal</a></li>
         </ul>
@@ -110,3 +134,4 @@
 
 </body>
 </html>
+
