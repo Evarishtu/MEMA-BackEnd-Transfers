@@ -73,10 +73,21 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::delete('/reservas/{id}', [AdminController::class, 'cancelarReserva'])->name('admin.reservas.cancelar');
     //CALENDARIO
     Route::get('/calendario', [AdminController::class, 'calendario'])->name('admin.calendario');
-     // ALTA HOTEL
-    Route::get('/hoteles/crear', [HotelController::class, 'create'])->name('admin.hotel.crear');
+    //ALTA HOTEL
+    Route::get('/hoteles/crear', [HotelController::class, 'createCorporativo'])->name('admin.hotel.crear');
     Route::post('/hoteles', [HotelController::class, 'store'])->name('admin.hotel.store');
+    //COMISIONES HOTEL
+    Route::get('/comisiones', [AdminController::class, 'comisionesHoteles'])->name('admin.comisiones');
 });
+
+//HOTEL
+Route::get('/hotel', [HotelController::class, 'index'])->name('hotel.index');
+Route::get('/hotel/create', [HotelController::class, 'create'])->name('hotel.create');
+Route::post('/hotel', [HotelController::class, 'store'])->name('hotel.store');
+Route::get('/hotel/{id}/edit', [HotelController::class, 'edit'])->name('hotel.edit');
+Route::put('/hotel/{id}', [HotelController::class, 'update'])->name('hotel.update');
+Route::delete('/hotel/{id}', [HotelController::class, 'destroy'])->name('hotel.destroy');
+
 
 //ZONAS
 Route::get('/zona', [ZonaController::class, 'index'])->name('zona.index');

@@ -77,10 +77,22 @@
             margin-top: 5px;
         }
 
-        a {
-            text-decoration: none;
+        /* ============================
+           BOTÓN VOLVER AL PANEL (UNIFICADO)
+           ============================ */
+        .btn-volver {
+            display: inline-block;
+            margin-top: 30px;
+            background: #003e60;
+            padding: 12px 22px;
+            color: #fff;
+            border-radius: 10px;
             font-weight: bold;
-            color: #004f7c;
+            text-decoration: none;
+        }
+
+        .btn-volver:hover {
+            background: #002b44;
         }
     </style>
 </head>
@@ -117,12 +129,14 @@
 
         <button type="button" id="editarBtn">Editar</button>
         <button type="submit" id="guardarBtn" style="display:none;">Guardar</button>
-
     </form>
 
-    <p style="margin-top:20px; text-align:center;">
-        <a href="{{ route('admin.dashboard') }}">← Volver al panel</a>
-    </p>
+    <!-- BOTÓN VOLVER AL PANEL ESTÁNDAR -->
+    <div style="text-align:center;">
+        <a href="{{ route('admin.dashboard') }}" class="btn-volver">
+            Volver al panel
+        </a>
+    </div>
 
 </div>
 
@@ -134,7 +148,6 @@
     const passwordField = document.getElementById('passwordField');
     const togglePassword = document.getElementById('togglePassword');
 
-    // Activar edición
     editarBtn.addEventListener('click', () => {
         form.classList.remove('disabled');
         passwordField.disabled = false;
@@ -144,7 +157,6 @@
         guardarBtn.style.display = 'inline-block';
     });
 
-    // Mostrar / Ocultar contraseña
     togglePassword.addEventListener('click', () => {
         if (passwordField.type === "password") {
             passwordField.type = "text";

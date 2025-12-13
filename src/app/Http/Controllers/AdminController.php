@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -445,8 +446,7 @@ class AdminController extends Controller
         $fecha_base = $request->query('fecha', date('Y-m-d'));
 
         // Obtener todos los eventos (reservas)
-        $eventos = Reserva::with(['tipo_reserva', 'hotel'])
-            ->orderBy('fecha_reserva', 'asc')
+        $eventos = Reserva::with(['tipo', 'hotel'])->orderBy('fecha_reserva', 'asc')
             ->get();
 
         /* ================================================
@@ -523,5 +523,24 @@ class AdminController extends Controller
         return view('admin.registrosuccess', [
             'viajero' => $viajero
         ]);
+    }
+
+
+    public function comisionesHoteles(Request $request){
+        $mes = $request->get('mes', now()->format('Y-m'));
+
+        $comisiones = Reserva::select(
+            'hoteles.id_hotel',
+            'hoteles.nombre as hotel',
+            DB::raw('SUM(reservas.precio_total * hoteles.comision / 100) as total_comision'),
+            DB::raw('COUNT(reservas.id) as total_reservas')
+        )
+        ->join('hoteles', 'reservas.id_hotel', '=', 'hoteles.id_hotel')
+        ->whereRaw("DATE_FORMAT(reservas.created_at, '%Y-%m') = ?", [$mes])
+        ->groupBy('hoteles.id_hotel', 'hoteles.nombre')
+        ->orderByDesc('total_comision')
+        ->get();
+
+        return view('admin.comisiones', compact('comisiones', 'mes'));
     }
 }
