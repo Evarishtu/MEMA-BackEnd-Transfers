@@ -29,10 +29,10 @@ Route::post('/registro/viajero', [RegistroController::class, 'storeViajero'])->n
 Route::prefix('viajero')->middleware('auth:viajero')->group(function () {
     Route::get('/dashboard', [ViajeroController::class, 'dashboard'])->name('viajero.dashboard');
     Route::post('/logout', [LoginController::class, 'logout'])->name('viajero.logout');
-    // INFORMACIÓN PERSONAL
+    //INFORMACIÓN PERSONAL
     Route::get('/info', [ViajeroController::class, 'informacionPersonal'])->name('viajero.info');
     Route::put('/info', [ViajeroController::class, 'actualizarInformacionPersonal'])->name('viajero.info.update');
-    // RESERVAS
+    //RESERVAS
     Route::get('/reservas', [ViajeroController::class, 'listarReservas'])->name('viajero.listar');
     Route::get('/datos', [ViajeroController::class, 'crearReserva'])->name('viajero.datos');
     Route::post('/reservas', [ViajeroController::class, 'guardarReserva'])->name('viajero.reservas.store');
@@ -44,6 +44,27 @@ Route::prefix('viajero')->middleware('auth:viajero')->group(function () {
 //REG - HOTEL
 Route::get('/registro/hotel', [RegistroController::class, 'registroHotel'])->name('registro.hotel');
 Route::post('/registro/hotel', [RegistroController::class, 'storeHotel'])->name('registro.hotel.store');
+Route::prefix('hotel')->middleware('auth:hotel')->group(function(){
+    //DASHBOARD
+    Route::get('/dashboard', [HotelController::class, 'dashboard'])->name('hotel.dashboard');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('hotel.logout');
+    //CREAR RESERVA - Paso 1
+    Route::get('/reservas/crear', [HotelController::class, 'crearReserva'])->name('hotel.reservas.crear');
+    //CREAR RESERVA - Paso 2
+    Route::match(['GET', 'POST'], '/reservas/datos', [HotelController::class, 'crearReservaDatos'])->name('hotel.reservas.datos');
+    //GUARDAR RESERVA
+    Route::post('/reservas/guardar', [HotelController::class, 'guardarReserva'])->name('hotel.reservas.guardar');
+    //REGISTRO VIAJERO 
+    Route::post('/viajeros', [HotelController::class, 'storeViajero'])->name('hotel.viajeros.store');
+    Route::post('/reservas/buscar-cliente', [HotelController::class, 'buscarCliente'])->name('hotel.reservas.buscarCliente');
+    Route::post('/viajero/registrar', [HotelController::class, 'registrarViajero'])->name('hotel.viajero.store');
+    Route::post('/reservas/guardar', [HotelController::class, 'guardarReserva'])->name('hotel.reservas.guardar');
+    Route::get('/reservas/confirmacion/{localizador}', [HotelController::class, 'confirmacionReserva'])->name('hotel.reservas.confirmacion');
+    //LISTAR RESERVAS
+    Route::get('/reservas', [HotelController::class, 'listarReservas'])->name('hotel.reservas.listar');
+    //COMISIONES
+    Route::get('/comisiones', [HotelController::class, 'comisiones'])->name('hotel.comisiones');
+});
 
 //REG - ADMIN
 Route::get('/registro/admin', [RegistroController::class, 'registroAdmin'])->name('registro.admin');

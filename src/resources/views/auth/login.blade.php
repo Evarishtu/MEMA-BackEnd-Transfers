@@ -155,8 +155,8 @@
     <form method="POST" action="{{ route('login.attempt') }}">
       @csrf
 
-      <label>Email:</label>
-      <input type="email" name="email" placeholder="tu email" required>
+      <label>Usuario:</label>
+      <input type="text" name="login" placeholder="tu usuario" required>
 
       <label>Contraseña:</label>
       <input type="password" name="password" placeholder="tu contraseña" required>
