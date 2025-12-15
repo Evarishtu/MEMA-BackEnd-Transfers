@@ -22,7 +22,11 @@
       justify-content: space-between;
       align-items: center;
     }
-
+    .navbar-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1f2937;
+    }
     .navbar .left {
       font-size: 16px;
       color: #2c3e50;
@@ -127,7 +131,7 @@
   <!-- NAVBAR -->
   <div class="navbar">
     <div class="left">
-      <span>📍</span> <span>Gestión de zonas</span>
+      <div class="navbar-title">📋 Menú Principal</div>
     </div>
     <div class="right">
       <a href="{{route('login')}}">Iniciar sesión</a>
@@ -151,8 +155,8 @@
           <li><a href="{{route('zona.create')}}">Crear nueva zona</a></li>
           <li><a href="{{route('reservatipo.index')}}">Gestión de tipos de reserva</a></li>
           <li><a href="{{ route('reservatipo.create')}}">Crear nuevo tipo de reserva</a></li>
-          <li><a href="{{ route('hotel.index')}}">Gestión de hoteles</a></li>
-          <li><a href="{{ route('hotel.create')}}">Crear nuevo hotel</a></li>
+          <!-- <li><a href="{{ route('hotel.index')}}">Gestión de hoteles</a></li>
+          <li><a href="{{ route('hotel.create')}}">Crear nuevo hotel</a></li> -->
           <li><a href="{{ route('vehiculo.index')}}">Gestión de vehículos</a></li>
           <li><a href="{{ route('vehiculo.create')}}">Crear nuevo vehículo</a></li>
         </ul>

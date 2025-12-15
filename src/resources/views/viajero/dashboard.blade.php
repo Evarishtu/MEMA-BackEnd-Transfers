@@ -46,6 +46,7 @@
         font-weight: bold;
         text-decoration: none;
         transition: 0.3s;
+        cursor: pointer;
     }
 
     .navbar button.logout-btn:hover {
@@ -89,7 +90,7 @@
 </head>
     <body>
     <div class="navbar">
-        <div class="navbar-title">Panel del Viajero</div>
+        <div class="navbar-title">✈️ Panel del Viajero</div>
         {{-- Botón de logout --}}
         <form method="POST" action="{{ route('viajero.logout') }}">
         @csrf
@@ -97,9 +98,11 @@
         </form>
     </div>
     <div class="container">
+
     {{-- Nombre del viajero --}}
-    <h1>Hola, {{ $viajero->nombre ?? 'Viajero' }} 👋</h1>
-        <div class="menu">
+    <h1>Bienvenid@, {{ $viajero->nombre ?? 'Viajero' }} 👋</h1>
+
+        <div class= "menu">
             <a href="{{ route('viajero.listar') }}">📋 Mis reservas</a>
             <a href="{{ route('viajero.datos') }}">✈️ Crear reserva</a>
             <a href="{{ route('viajero.info') }}">👤 Información personal</a>

@@ -12,6 +12,7 @@ use App\Models\Vehiculo;
 use App\Models\Viajero;
 use App\Models\Reserva;
 use App\Models\TipoReserva;
+use App\Models\Zona;
 
 
 
@@ -92,24 +93,41 @@ class HotelController extends Controller{
         }
 
         if($tipo == 3){
-            $request->validate([
-                'fecha_entrada' => 'required|date',
-                'hora_entrada' => 'required',
-                'fecha_vuelo_salida' => 'required|date',
-                'hora_vuelo_salida' => 'required',
-            ]);
-            $validator->after(function($v) use ($request){
-                if($request->fecha_vuelo_salida && $request->fecha_entrada){
-                    if($request->fecha_vuelo_salida < $request->fecha_entrada){
-                        $v->errors()->add(
-                            'fecha_vuelo_salida',
-                            'Fecha ida posterior a vuelta'
-                        );
+            
+            $fechaEntrada = $request->fecha_entrada;
+            $horaEntrada = $request->hora_entrada;
+            $fechaSalida = $request->fecha_vuelo_salida;
+            $horaSalida = $request->hora_vuelo_salida;
+            $horaRecogida = $request->hora_recogida;
+
+            if($horaRecogida && $horaSalida){
+                if($horaRecogida >= $horaSalida){
+                    return back()
+                        ->withErrors([
+                            'hora_recogida' => 'La hora de recogida no puede ser igual o posterior a la del vuelo'
+                        ])
+                        ->withInput();
+                }
+            }
+            if($fechaSalida && $fechaEntrada){
+                if($fechaSalida < $fechaEntrada){
+                    return back()
+                        ->withErrors([
+                            'fecha_vuelo_salida' => 'La fecha del vuelo de ida no puede ser anterior a la de llegada'
+                        ])
+                        ->withInput();
+                }
+                if($fechaSalida === $fechaEntrada && $horaSalida && $horaEntrada){
+                    if($horaSalida <= $horaEntrada){
+                        return back()
+                            ->withErrors([
+                                'hora_vuelo_salida' => 'La hora del vuelo de ida debe ser posterior a la de llegada'
+                            ])
+                            ->withInput();
                     }
                 }
-            });
+            }
         }
-
         if($validator->fails()){
             return back()->withErrors($validator)->withInput();
         }
@@ -223,6 +241,77 @@ class HotelController extends Controller{
             'hotel' => $hotel,
             'comisiones' => $comisiones
         ]);
+    }
+    public function index(){
+        $hoteles = Hotel::with('zona')->orderBy('id_hotel')->get();
+        return view('hotel.index', compact('hoteles'));
+    }
+
+    public function create(){
+        $zonas = Zona::all();
+        return view('hotel.form', compact('zonas'));
+    }
+
+    public function createCorporativo(){
+        $zonas   = Zona::all();
+        $hoteles = Hotel::orderBy('nombre')->get();
+
+        return view('admin.crearcorporativo', compact('zonas', 'hoteles'));
+    }
+
+    public function store(Request $request){
+        $request->validate([
+            'nombre'   => 'required|string|max:100',
+            'usuario'  => 'required|string|max:25|unique:transfer_hotel,usuario',
+            'password' => 'required|min:4',
+            'id_zona'  => 'nullable|exists:transfer_zona,id_zona',
+            'comision' => 'nullable|integer|min:0|max:100',
+        ]);
+        Hotel::create([
+            'nombre'   => $request->nombre,
+            'usuario'  => $request->usuario,
+            'password' => bcrypt($request->password),
+            'id_zona'  => $request->id_zona,
+            'comision' => $request->comision,
+        ]);
+        return redirect()
+            ->route('admin.dashboard')
+            ->with('success', 'Hotel creado correctamente');
+    }
+
+    public function edit($id){
+        $hotel = Hotel::findOrFail($id);
+        $zonas = Zona::all();
+
+        return view('hotel.form', compact('hotel', 'zonas'));
+    }
+
+    public function update(Request $request, $id){
+        $hotel = Hotel::findOrFail($id);
+
+        $request->validate([
+            'nombre'   => 'required|string|max:100',
+            'usuario'  => 'required|string|max:25' . $hotel->id_hotel . ',id_hotel',
+            'id_zona'  => 'nullable|exists:transfer_zona,id_zona',
+            'comision' => 'nullable|integer|min:0|max:100',
+        ]);
+
+        $data = $request->only('nombre', 'usuario', 'id_zona', 'comision');
+
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $hotel->update($data);
+
+        return redirect()->route('hotel.index')->with('success', 'Hotel actualizado correctamente');
+    }
+
+    public function destroy($id){
+        $hotel = Hotel::findOrFail($id);
+        $hotel->delete();
+
+        return redirect()->route('hotel.index')->with('success', 'Hotel eliminado correctamente');
     }
 }
 ?>

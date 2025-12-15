@@ -6,31 +6,49 @@
     <title>Reservas</title>
     <style>
         body{
-            font-family: Arial, sens-serif;
+            margin: 0;
+            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            padding-top: 120px;
+            padding-bottom: 60px;
             color: #fff;
-            padding: 80px;
+            min-height: 100vh;
         }
         .card{
-            max-width: 700px;
+            width: 92%;
+            max-width: 1100px;
             margin: auto;
-            background: rgba(255,255,255,0.25);
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
             border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: #fff;
+        }
+         h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
         }
         table{
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.5);
         }
         th, td{
-            padding: 10px;
-            background: rgba(255,255,255,0.35);
-            color: #003b63;
+            padding: 12px;
             text-align: center;
+            color: #003b63;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            font-weight: bold;
         }
         th{
-            background: rgba(255,255,255,0.6);
+            background-color: rgba(0, 80, 160, 0.8);
+            color: #fff;
+        }
+        tr:nth-child(even) td {
+            background-color: rgba(255, 255, 255, 0.35);
         }
         .btn-panel {
             display:inline-block;
@@ -44,12 +62,17 @@
         .btn-panel:hover {
             background:#004a80;
         }
+        p,
+        .volver{
+            margin-top:30px;
+            text-align:center;
+        }
     </style>
 </head>
 <body>
     <div class= "card">
-        <h2>Reservas del Hotel</h2>
-        <p>Hotel: <strong>{{$hotel->nombre}}</strong></p>
+        <h1>Reservas de {{$hotel->nombre}}</h1>
+        
         <table>
             <thead>
                 <tr>
@@ -80,7 +103,7 @@
                 @endforeach 
             </tbody>
         </table>
-        <p style="margin-top:30px; text-align:center;">
+        <p class="volver">
             <a href="{{route('hotel.dashboard')}}" class="btn-panel">Volver al panel</a>
         </p>
     </div>

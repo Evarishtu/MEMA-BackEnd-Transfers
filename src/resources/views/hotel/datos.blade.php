@@ -61,16 +61,19 @@
             <legend>Vuelo de salida</legend>
 
             <label>Fecha vuelo salida:</label>
-            <input type="date" name="fecha_vuelo_salida">
+            <input type="date" name="fecha_vuelo_salida" value="{{ old('fecha_vuelo_salida') }}">
+             @error('fecha_vuelo_salida') <div class="error">{{ $message }}</div> @enderror
 
             <label>Hora vuelo salida:</label>
-            <input type="time" name="hora_vuelo_salida">
+            <input type="time" name="hora_vuelo_salida" value="{{ old('hora_vuelo_salida') }}">
+            @error('hora_vuelo_salida') <div class="error">{{ $message }}</div> @enderror
 
             <label>Número vuelo salida:</label>
-            <input type="text" name="numero_vuelo_salida">
+            <input type="text" name="numero_vuelo_salida" value="{{ old('numero_vuelo_salida') }}">
 
             <label>Hora recogida hotel:</label>
-            <input type="time" name="hora_recogida">
+            <input type="time" name="hora_recogida" value="{{ old('hora_recogida') }}">
+            @error('hora_recogida') <div class="error">{{ $message }}</div> @enderror
         </fieldset>
 
         {{-- TIPO 2 --}}
@@ -78,16 +81,18 @@
             <legend>Vuelo de llegada</legend>
 
             <label>Fecha llegada:</label>
-            <input type="date" name="fecha_entrada">
+            <input type="date" name="fecha_entrada" value="{{ old('fecha_entrada') }}">
+             @error('fecha_entrada') <div class="error">{{ $message }}</div> @enderror
 
             <label>Hora llegada:</label>
-            <input type="time" name="hora_entrada">
+            <input type="time" name="hora_entrada" value="{{ old('hora_entrada') }}">
+            @error('hora_entrada') <div class="error">{{ $message }}</div> @enderror
 
             <label>Número vuelo:</label>
-            <input type="text" name="numero_vuelo_entrada">
+            <input type="text" name="numero_vuelo_entrada" value="{{ old('numero_vuelo_entrada') }}">
 
             <label>Aeropuerto origen:</label>
-            <input type="text" name="origen_vuelo_entrada">
+            <input type="text" name="origen_vuelo_entrada" value="{{ old('origen_vuelo_entrada') }}">
         </fieldset>
 
         {{-- DATOS ADICIONALES --}}
@@ -95,21 +100,24 @@
             <legend>Datos adicionales</legend>
 
             <label>Hotel:</label>
-            <input type="text" value="{{ auth('hotel')->user()->nombre }}" readonly>
+            <input type="text" value="{{ auth('hotel')->user()->nombre }} " readonly>
 
             <label>Número de viajeros:</label>
-            <input type="number" name="numero_viajeros" min="1" required>
+            <input type="number" name="numero_viajeros" min="1" value="{{ old('numero_viajeros') }}" required>
+            @error('numero_viajeros') <div class="error">{{ $message }}</div> @enderror
 
             <label>Email del cliente:</label>
-            <input type="email" name="email_cliente" required>
+            <input type="email" name="email_cliente" value="{{ old('email_cliente') }}" required>
+            @error('email_cliente') <div class="error">{{ $message }}</div> @enderror
 
             <label>Vehículo:</label>
             <select name="id_vehiculo" required>
                 <option value="">-- Selecciona un vehículo --</option>
-                @foreach($vehiculos as $v)
-                    <option value="{{ $v->id_vehiculo }}">{{ $v->descripcion }}</option>
+                @foreach($vehiculos as $vehiculo)
+                    <option value="{{ $vehiculo->id_vehiculo }}">{{ $vehiculo->descripcion }}</option>
                 @endforeach
             </select>
+            @error('id_vehiculo') <div class="error">{{ $message }}</div> @enderror
 
             <button type="submit">Guardar Reserva</button>
         </fieldset>
@@ -118,99 +126,10 @@
 
     <a href="{{ route('hotel.reservas.crear') }}">Volver</a>
 </div>
-
-<script>
-// ==========================================
-// Mostrar/ocultar bloques según tipo
-// ==========================================
-const tipo = "{{ $tipo }}";
-document.getElementById('vuelo_salida').style.display  = (tipo==="1"||tipo==="3") ? "block" : "none";
-document.getElementById('vuelo_llegada').style.display = (tipo==="2"||tipo==="3") ? "block" : "none";
-
-
-
-// ==========================================
-// VALIDACIONES COMPLETAS DEL PHP ORIGINAL
-// ==========================================
-function validarHorasYFechas() {
-
-    const fechaSalida  = document.querySelector('input[name="fecha_vuelo_salida"]');
-    const horaSalida   = document.querySelector('input[name="hora_vuelo_salida"]');
-    const fechaLlegada = document.querySelector('input[name="fecha_entrada"]');
-    const horaLlegada  = document.querySelector('input[name="hora_entrada"]');
-    const horaRecogida = document.querySelector('input[name="hora_recogida"]');
-
-    // Reset
-    horaRecogida?.setCustomValidity("");
-    fechaSalida?.setCustomValidity("");
-    horaSalida?.setCustomValidity("");
-
-    switch (tipo) {
-
-        case "1": // HOTEL → AEROPUERTO
-            if (horaRecogida.value && horaSalida.value) {
-
-                if (horaRecogida.value > horaSalida.value) {
-                    horaRecogida.setCustomValidity("La hora de recogida no puede ser posterior a la del vuelo.");
-                }
-
-                if (horaRecogida.value === horaSalida.value) {
-                    horaRecogida.setCustomValidity("La hora de recogida no puede ser igual a la del vuelo.");
-                }
-            }
-            break;
-
-
-        case "3": // IDA Y VUELTA
-
-            // Recogida vs salida
-            if (horaRecogida.value && horaSalida.value) {
-
-                if (horaRecogida.value > horaSalida.value) {
-                    horaRecogida.setCustomValidity("La hora de recogida no puede ser posterior al vuelo de ida.");
-                }
-
-                if (horaRecogida.value === horaSalida.value) {
-                    horaRecogida.setCustomValidity("La hora de recogida no puede ser igual al vuelo de ida.");
-                }
-            }
-
-            // Comparación fechas
-            if (fechaSalida.value && fechaLlegada.value) {
-
-                if (fechaSalida.value < fechaLlegada.value) {
-                    fechaSalida.setCustomValidity("La fecha del vuelo de ida no puede ser posterior al de vuelta.");
-                }
-            }
-
-            // Comparación horas si son el mismo día
-            if (fechaSalida.value && fechaLlegada.value &&
-                fechaSalida.value === fechaLlegada.value) {
-
-                if (horaSalida.value > horaLlegada.value) {
-                    horaSalida.setCustomValidity("La hora de ida no puede ser posterior a la de vuelta.");
-                }
-
-                if (horaSalida.value === horaLlegada.value) {
-                    horaSalida.setCustomValidity("La hora de ida no puede ser igual a la de vuelta.");
-                }
-            }
-
-            break;
-    }
-}
-
-
-// Eventos
-document.addEventListener("DOMContentLoaded", () => {
-
-    document.querySelectorAll(
-        'input[name="hora_vuelo_salida"], input[name="hora_recogida"], ' +
-        'input[name="hora_entrada"], input[name="fecha_vuelo_salida"], input[name="fecha_entrada"]'
-    ).forEach(el => el.addEventListener("change", validarHorasYFechas));
-
-});
-</script>
-
+    <script>
+        const tipo = "{{ $tipo }}";
+        document.getElementById('vuelo_salida').style.display = (tipo === "1" || tipo === "3") ? "block" : "none";
+        document.getElementById('vuelo_llegada').style.display = (tipo === "2" || tipo === "3") ? "block" : "none";
+    </script>
 </body>
 </html>
