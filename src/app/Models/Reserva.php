@@ -55,6 +55,19 @@ class Reserva extends Model
         return $this->belongsTo(Vehiculo::class, 'id_vehiculo', 'id_vehiculo');
     }
 
+    public function zona(){
+        return $this->hasOneThrough(
+            Zona::class,   
+            Hotel::class,  
+            'id_hotel',   
+            'id_zona',    
+            'id_hotel',    
+            'id_zona'     
+        );
+    }
+
+
+
     public static function listarEventosCalendario(){
         return self::select(
                 'transfer_reservas.id_reserva',

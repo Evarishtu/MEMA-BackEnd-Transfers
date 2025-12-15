@@ -112,31 +112,42 @@ class AdminController extends Controller
         // --- TIPO 3 (IDA Y VUELTA)
         if ($tipo == 3) {
 
-            if($horaRecogida && $horaSalida){
-                if($horaRecogida >= $horaSalida){
-                    return back()
-                        ->withErrors([
-                            'hora_recogida' => 'La hora de recogida no puede ser igual o posterior a la del vuelo'
-                        ])
-                        ->withInput();
-                }
+            if ($horaRecogida && $horaSalida && $horaRecogida >= $horaSalida) {
+                return redirect()
+                    ->route('admin.reservas.datos', [
+                        'tipo_reserva' => $tipo,
+                        'email' => $request->email_cliente
+                    ])
+                    ->withErrors([
+                        'hora_recogida' => 'La hora de recogida no puede ser anterior o igual a la del vuelo de salida'
+                    ])
+                    ->withInput();
             }
-            if($fechaSalida && $fechaEntrada){
-                if($fechaSalida < $fechaEntrada){
-                    return back()
+
+            if ($fechaSalida && $fechaEntrada) {
+
+                if ($fechaSalida > $fechaEntrada) {
+                    return redirect()
+                        ->route('admin.reservas.datos', [
+                            'tipo_reserva' => $tipo,
+                            'email' => $request->email_cliente
+                        ])
                         ->withErrors([
                             'fecha_vuelo_salida' => 'La fecha del vuelo de ida no puede ser anterior a la de llegada'
                         ])
                         ->withInput();
                 }
-                if($fechaSalida === $fechaEntrada && $horaSalida && $horaEntrada){
-                    if($horaSalida <= $horaEntrada){
-                        return back()
-                            ->withErrors([
-                                'hora_vuelo_salida' => 'La hora del vuelo de ida debe ser posterior a la de llegada'
-                            ])
-                            ->withInput();
-                    }
+
+                if ($fechaSalida === $fechaEntrada && $horaSalida && $horaEntrada && $horaSalida <= $horaEntrada) {
+                    return redirect()
+                        ->route('admin.reservas.datos', [
+                            'tipo_reserva' => $tipo,
+                            'email' => $request->email_cliente
+                        ])
+                        ->withErrors([
+                            'hora_vuelo_salida' => 'La hora del vuelo de ida debe ser posterior a la de llegada'
+                        ])
+                        ->withInput();
                 }
             }
         }
@@ -453,7 +464,7 @@ class AdminController extends Controller
                     DB::raw("SUM(CASE WHEN transfer_reservas.usuario_creacion = 'corporativo' THEN 1 ELSE 0 END) AS reservas_corporativo"),
 
                 // Total comisiones corporativo (por reserva)
-                    DB::raw("(SUM(CASE WHEN transfer_reservas.usuario_creacion = 'corporativo' THEN 1 ELSE 0 END) * 10 * (1 + transfer_hotel.comision / 100)
+                    DB::raw("(SUM(CASE WHEN transfer_reservas.usuario_creacion = 'corporativo' THEN 1 ELSE 0 END) * transfer_hotel.comision
                     ) AS total_comisiones")
             )->groupBy('transfer_hotel.id_hotel',
                         'transfer_hotel.nombre',

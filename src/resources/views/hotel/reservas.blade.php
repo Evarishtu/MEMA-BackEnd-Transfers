@@ -94,7 +94,7 @@
                     <td>{{$reserva->usuario_creacion}}</td>
                     <td>
                         @if($reserva->usuario_creacion === 'corporativo')
-                        {{$hotel->comision}} €
+                            {{ $reserva->hotel->comision ?? 10 }} €
                         @else
                             0 €
                         @endif
