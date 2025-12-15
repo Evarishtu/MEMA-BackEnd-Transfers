@@ -140,8 +140,8 @@
             @endforeach
         </select>
 
-        <label>Comisión (%):</label>
-        <input type="number" name="comision" min="0" max="100">
+        <label>Comisión (€):</label>
+        <input type="number" name="comision" min="0" required>
 
         <label>Usuario:</label>
         <input type="text" name="usuario" required>

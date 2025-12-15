@@ -92,40 +92,53 @@ class HotelController extends Controller{
             });
         }
 
-        if($tipo == 3){
-            
+        if ($tipo == 3) {
+
             $fechaEntrada = $request->fecha_entrada;
-            $horaEntrada = $request->hora_entrada;
-            $fechaSalida = $request->fecha_vuelo_salida;
-            $horaSalida = $request->hora_vuelo_salida;
+            $horaEntrada  = $request->hora_entrada;
+            $fechaSalida  = $request->fecha_vuelo_salida;
+            $horaSalida   = $request->hora_vuelo_salida;
             $horaRecogida = $request->hora_recogida;
 
-            if($horaRecogida && $horaSalida){
-                if($horaRecogida >= $horaSalida){
-                    return back()
-                        ->withErrors([
-                            'hora_recogida' => 'La hora de recogida no puede ser igual o posterior a la del vuelo'
-                        ])
-                        ->withInput();
-                }
+            if ($horaRecogida && $horaSalida && $horaRecogida >= $horaSalida) {
+                return redirect()
+                    ->route('hotel.reservas.datos', [
+                        'tipo_reserva' => $tipo,
+                        'email'        => $request->email_cliente
+                    ])
+                    ->withErrors([
+                        'hora_recogida' => 'La hora de recogida no puede ser igual o posterior a la del vuelo'
+                    ])
+                    ->withInput();
             }
-            if($fechaSalida && $fechaEntrada){
-                if($fechaSalida < $fechaEntrada){
-                    return back()
-                        ->withErrors([
-                            'fecha_vuelo_salida' => 'La fecha del vuelo de ida no puede ser anterior a la de llegada'
-                        ])
-                        ->withInput();
-                }
-                if($fechaSalida === $fechaEntrada && $horaSalida && $horaEntrada){
-                    if($horaSalida <= $horaEntrada){
-                        return back()
-                            ->withErrors([
-                                'hora_vuelo_salida' => 'La hora del vuelo de ida debe ser posterior a la de llegada'
-                            ])
-                            ->withInput();
-                    }
-                }
+
+            if ($fechaSalida && $fechaEntrada && $fechaSalida < $fechaEntrada) {
+                return redirect()
+                    ->route('hotel.reservas.datos', [
+                        'tipo_reserva' => $tipo,
+                        'email'        => $request->email_cliente
+                    ])
+                    ->withErrors([
+                        'fecha_vuelo_salida' => 'La fecha del vuelo de ida no puede ser anterior a la de llegada'
+                    ])
+                    ->withInput();
+            }
+
+            if (
+                $fechaSalida === $fechaEntrada &&
+                $horaSalida &&
+                $horaEntrada &&
+                $horaSalida <= $horaEntrada
+            ) {
+                return redirect()
+                    ->route('hotel.reservas.datos', [
+                        'tipo_reserva' => $tipo,
+                        'email'        => $request->email_cliente
+                    ])
+                    ->withErrors([
+                        'hora_vuelo_salida' => 'La hora del vuelo de ida debe ser posterior a la de llegada'
+                    ])
+                    ->withInput();
             }
         }
         if($validator->fails()){
@@ -223,6 +236,8 @@ class HotelController extends Controller{
             ])
             ->with('success', "Cliente registrado. Contraseña tempral: $password");
     }
+
+    /*
     public function comisiones(){
         $hotel = auth('hotel')->user();
         $comisiones = Reserva::selectRaw('
@@ -242,6 +257,42 @@ class HotelController extends Controller{
             'comisiones' => $comisiones
         ]);
     }
+*/ 
+
+    public function comisiones(Request $request){
+        $hotel     = auth('hotel')->user();
+        $mes       = $request->get('mes', now()->format('Y-m'));
+        $inicioMes = $mes . '-01 00:00:00';
+        $finMes    = date('Y-m-t 23:59:59', strtotime($inicioMes));
+
+        $datos = DB::table('transfer_hotel')
+            ->leftJoin('transfer_reservas', function ($join) use ($inicioMes, $finMes) {
+                $join->on('transfer_hotel.id_hotel', '=', 'transfer_reservas.id_hotel')
+                    ->whereBetween('transfer_reservas.fecha_reserva', [$inicioMes, $finMes]);
+            })
+            ->where('transfer_hotel.id_hotel', $hotel->id_hotel) 
+            ->select(
+                'transfer_hotel.nombre as hotel',
+                'transfer_hotel.comision as comision_hotel',
+
+                DB::raw("SUM(CASE WHEN transfer_reservas.usuario_creacion = 'admin' THEN 1 ELSE 0 END) AS reservas_admin"),
+                DB::raw("SUM(CASE WHEN transfer_reservas.usuario_creacion = 'viajero' THEN 1 ELSE 0 END) AS reservas_viajero"),
+                DB::raw("SUM(CASE WHEN transfer_reservas.usuario_creacion = 'corporativo' THEN 1 ELSE 0 END) AS reservas_corporativo"),
+                DB::raw("(
+                    SUM(CASE WHEN transfer_reservas.usuario_creacion = 'corporativo' THEN 1 ELSE 0 END) * transfer_hotel.comision
+                ) AS total_comisiones")
+            )
+            ->groupBy(
+                'transfer_hotel.id_hotel',
+                'transfer_hotel.nombre',
+                'transfer_hotel.comision'
+            )
+            ->get();
+
+        return view('hotel.comisiones', compact('datos', 'mes', 'hotel'));
+    }
+
+
     public function index(){
         $hoteles = Hotel::with('zona')->orderBy('id_hotel')->get();
         return view('hotel.index', compact('hoteles'));
@@ -265,7 +316,7 @@ class HotelController extends Controller{
             'usuario'  => 'required|string|max:25|unique:transfer_hotel,usuario',
             'password' => 'required|min:4',
             'id_zona'  => 'nullable|exists:transfer_zona,id_zona',
-            'comision' => 'nullable|integer|min:0|max:100',
+            'comision' => 'nullable|integer|min:0',
         ]);
         Hotel::create([
             'nombre'   => $request->nombre,
@@ -293,7 +344,7 @@ class HotelController extends Controller{
             'nombre'   => 'required|string|max:100',
             'usuario'  => 'required|string|max:25' . $hotel->id_hotel . ',id_hotel',
             'id_zona'  => 'nullable|exists:transfer_zona,id_zona',
-            'comision' => 'nullable|integer|min:0|max:100',
+            'comision' => 'nullable|integer|min:0',
         ]);
 
         $data = $request->only('nombre', 'usuario', 'id_zona', 'comision');
