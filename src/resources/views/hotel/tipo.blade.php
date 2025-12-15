@@ -70,7 +70,6 @@
             background: #0056b3;
         }
 
-        /* BOTÓN VOLVER estilo calendario */
         .btn-volver {
             display: inline-block;
             margin-top: 25px;
@@ -84,6 +83,32 @@
 
         .btn-volver:hover {
             background:#004f73;
+        }
+        select {
+            width: 100%;
+            padding: 12px 40px 12px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 62, 96, 0.25);
+            background-color: rgba(255, 255, 255, 0.85);
+            font-size: 15px;
+            color: #003e60;
+            font-weight: bold;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+
+            background-image: url("data:image/svg+xml,%3Csvg fill='%23003e60' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+        select:hover {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
         }
 
     </style>
