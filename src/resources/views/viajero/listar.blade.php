@@ -64,18 +64,22 @@
         color: #fff;
     }
 
-    a.back {
-        display: block;
-        text-align: center;
-        margin-top: 35px;
-        text-decoration: none;
-        color: #e5f3ff;
-        font-size: 18px;
-        font-weight: bold;
+     .btn-panel {
+        display:inline-block;
+        background:#006699;
+        padding:10px 16px;
+        border-radius:10px;
+        color:white;
+        text-decoration:none;
+        font-weight:bold;
     }
-
-    a.back:hover {
-        text-decoration: underline;
+    .btn-panel:hover {
+        background:#004a80;
+    }
+    p,
+    .volver{
+        margin-top:30px;
+        text-align:center;
     }
 </style>
 </head>
@@ -116,9 +120,9 @@
             @else
                 <p class="no-reservas">Aún no tienes reservas registradas.</p>
             @endif
-
-            <a class="back" href="{{ route('viajero.dashboard') }}">← Volver al panel</a>
-
+            <p class="volver">
+                <a href="{{ route('viajero.dashboard') }}" class="btn-panel">Volver al panel</a>
+            </p>
         </div>
     </body>
 </html>

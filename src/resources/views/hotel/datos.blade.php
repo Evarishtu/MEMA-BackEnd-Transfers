@@ -51,7 +51,7 @@
     <h1>Datos de la reserva</h1>
     <h2>Tipo seleccionado: <strong>{{ $tipo_nombre }}</strong></h2>
 
-    <form method="POST" action="{{ route('admin.reservas.guardar') }}">
+    <form method="POST" action="{{ route('hotel.reservas.guardar') }}">
         @csrf
 
         <input type="hidden" name="tipo_reserva" value="{{ $tipo }}">
@@ -62,7 +62,7 @@
 
             <label>Fecha vuelo salida:</label>
             <input type="date" name="fecha_vuelo_salida" value="{{ old('fecha_vuelo_salida') }}">
-            @error('fecha_vuelo_salida') <div class="error">{{ $message }}</div> @enderror
+             @error('fecha_vuelo_salida') <div class="error">{{ $message }}</div> @enderror
 
             <label>Hora vuelo salida:</label>
             <input type="time" name="hora_vuelo_salida" value="{{ old('hora_vuelo_salida') }}">
@@ -70,9 +70,9 @@
 
             <label>Número vuelo salida:</label>
             <input type="text" name="numero_vuelo_salida" value="{{ old('numero_vuelo_salida') }}">
-            
+
             <label>Hora recogida hotel:</label>
-            <input type="time" name="hora_recogida">
+            <input type="time" name="hora_recogida" value="{{ old('hora_recogida') }}">
             @error('hora_recogida') <div class="error">{{ $message }}</div> @enderror
         </fieldset>
 
@@ -82,7 +82,7 @@
 
             <label>Fecha llegada:</label>
             <input type="date" name="fecha_entrada" value="{{ old('fecha_entrada') }}">
-            @error('fecha_entrada') <div class="error">{{ $message }}</div> @enderror
+             @error('fecha_entrada') <div class="error">{{ $message }}</div> @enderror
 
             <label>Hora llegada:</label>
             <input type="time" name="hora_entrada" value="{{ old('hora_entrada') }}">
@@ -100,26 +100,21 @@
             <legend>Datos adicionales</legend>
 
             <label>Hotel:</label>
-            <select name="id_hotel" required>
-                <option value="">-- Selecciona un hotel --</option>
-                @foreach($hoteles as $h)
-                    <option value="{{ $h->id_hotel }}">{{ $h->nombre }}</option>
-                @endforeach
-            </select>
+            <input type="text" value="{{ auth('hotel')->user()->nombre }} " readonly>
 
             <label>Número de viajeros:</label>
-            <input type="number" name="numero_viajeros" min="1" required>
+            <input type="number" name="numero_viajeros" min="1" value="{{ old('numero_viajeros') }}" required>
             @error('numero_viajeros') <div class="error">{{ $message }}</div> @enderror
 
             <label>Email del cliente:</label>
-            <input type="email" name="email_cliente" required>
+            <input type="email" name="email_cliente" value="{{ old('email_cliente') }}" required>
             @error('email_cliente') <div class="error">{{ $message }}</div> @enderror
 
             <label>Vehículo:</label>
             <select name="id_vehiculo" required>
                 <option value="">-- Selecciona un vehículo --</option>
-                @foreach($vehiculos as $v)
-                    <option value="{{ $v->id_vehiculo }}">{{ $v->descripcion }}</option>
+                @foreach($vehiculos as $vehiculo)
+                    <option value="{{ $vehiculo->id_vehiculo }}">{{ $vehiculo->descripcion }}</option>
                 @endforeach
             </select>
             @error('id_vehiculo') <div class="error">{{ $message }}</div> @enderror
@@ -129,7 +124,7 @@
 
     </form>
 
-    <a href="{{ route('admin.reservas.crear') }}">Volver</a>
+    <a href="{{ route('hotel.reservas.crear') }}">Volver</a>
 </div>
     <script>
         const tipo = "{{ $tipo }}";

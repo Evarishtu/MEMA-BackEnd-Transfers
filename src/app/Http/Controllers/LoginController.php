@@ -11,12 +11,10 @@ class LoginController extends Controller{
     }
     public function login(Request $request){
         $request->validate([
-            'email' => 'required|email',
+            'login' => 'required',
             'password' => 'required',
             'rol' => 'required'
         ]);
-
-        $credentials = $request->only('email', 'password');
 
         $guard = match($request->rol){
             'admin' => 'admin',
@@ -28,6 +26,16 @@ class LoginController extends Controller{
         if(!$guard){
             return back()->with('error', true);
         }
+        $credentials = match($request->rol){
+            'hotel' => [
+                'usuario' => $request->login,
+                'password' => $request->password
+            ],
+            default => [
+                'email' => $request->login,
+                'password' => $request->password
+            ],
+        };
         
         if(Auth::guard($guard)->attempt($credentials)){
             return redirect()->route($request->rol . '.dashboard');

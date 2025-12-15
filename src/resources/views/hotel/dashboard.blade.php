@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel del Viajero</title>
-<style>
-    body {
+    <meta charset="UTF-8">
+    <title>Panel Hotel</title>
+    <style>
+            body {
         margin: 0;
         font-family: "Arial", sans-serif;
         background: linear-gradient(135deg, #3a7bd5, #00d2ff);
@@ -16,7 +15,6 @@
         padding-top: 100px;
         min-height: 100vh;
     }
-
     .navbar {
         background: #ffffff;
         padding: 15px 40px;
@@ -31,14 +29,12 @@
         align-items: center;
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-
     .navbar-title {
         font-size: 18px;
         font-weight: bold;
         color: #1f2937;
     }
-
-    .navbar button.logout-btn {
+     .navbar button.logout-btn {
         background: #ff4d4d;
         padding: 8px 14px;
         border-radius: 10px;
@@ -52,7 +48,6 @@
     .navbar button.logout-btn:hover {
         background: #e60000;
     }
-
     .container {
         background: rgba(0, 0, 0, 0.25);
         padding: 40px;
@@ -68,7 +63,6 @@
         font-size: 30px;
         font-weight: bold;
     }
-
     .menu a {
         display: block;
         background: #ffffff33;
@@ -86,27 +80,27 @@
     .menu a:hover {
         background: #ffffff55;
     }
-</style>
+    </style>
 </head>
-    <body>
+<body>
     <div class="navbar">
-        <div class="navbar-title">✈️ Panel del Viajero</div>
+        <div class="navbar-title">🏨 Panel del corporativo</div>
         {{-- Botón de logout --}}
-        <form method="POST" action="{{ route('viajero.logout') }}">
+        <form method="POST" action="{{ route('hotel.logout') }}">
         @csrf
-        <button class="logout-btn">Cerrar sesión</button>
+        <button type="submit" class="logout-btn">Cerrar sesión</button>
         </form>
     </div>
     <div class="container">
 
-    {{-- Nombre del viajero --}}
-    <h1>Bienvenid@, {{ $viajero->nombre ?? 'Viajero' }} 👋</h1>
+        {{-- Nombre del corporativo --}}
+        <h1>Bienvenid@, {{ $hotel->nombre ?? 'Hotel' }} 👋</h1>
 
-        <div class= "menu">
-            <a href="{{ route('viajero.listar') }}">📋 Mis reservas</a>
-            <a href="{{ route('viajero.datos') }}">✈️ Crear reserva</a>
-            <a href="{{ route('viajero.info') }}">👤 Información personal</a>
+        <div class="menu">
+            <a href="{{route('hotel.reservas.crear')}}">🆕 Crear reserva</a>
+            <a href="{{route('hotel.reservas.listar')}}">📋 Reservas realizadas</a>
+            <a href="{{route('hotel.comisiones')}}">💰 Comisiones mensuales</a>
         </div>
     </div>
-    </body>
+</body>
 </html>

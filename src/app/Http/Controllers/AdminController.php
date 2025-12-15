@@ -13,6 +13,7 @@ use App\Models\Hotel;
 use App\Models\Viajero;
 use App\Models\Vehiculo;
 use App\Models\Admin;
+use App\Services\ReservaEmailService;
 
 class AdminController extends Controller
 {
@@ -36,247 +37,157 @@ class AdminController extends Controller
     // 2. FORMULARIO DE DATOS DE RESERVA
     // ===============================
     public function crearReservaDatos(Request $request){
-        //Si viene desde registrar viajero
-        if (session()->has('email_precargado')) {
-            $request->merge([
-                'email_cliente' => session('email_precargado'),
-                'tipo_reserva' => session('tipo_reserva')
-            ]);
-            session()->forget(['email_precargado', 'tipo_reserva']);
-        }
-        
+        // Validar tipo
         $request->validate([
             'tipo_reserva' => 'required|exists:transfer_tipo_reserva,id_tipo_reserva',
         ]);
 
         $tipo = $request->tipo_reserva;
+        $tipoModel = TipoReserva::findOrFail($tipo);
 
-        // Obtener el tipo real desde la BD
-        $tipoModel = TipoReserva::find($tipo);
-
-        // Debe existir porque lo valida arriba, pero por seguridad:
-        if (!$tipoModel) {
-            return redirect()
-                ->route('admin.reservas.crear')
-                ->with('error', 'Tipo de reserva no válido.');
-        }
-
-        // Nombre real del tipo (columna "descripcion")
-        $tipo_nombre = $tipoModel->descripcion;
-
-        // Datos adicionales
         $hoteles   = Hotel::orderBy('nombre')->get();
         $vehiculos = Vehiculo::orderBy('descripcion')->get();
-
-        // Si viene un email precargado del proceso de registrar viajero
         $email_cliente = $request->query('email', '');
 
-        return view('admin.datos', compact(
-            'tipo',
-            'tipo_nombre',
-            'hoteles',
-            'vehiculos',
-            'email_cliente'
-        ));
+        return view('admin.datos', [
+            'tipo' => $tipo,
+            'tipo_nombre' => $tipoModel->descripcion,
+            'hoteles' => $hoteles,
+            'vehiculos' => $vehiculos,
+            'email_cliente' => $email_cliente
+        ]);;
     }
-
-
     // ===============================
     // 3. GUARDAR RESERVA (LÓGICA COMPLETA)
     // ===============================
     public function guardarReserva(Request $request){
-        // ====================================
-        // 1. VALIDACIÓN BASE
-        // ====================================
+        
+        // ==========================
+        // VALIDACIÓN BASE
+        // ==========================
         $request->validate([
-            'tipo_reserva'      => 'required|exists:transfer_tipo_reserva,id_tipo_reserva',
-            'email_cliente'     => 'required|email',
-            'id_hotel'          => 'required|exists:transfer_hotel,id_hotel',
-            'id_vehiculo'       => 'required|exists:transfer_vehiculo,id_vehiculo',
-            'numero_viajeros'   => 'required|integer|min:1',
+            'tipo_reserva'    => 'required|exists:transfer_tipo_reserva,id_tipo_reserva',
+            'email_cliente'   => 'required|email',
+            'id_hotel'        => 'required|exists:transfer_hotel,id_hotel',
+            'id_vehiculo'     => 'required|exists:transfer_vehiculo,id_vehiculo',
+            'numero_viajeros' => 'required|integer|min:1',
         ]);
 
-        $tipo       = $request->tipo_reserva;
-        $tipoDesc = TipoReserva::TipoReservaDesc($tipo);
+        $tipo = $request->tipo_reserva;
 
-        // ====================================
-        // 2. COMPROBAR QUE EL EMAIL EXISTE
-        // ====================================
+        // ==========================
+        // COMPROBAR VIAJERO
+        // ==========================
         $viajero = Viajero::where('email', $request->email_cliente)->first();
 
         if (!$viajero) {
-            $email_cliente = $request->email_cliente;
-            $tipo_reserva  = $tipo;
-
-            // Muestra tu vista privada de admin
-            return view('admin.registroviajero', compact('email_cliente', 'tipo_reserva'));
+            return view('admin.registroviajero', [
+                'email_cliente' => $request->email_cliente,
+                'tipo_reserva'  => $tipo
+            ]);
         }
 
-        // ====================================
-        // 3. VALIDACIONES DEPENDIENTES DEL TIPO
-        // ====================================
+        // ==========================
+        // VALIDACIONES POR TIPO
+        // ==========================
+        $fechaEntrada = $request->fecha_entrada;
+        $horaEntrada  = $request->hora_entrada;
+        $fechaSalida  = $request->fecha_vuelo_salida;
+        $horaSalida   = $request->hora_vuelo_salida;
+        $horaRecogida = $request->hora_recogida;
 
-        $validator = Validator::make($request->all(), []);
-
-        // ----- TIPO 1 → HOTEL → AEROPUERTO
-        if ($tipo == 1) {
-            $validator->after(function ($v) use ($request) {
-                
-                if ($request->hora_recogida && $request->hora_vuelo_salida) {
-
-                    if ($request->hora_recogida > $request->hora_vuelo_salida) {
-                        $v->errors()->add('hora_recogida', 
-                            'La hora de recogida no puede ser posterior a la hora del vuelo.');
-                    }
-
-                    if ($request->hora_recogida == $request->hora_vuelo_salida) {
-                        $v->errors()->add('hora_recogida', 
-                            'La hora de recogida no puede ser igual a la hora del vuelo.');
-                    }
-                }
-            });
-        }
-
-
-        // ----- TIPO 3 → IDA Y VUELTA
-        if ($tipo == 3) {
-            $validator->after(function ($v) use ($request) {
-
-                // Validación recogida vs salida
-                if ($request->hora_recogida && $request->hora_vuelo_salida) {
-
-                    if ($request->hora_recogida > $request->hora_vuelo_salida) {
-                        $v->errors()->add('hora_recogida', 
-                            'La hora de recogida no puede ser posterior al vuelo.');
-                    }
-
-                    if ($request->hora_recogida == $request->hora_vuelo_salida) {
-                        $v->errors()->add('hora_recogida', 
-                            'La hora de recogida no puede ser igual al vuelo.');
-                    }
-                }
-
-                // Validación fechas ida/vuelta
-                if ($request->fecha_vuelo_salida && $request->fecha_entrada) {
-
-                    if ($request->fecha_vuelo_salida < $request->fecha_entrada) {
-                        $v->errors()->add('fecha_vuelo_salida',
-                            'La fecha del vuelo de ida no puede ser posterior a la fecha de llegada.');
-                    }
-
-                    if ($request->fecha_vuelo_salida == $request->fecha_entrada) {
-
-                        if ($request->hora_vuelo_salida > $request->hora_entrada) {
-                            $v->errors()->add('hora_vuelo_salida',
-                                'La hora del vuelo de ida no puede ser posterior a la de vuelta.');
-                        }
-
-                        if ($request->hora_vuelo_salida == $request->hora_entrada) {
-                            $v->errors()->add('hora_vuelo_salida',
-                                'La hora del vuelo de ida no puede ser igual a la de vuelta.');
-                        }
-                    }
-                }
-            });
-        }
-
-        // Ejecuta validaciones dinámicas
-        if ($validator->fails()) {
+        // --- TIPO 1
+        if ($tipo == 1 && $horaRecogida && $horaSalida && $horaRecogida >= $horaSalida) {
             return redirect()
-                ->back()
-                ->withErrors($validator)
+                ->route('admin.reservas.datos', [
+                    'tipo_reserva' => $tipo,
+                    'email' => $request->email_cliente
+                ])
+                ->withErrors([
+                    'hora_recogida' => 'La hora de recogida debe ser anterior al vuelo'
+                ])
                 ->withInput();
         }
 
-        // ====================================
-        // 4. NORMALIZAR CAMPOS A NULL
-        // ====================================
-        $data = $request->only([
-            'tipo_reserva',
-            'id_hotel',
-            'id_vehiculo',
-            'email_cliente',
-            'numero_viajeros',
-            'fecha_vuelo_salida',
-            'hora_vuelo_salida',
-            'numero_vuelo_salida',
-            'hora_recogida',
-            'fecha_entrada',
-            'hora_entrada',
-            'numero_vuelo_entrada',
-            'origen_vuelo_entrada'
-        ]);
+        // --- TIPO 3 (IDA Y VUELTA)
+        if ($tipo == 3) {
 
-        foreach ($data as $k => $v) {
-            if ($v === "" || $v === null) {
-                $data[$k] = null;
+            if($horaRecogida && $horaSalida){
+                if($horaRecogida >= $horaSalida){
+                    return back()
+                        ->withErrors([
+                            'hora_recogida' => 'La hora de recogida no puede ser igual o posterior a la del vuelo'
+                        ])
+                        ->withInput();
+                }
+            }
+            if($fechaSalida && $fechaEntrada){
+                if($fechaSalida < $fechaEntrada){
+                    return back()
+                        ->withErrors([
+                            'fecha_vuelo_salida' => 'La fecha del vuelo de ida no puede ser anterior a la de llegada'
+                        ])
+                        ->withInput();
+                }
+                if($fechaSalida === $fechaEntrada && $horaSalida && $horaEntrada){
+                    if($horaSalida <= $horaEntrada){
+                        return back()
+                            ->withErrors([
+                                'hora_vuelo_salida' => 'La hora del vuelo de ida debe ser posterior a la de llegada'
+                            ])
+                            ->withInput();
+                    }
+                }
             }
         }
 
-        // ====================================
-        // 5. OBTENER DESTINO POR HOTEL
-        // ====================================
-        $id_zona = Hotel::where('id_hotel', $request->id_hotel)->value('id_zona');
+        // ==========================
+        // CREAR RESERVA
+        // ==========================
+        
+        $hotel = Hotel::findOrFail($request->id_hotel);
+        $localizador = Reserva::generarLocalizador();
 
-        // ====================================
-        // 6. GENERAR LOCALIZADOR
-        // ====================================
-        $localizador = Reserva::generarLocalizador(); // método que debes implementar
+        Reserva::create([
+            'localizador'        => $localizador,
+            'id_hotel'           => $request->id_hotel,
+            'id_tipo_reserva'    => $tipo,
+            'email_cliente'      => $request->email_cliente,
+            'id_destino'         => null,
+            'num_viajeros'       => $request->numero_viajeros,
+            'id_vehiculo'        => $request->id_vehiculo,
+            'usuario_creacion'   => 'admin',
+            'fecha_reserva'      => now(),
+            'fecha_modificacion' => now(),
 
-        // ====================================
-        // 7. CREAR RESERVA
-        // ====================================
-        $reserva = Reserva::create([
-            'localizador'          => $localizador,
-            'id_hotel'             => $request->id_hotel,
-            'id_tipo_reserva'      => $request->tipo_reserva,
-            'email_cliente'        => $request->email_cliente,
-            'id_destino'           => $id_zona,
-            'num_viajeros'         => $request->numero_viajeros,
-            'id_vehiculo'          => $request->id_vehiculo,
-            'usuario_creacion'     => 'admin',
-            'fecha_reserva'        => now(),
-            'fecha_modificacion'   => now(),
+            'fecha_entrada'        => $fechaEntrada,
+            'hora_entrada'         => $horaEntrada,
+            'numero_vuelo_entrada' => $request->numero_vuelo_entrada,
+            'origen_vuelo_entrada' => $request->origen_vuelo_entrada,
 
-            // Llegada
-            'fecha_entrada'        => $data['fecha_entrada'],
-            'hora_entrada'         => $data['hora_entrada'],
-            'numero_vuelo_entrada' => $data['numero_vuelo_entrada'],
-            'origen_vuelo_entrada' => $data['origen_vuelo_entrada'],
-
-            // Salida
-            'fecha_vuelo_salida'   => $data['fecha_vuelo_salida'],
-            'hora_vuelo_salida'    => $data['hora_vuelo_salida'],
-            'numero_vuelo_salida'  => $data['numero_vuelo_salida'],
-            'hora_recogida'        => $data['hora_recogida'],
+            'fecha_vuelo_salida'   => $fechaSalida,
+            'hora_vuelo_salida'    => $horaSalida,
+            'numero_vuelo_salida'  => $request->numero_vuelo_salida,
+            'hora_recogida'        => $horaRecogida,
         ]);
-
-        // ====================================
-        // 8. ENVIAR EMAIL
-        // ====================================
-        /*
-        $hotelNombre = Hotel::find($request->id_hotel)->nombre;
-
-        EmailHelper::enviarConfirmacionReserva(
-            $request->email_cliente,
-            $viajero->nombre ?? "Cliente",
-            $localizador,
-            $tipoDesc,
-            $hotelNombre
-        ); */
-
-        // ====================================
-        // 9. MOSTRAR CONFIRMACIÓN
-        // ====================================
-
-        $hotelNombre = Hotel::HotelDesc($request->id_hotel);
+        try{
+            ReservaEmailService::enviarConfirmacion(
+                $request->email_cliente,
+                $localizador,
+                $hotel->nombre,
+                TipoReserva::TipoReservaDesc($tipo)
+             );
+        }catch(\Throwable $e){
+            logger()->error($e->getMessage());
+        }
+        
 
         return view('admin.confirmacion', [
-            'localizador'        => $localizador,
-            'email'              => $request->email_cliente,
-            'tipo_reserva_texto' => $tipoDesc,
-            'hotel_nombre'       => $hotelNombre,
-            'numero_viajeros'    => $request->numero_viajeros
+            'localizador' => $localizador,
+            'email' => $request->email_cliente,
+            'tipo_reserva_texto' => TipoReserva::TipoReservaDesc($tipo),
+            'hotel_nombre' => $hotel->nombre,
+            'numero_viajeros' => $request->numero_viajeros
         ]);
     }
 
