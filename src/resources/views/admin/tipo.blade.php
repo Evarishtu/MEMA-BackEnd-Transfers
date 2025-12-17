@@ -70,7 +70,6 @@
             background: #0056b3;
         }
 
-        /* BOTÓN VOLVER estilo calendario */
         .btn-volver {
             display: inline-block;
             margin-top: 25px;
