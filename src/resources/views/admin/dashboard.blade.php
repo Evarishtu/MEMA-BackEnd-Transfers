@@ -87,7 +87,7 @@
 
 <body>
     <div class="navbar">
-        <div class="navbar-title">🛠️ Panel de administraddor</div>
+        <div class="navbar-title">🛠️ Panel de administrador</div>
         {{-- Botón de logout --}}
         <form method="POST" action="{{ route('admin.logout') }}">
         @csrf
