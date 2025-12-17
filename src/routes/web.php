@@ -57,7 +57,7 @@ Route::prefix('hotel')->middleware('auth:hotel')->group(function(){
     //REGISTRO VIAJERO 
     Route::post('/viajeros', [HotelController::class, 'storeViajero'])->name('hotel.viajeros.store');
     Route::post('/reservas/buscar-cliente', [HotelController::class, 'buscarCliente'])->name('hotel.reservas.buscarCliente');
-    Route::post('/viajero/registrar', [HotelController::class, 'registrarViajero'])->name('hotel.viajero.store');
+    Route::post('/viajero/registrar', [HotelController::class, 'storeViajero'])->name('hotel.viajero.store');
     Route::post('/reservas/guardar', [HotelController::class, 'guardarReserva'])->name('hotel.reservas.guardar');
     Route::get('/reservas/confirmacion/{localizador}', [HotelController::class, 'confirmacionReserva'])->name('hotel.reservas.confirmacion');
     //LISTAR RESERVAS

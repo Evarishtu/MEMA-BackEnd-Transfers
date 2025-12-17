@@ -16,7 +16,27 @@
         padding-bottom: 80px;
         min-height: 100vh;
     }
-
+    .form-grid{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px 16px;
+    }
+    .form-group{
+        display: flex;
+        flex-direction: column;
+    }
+    .full{
+        grid-column: 1 / -1;
+    }
+        input[type="date"],
+        input[type="time"],
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+    select {
+        height: 44px;
+        box-sizing: border-box;
+    }   
     .card {
         width: 90%;
         max-width: 700px;
@@ -108,7 +128,6 @@
                     <legend>Tipo de reserva</legend>
                     <select name="id_tipo_reserva" id="tipo_reserva" required onchange="mostrarCampos()">
                         <option value="">-- Selecciona tipo de reserva --</option>
-
                         @foreach($tiposReserva as $tipo)
                             <option value="{{ $tipo->id_tipo_reserva }}">
                                 {{ $tipo->descripcion }}
@@ -117,78 +136,94 @@
                     </select>
                 </fieldset>
 
+                 {{-- BLOQUE: VUELO LLEGADA --}}
+                <fieldset id="vuelo_llegada" style="display:none;">
+                    <legend>Vuelo de llegada (Aeropuerto → Hotel)</legend>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Fecha llegada:</label>
+                            <input type="date" name="fecha_entrada">
+                        </div>
+                        <div class="form-group">
+                            <label>Hora llegada:</label>
+                            <input type="time" name="hora_entrada">
+                        </div>
+                        <div class="form-group">
+                            <label>Número de vuelo:</label>
+                            <input type="text" name="numero_vuelo_entrada">
+                        </div>
+                        <div class="form-group">
+                            <label>Aeropuerto de origen:</label>
+                            <input type="text" name="origen_vuelo_entrada">
+                        </div>
+                    </div>
+                </fieldset>
+
                 {{-- BLOQUE: VUELO SALIDA --}}
                 <fieldset id="vuelo_salida" style="display:none;">
                     <legend>Vuelo de salida (Hotel → Aeropuerto)</legend>
-
-                    <label>Fecha vuelo salida:</label>
-                    <input type="date" name="fecha_vuelo_salida">
-
-                    <label>Hora vuelo salida:</label>
-                    <input type="time" name="hora_vuelo_salida">
-
-                    <label>Número de vuelo salida:</label>
-                    <input type="text" name="numero_vuelo_salida">
-
-                    <label>Hora recogida en hotel:</label>
-                    <input type="time" name="hora_recogida">
-                </fieldset>
-
-                {{-- BLOQUE: VUELO LLEGADA --}}
-                <fieldset id="vuelo_llegada" style="display:none;">
-                    <legend>Vuelo de llegada (Aeropuerto → Hotel)</legend>
-
-                    <label>Fecha llegada:</label>
-                    <input type="date" name="fecha_entrada">
-
-                    <label>Hora llegada:</label>
-                    <input type="time" name="hora_entrada">
-
-                    <label>Número de vuelo:</label>
-                    <input type="text" name="numero_vuelo_entrada">
-
-                    <label>Aeropuerto de origen:</label>
-                    <input type="text" name="origen_vuelo_entrada">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Fecha vuelo salida:</label>
+                            <input type="date" name="fecha_vuelo_salida">
+                        </div>
+                        <div class="form-group">
+                            <label>Hora vuelo salida:</label>
+                            <input type="time" name="hora_vuelo_salida">
+                        </div>
+                        <div class="form-group">
+                            <label>Número de vuelo salida:</label>
+                            <input type="text" name="numero_vuelo_salida">
+                        </div>
+                        <div class="form-group">
+                            <label>Hora recogida en hotel:</label>
+                            <input type="time" name="hora_recogida">
+                        </div>
+                    </div>
                 </fieldset>
 
                 {{-- DATOS ADICIONALES --}}
                 <fieldset>
                     <legend>Datos adicionales</legend>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label>Hotel:</label>
+                            <select name="id_hotel" required>
+                                <option value="">-- Selecciona un hotel --</option>
 
-                    <label>Hotel:</label>
-                    <select name="id_hotel" required>
-                        <option value="">-- Selecciona un hotel --</option>
-
-                        @foreach($hoteles as $hotel)
-                            <option value="{{ $hotel->id_hotel }}">
-                                {{ $hotel->nombre }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    <label>Número de viajeros:</label>
-                    <input type="number" name="num_viajeros" min="1" required>
-
-                    <label>Email del cliente:</label>
-                    <input type="email" value="{{ $viajero->email }}" readonly>
-
-                    <label>Vehículo:</label>
-                    <select name="id_vehiculo" required>
-                        <option value="">-- Selecciona un vehículo --</option>
-
-                        @foreach($vehiculos as $vehiculo)
-                            <option value="{{ $vehiculo->id_vehiculo }}">
-                                {{ $vehiculo->descripcion }}
-                            </option>
-                        @endforeach
-
-                    </select>
+                                @foreach($hoteles as $hotel)
+                                    <option value="{{ $hotel->id_hotel }}">
+                                        {{ $hotel->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Número de viajeros:</label>
+                            <input type="number" name="num_viajeros" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email del cliente:</label>
+                            <input type="email" value="{{ $viajero->email }}" readonly>
+                        </div>
+                        <div class="form-group full">
+                            <label>Vehículo:</label>
+                            <select name="id_vehiculo" required>
+                                <option value="">-- Selecciona un vehículo --</option>
+                                @foreach($vehiculos as $vehiculo)
+                                    <option value="{{ $vehiculo->id_vehiculo }}">
+                                        {{ $vehiculo->descripcion }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </fieldset>
 
                 <button type="submit">Guardar reserva</button>
             </form>
 
-            <a href="{{ route('viajero.dashboard') }}" class="volver">← Volver al dashboard</a>
+            <a href="{{ route('viajero.dashboard') }}" class="btn-volver">">Volver al dashboard</a>
         </div>
 
         <script>
@@ -201,6 +236,7 @@
             document.getElementById('vuelo_llegada').style.display =
                 (tipo == "2" || tipo == "3") ? 'block' : 'none';
         }
+        document.getElementById('tipo_reserva').addEventListener('change', mostrarCampos);
         </script>
     </body>
 </html>
