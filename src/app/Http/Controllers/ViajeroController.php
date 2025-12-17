@@ -9,6 +9,7 @@ use App\Models\Reserva;
 use App\Models\TipoReserva;
 use App\Models\Hotel;
 use App\Models\Vehiculo;
+use App\Models\Zona;
 
 class ViajeroController extends Controller {
     public function dashboard(){
