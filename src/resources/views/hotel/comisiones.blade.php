@@ -155,6 +155,7 @@
         <thead>
             <tr>
                 <th>Hotel</th>
+                <th>Reservas Admin</th>
                 <th>Reservas Viajero</th>
                 <th>Reservas Corporativo</th>
                 <th>Comisión fija (€)</th>
@@ -165,9 +166,10 @@
             @forelse ($datos as $fila)
                 <tr>
                     <td>{{ $fila->hotel }}</td>
+                    <td>{{ $fila->reservas_admin }}</td>
                     <td>{{ $fila->reservas_viajero }}</td>
-                    <td>{{ $fila->reservas_corporativo }}</td>
-                    <td>{{ $fila->comision_hotel }} €</td>
+                    <td>{{ $fila->reservas_corporativo }} </td>
+                    <td>{{ $fila->comision_hotel }} € </td>
                     <td class="total">
                         {{ number_format($fila->total_comisiones ?? 0, 2, ',', '.') }} €
                     </td>
