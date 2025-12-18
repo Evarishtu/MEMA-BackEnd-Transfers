@@ -13,7 +13,7 @@ use App\Models\Viajero;
 use App\Models\Reserva;
 use App\Models\TipoReserva;
 use App\Models\Zona;
-
+use App\Services\ReservaEmailService;
 
 
 class HotelController extends Controller{
@@ -187,6 +187,17 @@ class HotelController extends Controller{
         'hora_recogida'        => $data['hora_recogida'],
     ]);
 
+    try{
+        ReservaEmailService::enviarConfirmacion(
+            $request->email_cliente,
+            $localizador,
+            $hotel->nombre,
+            TipoReserva::TipoReservaDesc($tipo)
+            );
+    }catch(\Throwable $e){
+            logger()->error($e->getMessage());
+    }
+
     return view('hotel.confirmacion', [
         'localizador'        => $localizador,
         'email'              => $request->email_cliente,
@@ -208,33 +219,37 @@ class HotelController extends Controller{
             'reservas' => $reservas
         ]);
     }
+    
     public function storeViajero(Request $request){
         $request->validate([
-            'email' => 'required|email|unique:transfer_viajeros,email',
-            'nombre' => 'required',
-            'apellido1' => 'required',
-            'direccion' => 'required'
+            'email'        => 'required|email|unique:transfer_viajeros,email',
+            'password'     => 'required|min:2',
+            'nombre'       => 'required|string',
+            'apellido1'    => 'required|string',
+            'apellido2'    => 'nullable|string',
+            'direccion'    => 'required|string',
+            'codigoPostal' => 'required|string',
+            'pais'         => 'required|string',
+            'ciudad'       => 'required|string',
         ]);
-        $password = bin2hex(random_bytes(4));
 
-        Viajero::create([
-            'email' => $request->email,
-            'password' => bcrypt($password),
-            'nombre' => $request->nombre,
-            'apellido1' => $request->apellido1,
-            'apellido2' => $request->apellido2,
-            'direccion' => $request->direccion,
+        // Crear viajero
+        $viajero = Viajero::create([
+            'email'        => $request->email,
+            'password'     => bcrypt($request->password),
+            'nombre'       => $request->nombre,
+            'apellido1'    => $request->apellido1,
+            'apellido2'    => $request->apellido2,
+            'direccion'    => $request->direccion,
             'codigoPostal' => $request->codigoPostal,
-            'pais' => $request->pais,
-            'ciudad' => $request->ciudad,
+            'pais'         => $request->pais,
+            'ciudad'       => $request->ciudad,
         ]);
 
-        return redirect()
-            ->route('hotel.reservas.datos', [
-                'tipo_reserva' => $request->tipo_reserva,
-                'email' => $request->email
-            ])
-            ->with('success', "Cliente registrado. Contraseña tempral: $password");
+        // Mostrar vista de éxito sencilla
+        return view('admin.registrosuccess', [
+            'viajero' => $viajero
+        ]);
     }
 
     /*
