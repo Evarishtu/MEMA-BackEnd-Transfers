@@ -10,6 +10,7 @@ use App\Models\TipoReserva;
 use App\Models\Hotel;
 use App\Models\Vehiculo;
 use App\Models\Zona;
+use App\Services\ReservaEmailService;
 
 class ViajeroController extends Controller {
     public function dashboard(){
@@ -70,8 +71,20 @@ class ViajeroController extends Controller {
         $data['fecha_reserva'] = now();
         $data['email_cliente'] = $viajero->email;
         $data['usuario_creacion'] = 'viajero';
-
+        $hotel = Hotel::findOrFail($request->id_hotel);
+        $tipo  = $request->id_tipo_reserva; 
         Reserva::create($data);
+
+    try{
+        ReservaEmailService::enviarConfirmacion(
+            $viajero->email,
+            $localizador,
+            $hotel->nombre,
+            TipoReserva::TipoReservaDesc($tipo)
+            );
+        }catch(\Throwable $e){
+            logger()->error($e->getMessage());
+    }
 
         return redirect()->route('viajero.confirmacion', $localizador);
     }
