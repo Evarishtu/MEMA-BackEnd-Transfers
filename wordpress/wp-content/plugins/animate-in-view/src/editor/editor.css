@@ -1,0 +1,19 @@
+.animate-in-view-editor {
+    --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: transparent;
+    --tw-ring-color: var(--wp-admin-theme-color);
+}
+.animate-in-view-editor *,
+.animate-in-view-editor *:after,
+.animate-in-view-editor *:before {
+    box-sizing: border-box;
+    border: 0 solid #e5e7eb;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Add more styles here specific to the editor only */
+.animate-in-view-editor [role="presentation"] {
+    @apply bg-wp-theme-500;
+}

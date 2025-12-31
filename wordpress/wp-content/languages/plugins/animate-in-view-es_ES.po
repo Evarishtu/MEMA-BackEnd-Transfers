@@ -1,0 +1,30 @@
+# Translation of Plugins - Animate In View - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - Animate In View - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-09-12 11:25:17+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.0-alpha.7\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - Animate In View - Stable (latest release)\n"
+
+#: build/block.json src/block.json
+msgctxt "block description"
+msgid "Animates a block when it comes into view."
+msgstr "Anima un bloque cuando entra en el área de visualización."
+
+#: build/block.json src/block.json
+msgctxt "block title"
+msgid "Animate In View"
+msgstr "Animate In View"
+
+#. Author of the plugin
+msgid "Kevin Batdorf"
+msgstr "Kevin Batdorf"
+
+#. Description of the plugin
+msgid "This block will animate in as soon as it enters the viewport of the browser window. That's it."
+msgstr "Este bloque se animará cuando entre en el área de visualización de la ventana del navegador. Ya está."
